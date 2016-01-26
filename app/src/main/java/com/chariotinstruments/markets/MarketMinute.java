@@ -15,6 +15,12 @@ public class MarketMinute {
     private BigDecimal _close;
     private Long _volume;
 
+    //Constructor
+    public MarketMinute(){
+
+    }
+
+    //Getters/setters
     public int getMinute(){
         return _minute;
     }
@@ -63,9 +69,6 @@ public class MarketMinute {
         _volume = volumeIn;
     }
 
-    //Constructor
-    public MarketMinute(){
 
-    }
 
 }
