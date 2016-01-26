@@ -13,7 +13,7 @@ public class ParseData {
     //Constructor
     public ParseData(){
         _data = new ArrayList<String>();
-        _target = "1,";
+        _target = "TIMEZONE_OFFSET";
     }
 
     //getters/setters
@@ -40,7 +40,7 @@ public class ParseData {
 
         for (String item : trimmedData){
             if(item.contains(_target)){
-                targetIndex = count;
+                targetIndex = count+2; // +2 since the TIMEZONE_OFFSET is two indices prior to where we want to start.
                 break;
             }
             count++;
