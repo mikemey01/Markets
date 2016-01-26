@@ -16,7 +16,7 @@ public class MarketDay {
     private ArrayList<MarketMinute> _marketMinutes;
 
     public MarketDay(){
-        _marketMinutes = new ArrayList<MarketMinute>;
+        _marketMinutes = new ArrayList<MarketMinute>();
     }
 
     private void addMinute(int curMinute, BigDecimal open, BigDecimal high, BigDecimal low, BigDecimal close, Long volume){
