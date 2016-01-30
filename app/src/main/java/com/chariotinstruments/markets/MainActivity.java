@@ -14,12 +14,14 @@ import java.io.InputStreamReader;
 public class MainActivity extends AppCompatActivity {
 
     TextView dataTextView;
+    APIKeys apiKeys;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dataTextView = (TextView)findViewById(R.id.dataTextView);
+        apiKeys = new APIKeys();
 
         //this potentially avoids the error in running network operations on the main thread.
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
