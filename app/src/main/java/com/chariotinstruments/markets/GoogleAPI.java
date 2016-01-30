@@ -3,15 +3,27 @@ package com.chariotinstruments.markets;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * Created by user on 1/29/16.
+ */
+
+
+public class GoogleAPI extends AppCompatActivity {
 
     TextView dataTextView;
 
@@ -34,12 +46,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void getData(View v) {
 
+
+    public void getData(View v) {
+        Toast.makeText(GoogleAPI.this, "Works", Toast.LENGTH_SHORT).show();
+        getTickerInfo();
     }
 
     public void getTickerInfo() {
+        HttpURLConnection conn = null;
+        try {
+            URL url = new URL("http://www.google.com/finance/getprices?i=60&p=1d&f=d,o,h,l,c,v&df=cpct&q=SPY");
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+        } catch (MalformedURLException e) {
+            Log.d("URL Malform", e.toString());
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+// read the response
+        try {
+            System.out.println("Response Code: " + conn.getResponseCode());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        InputStream in = null;
+        try {
+            in = new BufferedInputStream(conn.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String response = convertStreamToString(in);
+
+        dataTextView.setText(response);
+        //System.out.println(response);
     }
 
     private String convertStreamToString(InputStream is) {
