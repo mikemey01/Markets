@@ -52,13 +52,13 @@ public class SQLMarketMinutesDataSource {
         return newMarMin;
     }
 
-    public void deleteComment(MarketMinute marMin) {
+    public void deleteMarketMinute(MarketMinute marMin) {
         long id = marMin.getId();
         System.out.println("Comment deleted with id: " + id);
         database.delete(SQLiteHelper.TABLE_MARKETMINUTES, SQLiteHelper.COLUMN_ID + " = " + id, null);
     }
 
-    public List<MarketMinute> getAllComments() {
+    public List<MarketMinute> getAllMarketMinutes() {
         List<MarketMinute> marMins = new ArrayList<MarketMinute>();
 
         Cursor cursor = database.query(SQLiteHelper.TABLE_MARKETMINUTES, allColumns, null, null, null, null, null);
