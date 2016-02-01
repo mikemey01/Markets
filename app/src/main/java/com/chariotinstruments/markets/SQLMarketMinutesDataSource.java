@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,25 +59,32 @@ public class SQLMarketMinutesDataSource {
     }
 
     public List<MarketMinute> getAllComments() {
-        List<MarketMinute> comments = new ArrayList<MarketMinute>();
+        List<MarketMinute> marMins = new ArrayList<MarketMinute>();
 
         Cursor cursor = database.query(SQLiteHelper.TABLE_MARKETMINUTES, allColumns, null, null, null, null, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            Comment comment = cursorToComment(cursor);
-            comments.add(comment);
+            MarketMinute marMin = cursorToMarMin(cursor);
+            marMins.add(marMin);
             cursor.moveToNext();
         }
         // make sure to close the cursor
         cursor.close();
-        return comments;
+        return marMins;
     }
 
     private MarketMinute cursorToMarMin(Cursor cursor) {
-        Comment comment = new Comment();
-        comment.setId(cursor.getLong(0));
-        comment.setComment(cursor.getString(1));
-        return comment;
+        MarketMinute marMin = new MarketMinute();
+        marMin.setId(cursor.getInt(0));
+        marMin.setOpen(new BigDecimal(Float.toString(cursor.getFloat(1))));
+        marMin.setLow(new BigDecimal(Float.toString(cursor.getFloat(2))));
+        marMin.setHigh(new BigDecimal(Float.toString(cursor.getFloat(3))));
+        marMin.setClose(new BigDecimal(Float.toString(cursor.getFloat(4))));
+        marMin.setVolume(cursor.getLong(5));
+        marMin.setDate(cursor.getInt(6));
+        marMin.setIsOpen(cursor.getInt(7));
+        marMin.setIsClose(cursor.getInt(8));
+        return marMin;
     }
 }
