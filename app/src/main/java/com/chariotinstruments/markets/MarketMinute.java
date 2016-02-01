@@ -8,12 +8,18 @@ import java.math.BigDecimal;
 
 public class MarketMinute {
 
+    private int _id;
     private int _minute;
     private BigDecimal  _open;
     private BigDecimal _high;
     private BigDecimal _low;
     private BigDecimal _close;
     private Long _volume;
+    private int _date;
+    private int _isOpen;
+    private int _isClose;
+
+
 
     //Constructor
     public MarketMinute(){
@@ -21,6 +27,14 @@ public class MarketMinute {
     }
 
     //Getters/setters
+    public int getId(){
+        return _id;
+    }
+
+    public void setId(int idIn){
+        _id = idIn;
+    }
+
     public int getMinute(){
         return _minute;
     }
@@ -69,6 +83,29 @@ public class MarketMinute {
         _volume = volumeIn;
     }
 
+    public int getDate(){
+        return _date;
+    }
+
+    public void setDate(int dateIn){
+        _date = dateIn;
+    }
+
+    public int getIsOpen(){
+        return _isOpen;
+    }
+
+    public void setIsOpen(int isOpenIn){
+        _isOpen = isOpenIn;
+    }
+
+    public int getIsClose(){
+        return _isClose;
+    }
+
+    public void setIsClose(int isCloseIn){
+        _isClose = isCloseIn;
+    }
 
 
 }
