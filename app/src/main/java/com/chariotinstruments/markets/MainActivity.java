@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,13 +42,27 @@ public class MainActivity extends AppCompatActivity {
 
     public void setData(View v){
         MarketMinute marMin = new MarketMinute();
-
         marMin = datasource.createMarketMinute(1.0, 0.5, 2.0, 1.5, 1000, 1234, 1, 0);
     }
 
 
     public void getData(View v) {
+        List<MarketMinute> marMinList = datasource.getAllMarketMinutes();
+        for(int i = 0; i<marMinList.size(); i++){
+            System.out.println(marMinList.get(i));
+        }
+    }
 
+    @Override
+    protected void onResume() {
+        datasource.open();
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        datasource.close();
+        super.onPause();
     }
 
     public void getTickerInfo() {
