@@ -1,7 +1,6 @@
 package com.chariotinstruments.markets;
 
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -15,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView dataTextView;
     APIKeys apiKeys;
+    SQLMarketMinutesDataSource datasource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,16 +23,26 @@ public class MainActivity extends AppCompatActivity {
         dataTextView = (TextView)findViewById(R.id.dataTextView);
         apiKeys = new APIKeys();
 
-        //this potentially avoids the error in running network operations on the main thread.
-        int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        if (SDK_INT > 8)
-        {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                    .permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            //your codes here
+        datasource = new SQLMarketMinutesDataSource(this);
+        datasource.open();
 
-        }
+
+//        //this potentially avoids the error in running network operations on the main thread.
+//        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+//        if (SDK_INT > 8)
+//        {
+//            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+//                    .permitAll().build();
+//            StrictMode.setThreadPolicy(policy);
+//            //your codes here
+//
+//        }
+    }
+
+    public void setData(View v){
+        MarketMinute marMin = new MarketMinute();
+
+        marMin = datasource.createMarketMinute(1.0, 0.5, 2.0, 1.5, 1000, 1234, 1, 0);
     }
 
 

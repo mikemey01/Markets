@@ -18,6 +18,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <Button
+        android:id="@+id/setDataButton"
+        android:text="Set Data"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:onClick="setData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/getDataButton"/>
+
     <TextView
         android:id="@+id/dataTextView"
         android:layout_width="wrap_content"
