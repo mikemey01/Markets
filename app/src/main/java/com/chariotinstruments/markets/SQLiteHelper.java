@@ -21,13 +21,13 @@ public class SQLiteHelper  extends SQLiteOpenHelper {
     public static final String COLUMN_ISCLOSE = "isclose";
 
     private static final String DATABASE_NAME = "Markets.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table "
             + TABLE_MARKETMINUTES
             + "("
-            + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_ID + " integer primary key, "
             + COLUMN_OPEN + " real,"
             + COLUMN_LOW + " real,"
             + COLUMN_HIGH + " real,"

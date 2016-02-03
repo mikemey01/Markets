@@ -41,9 +41,16 @@ public class SQLMarketMinutesDataSource {
         dbHelper.close();
     }
 
-    public MarketMinute createMarketMinute(double open, double low, double high, double close, long volume, int date, int isOpen, int isClose) {
+    public MarketMinute createMarketMinute(int open, int low, int high, int close, int volume, int date, int isOpen, int isClose) {
         ContentValues values = new ContentValues();
         values.put(SQLiteHelper.COLUMN_OPEN, open);
+        values.put(SQLiteHelper.COLUMN_LOW, low);
+        values.put(SQLiteHelper.COLUMN_HIGH, high);
+        values.put(SQLiteHelper.COLUMN_CLOSE, close);
+        values.put(SQLiteHelper.COLUMN_VOLUME, volume);
+        values.put(SQLiteHelper.COLUMN_DATE, date);
+        values.put(SQLiteHelper.COLUMN_ISOPEN, isOpen);
+        values.put(SQLiteHelper.COLUMN_ISCLOSE, isClose);
         long insertId = database.insert(SQLiteHelper.TABLE_MARKETMINUTES, null, values);
         Cursor cursor = database.query(SQLiteHelper.TABLE_MARKETMINUTES, allColumns, SQLiteHelper.COLUMN_ID + " = " + insertId, null, null, null, null);
         cursor.moveToFirst();
@@ -74,14 +81,23 @@ public class SQLMarketMinutesDataSource {
         return marMins;
     }
 
+    public void dropTable(){
+
+    }
+
     private MarketMinute cursorToMarMin(Cursor cursor) {
         MarketMinute marMin = new MarketMinute();
+        if(cursor.isNull(0)){
+            System.out.println("NO GOOD - NULL");
+        }else{
+            System.out.println(cursor.getInt(0));
+        }
         marMin.setId(cursor.getInt(0));
-        marMin.setOpen(new BigDecimal(Float.toString(cursor.getFloat(1))));
-        marMin.setLow(new BigDecimal(Float.toString(cursor.getFloat(2))));
-        marMin.setHigh(new BigDecimal(Float.toString(cursor.getFloat(3))));
-        marMin.setClose(new BigDecimal(Float.toString(cursor.getFloat(4))));
-        marMin.setVolume(cursor.getLong(5));
+        marMin.setOpen(new BigDecimal(cursor.getInt(1)));
+        marMin.setLow(new BigDecimal(cursor.getInt(2)));
+        marMin.setHigh(new BigDecimal(cursor.getInt(3)));
+        marMin.setClose(new BigDecimal(cursor.getInt(4)));
+        marMin.setVolume(Long.valueOf(cursor.getInt(5)));
         marMin.setDate(cursor.getInt(6));
         marMin.setIsOpen(cursor.getInt(7));
         marMin.setIsClose(cursor.getInt(8));

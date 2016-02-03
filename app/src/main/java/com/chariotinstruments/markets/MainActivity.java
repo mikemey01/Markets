@@ -42,15 +42,25 @@ public class MainActivity extends AppCompatActivity {
 
     public void setData(View v){
         MarketMinute marMin = new MarketMinute();
-        marMin = datasource.createMarketMinute(1.0, 0.5, 2.0, 1.5, 1000, 1234, 1, 0);
+        marMin = datasource.createMarketMinute(1, 2, 3, 4, 1000, 1234, 1, 0);
     }
 
 
     public void getData(View v) {
         List<MarketMinute> marMinList = datasource.getAllMarketMinutes();
         for(int i = 0; i<marMinList.size(); i++){
-            System.out.println(marMinList.get(i));
+            MarketMinute tempMarMin;
+            tempMarMin = marMinList.get(i);
+            System.out.println(tempMarMin.getLow());
+            System.out.println(tempMarMin.getHigh());
+            System.out.println(tempMarMin.getVolume());
+            deleteData(tempMarMin);
+
         }
+    }
+
+    public void deleteData(MarketMinute marMinIn){
+        datasource.deleteMarketMinute(marMinIn);
     }
 
     @Override
