@@ -14,8 +14,8 @@ public class MarketMinute {
     private BigDecimal _high;
     private BigDecimal _low;
     private BigDecimal _close;
-    private Long _volume;
-    private int _date;
+    private long _volume;
+    private long _date;
     private int _isOpen;
     private int _isClose;
 
@@ -83,11 +83,11 @@ public class MarketMinute {
         _volume = volumeIn;
     }
 
-    public int getDate(){
+    public long getDate(){
         return _date;
     }
 
-    public void setDate(int dateIn){
+    public void setDate(long dateIn){
         _date = dateIn;
     }
 

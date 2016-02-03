@@ -21,7 +21,7 @@ public class SQLiteHelper  extends SQLiteOpenHelper {
     public static final String COLUMN_ISCLOSE = "isclose";
 
     private static final String DATABASE_NAME = "Markets.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 2; //increment this to drop/recreate the thing.
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table "
@@ -33,7 +33,7 @@ public class SQLiteHelper  extends SQLiteOpenHelper {
             + COLUMN_HIGH + " real,"
             + COLUMN_CLOSE + " real,"
             + COLUMN_VOLUME + " real,"
-            + COLUMN_DATE + " int,"
+            + COLUMN_DATE + " real,"
             + COLUMN_ISOPEN + " int,"
             + COLUMN_ISCLOSE + " int"
             +");";

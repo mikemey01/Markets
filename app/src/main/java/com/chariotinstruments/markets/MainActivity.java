@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setData(View v){
-        MarketMinute marMin = new MarketMinute();
-        marMin = datasource.createMarketMinute(1, 2, 3, 4, 1000, 1234, 1, 0);
+        long newID;
+        newID = datasource.createMarketMinute(1.1f, 2.2f, 3.3f, 4.4f, 1000, System.currentTimeMillis(), 1, 0);
     }
 
 
