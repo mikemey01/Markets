@@ -41,6 +41,7 @@ public class SQLMarketMinutesDataSource {
         dbHelper.close();
     }
 
+    //TODO: should really pass a MarketMinute object here.
     public long createMarketMinute(float open, float low, float high, float close, long volume, long date, int isOpen, int isClose) {
         ContentValues values = new ContentValues();
         values.put(SQLiteHelper.COLUMN_OPEN, open);
@@ -61,6 +62,12 @@ public class SQLMarketMinutesDataSource {
         database.delete(SQLiteHelper.TABLE_MARKETMINUTES, SQLiteHelper.COLUMN_ID + " = " + id, null);
     }
 
+    //TODO: need a way to update a column
+    public void updateMarketMinute(MarketMinute marMinIn){
+
+    }
+
+    //TODO: make this an arraylist for fast enumeration.
     public List<MarketMinute> getAllMarketMinutes() {
         List<MarketMinute> marMins = new ArrayList<MarketMinute>();
 
