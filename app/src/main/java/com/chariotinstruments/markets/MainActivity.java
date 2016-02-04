@@ -5,6 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.github.scribejava.apis.TwitterApi;
+import com.github.scribejava.core.builder.ServiceBuilder;
+import com.github.scribejava.core.model.OAuthRequest;
+import com.github.scribejava.core.model.Response;
+import com.github.scribejava.core.model.Token;
+import com.github.scribejava.core.model.Verb;
+import com.github.scribejava.core.oauth.OAuthService;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +22,14 @@ public class MainActivity extends AppCompatActivity {
 
     TextView dataTextView;
     APIKeys apiKeys;
+    private static final String PROTECTED_RESOURCE_URL = "https://api.tradeking.com/v1/member/profile.json";
+
+    private final OAuthService service = new ServiceBuilder()
+            .provider(TwitterApi.class)
+            .apiKey(apiKeys.CONSUMER_KEY)
+            .apiSecret(apiKeys.CONSUMER_SECRET)
+            .callback("http://www.example.com/oauth_callback/")
+            .build();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +37,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         dataTextView = (TextView)findViewById(R.id.dataTextView);
         apiKeys = new APIKeys();
+
+
+
+        Token accessToken = new Token(apiKeys.OAUTH_TOKEN, apiKeys.OAUTH_TOKEN_SECRET);
+
+        // Now let's go and ask for a protected resource!
+        OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL, service);
+        service.signRequest(accessToken, request);
+        Response response = request.send();
+        System.out.println(response.getBody());
 
 
 //        //this potentially avoids the error in running network operations on the main thread.
