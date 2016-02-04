@@ -9,13 +9,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView dataTextView;
     APIKeys apiKeys;
-    SQLMarketMinutesDataSource datasource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,9 +21,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         dataTextView = (TextView)findViewById(R.id.dataTextView);
         apiKeys = new APIKeys();
-
-        datasource = new SQLMarketMinutesDataSource(this);
-        datasource.open();
 
 
 //        //this potentially avoids the error in running network operations on the main thread.
@@ -41,37 +36,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setData(View v){
-        long newID;
-        newID = datasource.createMarketMinute(1.1f, 2.2f, 3.3f, 4.4f, 1000, System.currentTimeMillis(), 1, 0);
+
     }
 
 
     public void getData(View v) {
-        List<MarketMinute> marMinList = datasource.getAllMarketMinutes();
-        for(int i = 0; i<marMinList.size(); i++){
-            MarketMinute tempMarMin;
-            tempMarMin = marMinList.get(i);
-            System.out.println(tempMarMin.getLow());
-            System.out.println(tempMarMin.getHigh());
-            System.out.println(tempMarMin.getVolume());
-            deleteData(tempMarMin);
 
-        }
-    }
-
-    public void deleteData(MarketMinute marMinIn){
-        datasource.deleteMarketMinute(marMinIn);
     }
 
     @Override
     protected void onResume() {
-        datasource.open();
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        datasource.close();
         super.onPause();
     }
 
