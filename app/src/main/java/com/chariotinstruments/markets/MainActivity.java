@@ -1,6 +1,7 @@
 package com.chariotinstruments.markets;
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -31,16 +32,16 @@ public class MainActivity extends AppCompatActivity {
         apiKeys = new APIKeys();
 
 
-//        //this potentially avoids the error in running network operations on the main thread.
-//        int SDK_INT = android.os.Build.VERSION.SDK_INT;
-//        if (SDK_INT > 8)
-//        {
-//            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-//                    .permitAll().build();
-//            StrictMode.setThreadPolicy(policy);
-//            //your codes here
-//
-//        }
+        //this potentially avoids the error in running network operations on the main thread.
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            //your codes here
+
+        }
     }
 
     public void setData(View v){
@@ -50,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void getData(View v) {
         final OAuth10aService service = new ServiceBuilder()
-                .apiKey("your_api_key")
-                .apiSecret("your_api_secret")
+                .apiKey(apiKeys.CONSUMER_KEY)
+                .apiSecret(apiKeys.CONSUMER_SECRET)
                 .build(TradeKingApi.instance());
         Token accessToken = new Token(apiKeys.OAUTH_TOKEN, apiKeys.OAUTH_TOKEN_SECRET);
 
