@@ -31,4 +31,12 @@ public class TradeKingApi extends DefaultApi10a
         return String.format(AUTHORIZE_URL, requestToken.getToken());
     }
 
+    private static class InstanceHolder {
+        private static final TradeKingApi INSTANCE = new TradeKingApi();
+    }
+
+    public static TradeKingApi instance() {
+        return InstanceHolder.INSTANCE;
+    }
+
 }
