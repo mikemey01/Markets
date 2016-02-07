@@ -34,5 +34,5 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/getDataButton"
         android:text="Hello World!"
-        android:isScrollContainer="true"/>
+        android:scrollbars="vertical"/>
 </RelativeLayout>

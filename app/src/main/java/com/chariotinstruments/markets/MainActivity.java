@@ -3,6 +3,7 @@ package com.chariotinstruments.markets;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dataTextView = (TextView)findViewById(R.id.dataTextView);
+        dataTextView.setMovementMethod(new ScrollingMovementMethod());
         apiKeys = new APIKeys();
         tk = new TradeKingApiCalls();
 
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         Token accessToken = new Token(apiKeys.OAUTH_TOKEN, apiKeys.OAUTH_TOKEN_SECRET);
 
         // Now let's go and ask for a protected resource!
-        OAuthRequest request = new OAuthRequest(Verb.GET, tk.getProfile(), service);
+        OAuthRequest request = new OAuthRequest(Verb.GET, tk.getMarketQuote("SPY"), service);
         service.signRequest(accessToken, request);
         Response response = request.send();
         dataTextView.setText(response.getBody());
