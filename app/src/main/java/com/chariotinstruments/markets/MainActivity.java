@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView dataTextView;
     APIKeys apiKeys;
+    private TradeKingApiCalls tk;
     private static final String PROTECTED_RESOURCE_URL = "https://api.tradeking.com/v1/member/profile.json";
 
     @Override
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         dataTextView = (TextView)findViewById(R.id.dataTextView);
         apiKeys = new APIKeys();
+        tk = new TradeKingApiCalls();
 
 
         //this potentially avoids the error in running network operations on the main thread.
@@ -57,9 +59,10 @@ public class MainActivity extends AppCompatActivity {
         Token accessToken = new Token(apiKeys.OAUTH_TOKEN, apiKeys.OAUTH_TOKEN_SECRET);
 
         // Now let's go and ask for a protected resource!
-        OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL, service);
+        OAuthRequest request = new OAuthRequest(Verb.GET, tk.getProfile(), service);
         service.signRequest(accessToken, request);
         Response response = request.send();
+        dataTextView.setText(response.getBody());
         System.out.println(response.getBody());
     }
 
