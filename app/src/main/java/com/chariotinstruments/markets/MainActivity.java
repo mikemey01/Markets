@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         Token accessToken = new Token(apiKeys.OAUTH_TOKEN, apiKeys.OAUTH_TOKEN_SECRET);
 
         // Now let's go and ask for a protected resource!
-        OAuthRequest request = new OAuthRequest(Verb.GET, tk.getMarketHistoricalQuote("SPY"), service);
+        OAuthRequest request = new OAuthRequest(Verb.GET, tk.getMarketYesterdaysMinuteData("SPY"), service);
         service.signRequest(accessToken, request);
         Response response = request.send();
         dataTextView.setText(response.getBody());

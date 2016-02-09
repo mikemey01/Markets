@@ -1,5 +1,10 @@
 package com.chariotinstruments.markets;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 /**
  * Created by user on 2/7/16.
  */
@@ -49,8 +54,42 @@ public class TradeKingApiCalls {
         return MARKET_QUOTE+symbol;
     }
 
-    public String getMarketHistoricalQuote(String symbol){
-        return MARKET_HISTORICAL_QUOTE+symbol+"&startdate=2016-02-08&interval=1min";
+    public String getMarketSpecifiedMinuteData(String symbol, String date){
+        return MARKET_HISTORICAL_QUOTE+symbol+"&startdate="+date+"&interval=1min";
+    }
+
+    //Gets the previous day (excluding weekends) up to the current pricing today.
+    public String getMarketYesterdaysMinuteData(String symbol){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        String todaysDate = sdf.format(Calendar.getInstance().getTime());
+        Calendar cal = Calendar.getInstance();
+
+        try{
+            cal.setTime(sdf.parse(todaysDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //if it's monday, set it to the previous friday.
+        int setDayPrevious = -1;
+        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+        if(dayOfWeek == Calendar.MONDAY){
+            setDayPrevious = -3;
+        }
+
+        cal.add(Calendar.DAY_OF_MONTH, setDayPrevious);
+        String yesterdaysDate = sdf.format(cal.getTime());
+
+        return MARKET_HISTORICAL_QUOTE+symbol+"&startdate="+yesterdaysDate+"&interval=1min";
+    }
+
+    //Gets the data up to the current time.
+    public String getMarketTodaysMinuteData(String symbol){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        String todaysDate = sdf.format(Calendar.getInstance().getTime());
+        System.out.println(todaysDate);
+
+        return MARKET_HISTORICAL_QUOTE+symbol+"&startdate="+todaysDate+"&interval=1min";
     }
 
     //endregion
