@@ -33,6 +33,8 @@ public class TradeKingApiCalls {
 
     //region orders
 
+    
+
     //endregion
 
     //region market calls
@@ -87,14 +89,11 @@ public class TradeKingApiCalls {
     public String getMarketTodaysMinuteData(String symbol){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         String todaysDate = sdf.format(Calendar.getInstance().getTime());
-        System.out.println(todaysDate);
 
         return MARKET_HISTORICAL_QUOTE+symbol+"&startdate="+todaysDate+"&interval=1min";
     }
 
     //endregion
-
-
 
 
 }
