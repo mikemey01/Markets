@@ -52,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void parseData(View v){
+        
+    }
+
 
     public void getData(View v) {
         final OAuth10aService service = new ServiceBuilder()
