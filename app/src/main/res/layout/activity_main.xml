@@ -28,6 +28,16 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/getDataButton"/>
 
+    <Button
+        android:id="@+id/parseDataButton"
+        android:text="Parse Data"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:onClick="parseData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/setDataButton"/>
+
     <TextView
         android:id="@+id/dataTextView"
         android:layout_width="wrap_content"
