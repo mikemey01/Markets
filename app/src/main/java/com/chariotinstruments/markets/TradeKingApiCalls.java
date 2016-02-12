@@ -10,7 +10,7 @@ import java.util.Locale;
  */
 public class TradeKingApiCalls {
 
-    private static final String RESPONSE_TYPE = ".xml";
+    private static final String RESPONSE_TYPE = ".json";
 
     public TradeKingApiCalls(){
 
