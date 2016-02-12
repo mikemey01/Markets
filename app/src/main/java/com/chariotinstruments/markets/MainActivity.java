@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //TODO: this should all be done in an ASync class, get it off the main thread.
     public void parseJSON(Response response) throws JSONException {
         JSONObject json = new JSONObject();
         JSONObject jsonResponse = new JSONObject();
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    //TODO: should be done in ASync class, get it off main thread.
     public void getData(View v) throws JSONException {
         final OAuth10aService service = new ServiceBuilder()
                 .apiKey(apiKeys.CONSUMER_KEY)
