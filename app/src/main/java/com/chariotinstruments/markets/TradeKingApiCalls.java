@@ -11,6 +11,7 @@ import java.util.Locale;
 public class TradeKingApiCalls {
 
     private static final String RESPONSE_TYPE = ".json";
+    private Calendar previousMarketDay;
 
     public TradeKingApiCalls(){
 
@@ -62,28 +63,11 @@ public class TradeKingApiCalls {
 
     //Gets the previous day (excluding weekends) up to the current pricing today.
     public String getMarketYesterdaysMinuteData(String symbol){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        String todaysDate = sdf.format(Calendar.getInstance().getTime());
-        Calendar cal = Calendar.getInstance();
-
-        try{
-            cal.setTime(sdf.parse(todaysDate));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        //if it's monday, set it to the previous friday.
-        int setDayPrevious = -1;
-        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-        if(dayOfWeek == Calendar.MONDAY){
-            setDayPrevious = -3;
-        }
-
-        cal.add(Calendar.DAY_OF_MONTH, setDayPrevious);
-        String yesterdaysDate = sdf.format(cal.getTime());
+        String yesterdaysDate = getPreviousDayDate();
 
         return MARKET_HISTORICAL_QUOTE+symbol+"&startdate="+yesterdaysDate+"&interval=1min";
     }
+
 
     //Gets the data up to the current time.
     public String getMarketTodaysMinuteData(String symbol){
@@ -91,6 +75,87 @@ public class TradeKingApiCalls {
         String todaysDate = sdf.format(Calendar.getInstance().getTime());
 
         return MARKET_HISTORICAL_QUOTE+symbol+"&startdate="+todaysDate+"&interval=1min";
+    }
+
+    //endregion
+
+    //region Calendar Work
+
+    private String getPreviousDayDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        String todaysDate = sdf.format(Calendar.getInstance().getTime());
+        previousMarketDay = Calendar.getInstance();
+
+        try{
+            previousMarketDay.setTime(sdf.parse(todaysDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        previousMarketDay.add(Calendar.DAY_OF_MONTH, -1);
+
+        checkPreviousDay(previousMarketDay);
+
+        String yesterdaysDate = sdf.format(previousMarketDay.getTime());
+        System.out.println(yesterdaysDate);
+
+        return yesterdaysDate;
+    }
+
+    //use this to ignore market holidays and the weekend
+    private void checkPreviousDay(Calendar cal){
+        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+        boolean skipRecursion = false;
+
+        if(cal.DAY_OF_MONTH == 15 && cal.MONTH == Calendar.FEBRUARY && cal.YEAR == 2016){
+            cal.add(Calendar.DAY_OF_MONTH, -1);
+            checkPreviousDay(cal);
+            skipRecursion = true;
+        }
+        if(cal.DAY_OF_MONTH == 25 && cal.MONTH == Calendar.MARCH && cal.YEAR == 2016){
+            cal.add(Calendar.DAY_OF_MONTH, -1);
+            checkPreviousDay(cal);
+        }
+        if(cal.DAY_OF_MONTH == 30 && cal.MONTH == Calendar.MAY && cal.YEAR == 2016){
+            cal.add(Calendar.DAY_OF_MONTH, -1);
+            checkPreviousDay(cal);
+            skipRecursion = true;
+        }
+        if(cal.DAY_OF_MONTH == 4 && cal.MONTH == Calendar.JULY && cal.YEAR == 2016){
+            cal.add(Calendar.DAY_OF_MONTH, -1);
+            checkPreviousDay(cal);
+            skipRecursion = true;
+        }
+        if(cal.DAY_OF_MONTH == 5 && cal.MONTH == Calendar.SEPTEMBER && cal.YEAR == 2016){
+            cal.add(Calendar.DAY_OF_MONTH, -1);
+            checkPreviousDay(cal);
+            skipRecursion = true;
+        }
+        if(cal.DAY_OF_MONTH == 24 && cal.MONTH == Calendar.NOVEMBER && cal.YEAR == 2016){
+            cal.add(Calendar.DAY_OF_MONTH, -1);
+            checkPreviousDay(cal);
+            skipRecursion = true;
+        }
+        if(cal.DAY_OF_MONTH == 25 && cal.MONTH == Calendar.DECEMBER && cal.YEAR == 2016){
+            cal.add(Calendar.DAY_OF_MONTH, -1);
+            checkPreviousDay(cal);
+            skipRecursion = true;
+        }
+
+        if(dayOfWeek == Calendar.SUNDAY){
+            cal.add(Calendar.DAY_OF_MONTH, -1);
+            checkPreviousDay(cal);
+            skipRecursion = true;
+        }
+        if(dayOfWeek == Calendar.SATURDAY){
+            cal.add(Calendar.DAY_OF_MONTH, -1);
+            checkPreviousDay(cal);
+            skipRecursion = true;
+        }
+
+
+        if(skipRecursion == false){
+            previousMarketDay = cal;
+        }
     }
 
     //endregion
