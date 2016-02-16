@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void getData(View v) throws JSONException {
-        new ParseData().execute();
+        new ParseData(this).execute();
     }
 
     @Override

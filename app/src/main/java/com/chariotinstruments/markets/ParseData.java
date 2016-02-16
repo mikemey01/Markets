@@ -1,5 +1,7 @@
 package com.chariotinstruments.markets;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
@@ -25,14 +27,22 @@ public class ParseData extends AsyncTask<Void, Void, Void> {
     private String opnConcat;
     private APIKeys apiKeys = new APIKeys();
     private TradeKingApiCalls tk = new TradeKingApiCalls();
+    private ProgressDialog pDialog;
 
     private static final String GET_QUOTES = "quotes";
     private static final String GET_RESPONSE = "response";
     private static final String GET_QUOTE = "quote";
 
+    public ParseData(Activity activity){
+        pDialog = new ProgressDialog(activity);
+
+    }
+
     protected void onPreExecute(){
         super.onPreExecute();
-        System.out.println("pre exec.......");
+        pDialog.setMessage("Getting Data..");
+        pDialog.setCancelable(false);
+        pDialog.show();
     }
 
     protected Void doInBackground(Void... arg0){
@@ -48,6 +58,8 @@ public class ParseData extends AsyncTask<Void, Void, Void> {
         OAuthRequest request = new OAuthRequest(Verb.GET, tk.getMarketYesterdaysMinuteData("SPY"), service);
         service.signRequest(accessToken, request);
         Response response = request.send();
+
+        //try parsing the JSON data.
         try {
             parseJSON(response);
         } catch (JSONException e) {
@@ -62,7 +74,8 @@ public class ParseData extends AsyncTask<Void, Void, Void> {
 
     protected void onPostExecute(Void result){
         super.onPostExecute(result);
-        System.out.println("post exec......");
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 
     private void parseJSON(Response response) throws JSONException {
@@ -72,13 +85,13 @@ public class ParseData extends AsyncTask<Void, Void, Void> {
         JSONArray jsonQuote = new JSONArray();
         String output = "";
 
-        //dataTextView.setText(response.getBody());
-
+        //Make sure to respect the object(array(object)) hierarchy of the response.
         json = new JSONObject(response.getBody());
         jsonResponse = json.getJSONObject(GET_RESPONSE);
         jsonQuotes = jsonResponse.getJSONObject(GET_QUOTES);
         jsonQuote = jsonQuotes.getJSONArray(GET_QUOTE);
 
+        //Loop through the quote array and do something with the data..
         for (int i = 0; i < jsonQuote.length(); i++){
             JSONObject curQuote = jsonQuote.getJSONObject(i);
 
