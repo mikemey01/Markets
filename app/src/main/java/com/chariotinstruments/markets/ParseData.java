@@ -23,8 +23,8 @@ public class ParseData extends AsyncTask<Void, Void, Void> {
     private String _target;
     private ArrayList<String> _data;
     private String opnConcat;
-    APIKeys apiKeys = new APIKeys();
-    private TradeKingApiCalls tk;
+    private APIKeys apiKeys = new APIKeys();
+    private TradeKingApiCalls tk = new TradeKingApiCalls();
 
     private static final String GET_QUOTES = "quotes";
     private static final String GET_RESPONSE = "response";
