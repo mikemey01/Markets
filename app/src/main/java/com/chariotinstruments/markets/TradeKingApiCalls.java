@@ -34,8 +34,6 @@ public class TradeKingApiCalls {
 
     //region orders
 
-
-
     //endregion
 
     //region market calls
