@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 import org.json.JSONException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ParseData.AsyncListener {
 
     TextView dataTextView;
 
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void getData(View v) throws JSONException {
-        new ParseData(this).execute();
+        new ParseData(this, this).execute();
     }
 
     @Override
@@ -40,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    public void onRemoteCallComplete(String result){
+        dataTextView.setText(result);
     }
 
 }

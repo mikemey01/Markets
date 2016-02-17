@@ -20,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Created by user on 1/25/16.
  */
-public class ParseData extends AsyncTask<Void, Void, Void> {
+public class ParseData extends AsyncTask<Void, Void, String> {
 
     private String _target;
     private ArrayList<String> _data;
@@ -33,8 +33,11 @@ public class ParseData extends AsyncTask<Void, Void, Void> {
     private static final String GET_RESPONSE = "response";
     private static final String GET_QUOTE = "quote";
 
-    public ParseData(Activity activity){
+    AsyncListener asyncListener;
+
+    public ParseData(Activity activity, AsyncListener asyncListener){
         pDialog = new ProgressDialog(activity);
+        this.asyncListener = asyncListener;
 
     }
 
@@ -45,7 +48,8 @@ public class ParseData extends AsyncTask<Void, Void, Void> {
         pDialog.show();
     }
 
-    protected Void doInBackground(Void... arg0){
+    protected String doInBackground(Void... arg0){
+        String res = "";
 
         //Build the OAuth service
         final OAuth10aService service = new ServiceBuilder()
@@ -61,24 +65,28 @@ public class ParseData extends AsyncTask<Void, Void, Void> {
 
         //try parsing the JSON data.
         try {
-            parseJSON(response);
+            res = parseJSON(response);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        //Parse the JSON
-
-
-        return null;
+        return res;
     }
 
-    protected void onPostExecute(Void result){
+    //This will pass the parsed result back to the main thread.
+    protected void onPostExecute(String result){
         super.onPostExecute(result);
         if (pDialog.isShowing())
             pDialog.dismiss();
+        asyncListener.onRemoteCallComplete(result);
     }
 
-    private void parseJSON(Response response) throws JSONException {
+    //call this from the main thread to pass the data up once the response is complete.
+    public interface AsyncListener{
+        public void onRemoteCallComplete(String concat);
+    }
+
+    private String parseJSON(Response response) throws JSONException {
         JSONObject json = new JSONObject();
         JSONObject jsonResponse = new JSONObject();
         JSONObject jsonQuotes = new JSONObject();
@@ -94,11 +102,14 @@ public class ParseData extends AsyncTask<Void, Void, Void> {
         //Loop through the quote array and do something with the data..
         for (int i = 0; i < jsonQuote.length(); i++){
             JSONObject curQuote = jsonQuote.getJSONObject(i);
-
-            output = output +", "+ curQuote.getString("opn");
+            if(i == 0){
+                output = curQuote.getString("opn");
+            }else {
+                output = output + ", " + curQuote.getString("opn");
+            }
         }
 
-        System.out.println(output);
+        return output;
     }
 
 }

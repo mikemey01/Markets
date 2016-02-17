@@ -104,7 +104,7 @@ public class TradeKingApiCalls {
     //use this to ignore market holidays and the weekend
     private void checkPreviousDay(Calendar cal){
         int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-        boolean skipRecursion = false;
+        boolean skipRecursion = false; 
 
         if(cal.DAY_OF_MONTH == 15 && cal.MONTH == Calendar.FEBRUARY && cal.YEAR == 2016){
             cal.add(Calendar.DAY_OF_MONTH, -1);
