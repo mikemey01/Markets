@@ -103,39 +103,41 @@ public class TradeKingApiCalls {
 
     //use this to ignore market holidays and the weekend
     private void checkPreviousDay(Calendar cal){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-        boolean skipRecursion = false; 
+        boolean skipRecursion = false;
 
-        if(cal.DAY_OF_MONTH == 15 && cal.MONTH == Calendar.FEBRUARY && cal.YEAR == 2016){
+        //the date compare works but I hate it.
+        if(cal.get(Calendar.DAY_OF_MONTH) == 15 && cal.get(Calendar.MONTH) == Calendar.FEBRUARY && cal.get(Calendar.YEAR) == 2016){
             cal.add(Calendar.DAY_OF_MONTH, -1);
             checkPreviousDay(cal);
             skipRecursion = true;
         }
-        if(cal.DAY_OF_MONTH == 25 && cal.MONTH == Calendar.MARCH && cal.YEAR == 2016){
+        if(cal.get(Calendar.DAY_OF_MONTH) == 25 && cal.get(Calendar.MONTH) == Calendar.MARCH && cal.get(Calendar.YEAR) == 2016){
             cal.add(Calendar.DAY_OF_MONTH, -1);
             checkPreviousDay(cal);
         }
-        if(cal.DAY_OF_MONTH == 30 && cal.MONTH == Calendar.MAY && cal.YEAR == 2016){
-            cal.add(Calendar.DAY_OF_MONTH, -1);
-            checkPreviousDay(cal);
-            skipRecursion = true;
-        }
-        if(cal.DAY_OF_MONTH == 4 && cal.MONTH == Calendar.JULY && cal.YEAR == 2016){
+        if(cal.get(Calendar.DAY_OF_MONTH) == 30 && cal.get(Calendar.MONTH) == Calendar.MAY && cal.get(Calendar.YEAR) == 2016){
             cal.add(Calendar.DAY_OF_MONTH, -1);
             checkPreviousDay(cal);
             skipRecursion = true;
         }
-        if(cal.DAY_OF_MONTH == 5 && cal.MONTH == Calendar.SEPTEMBER && cal.YEAR == 2016){
+        if(cal.get(Calendar.DAY_OF_MONTH) == 4 && cal.get(Calendar.MONTH) == Calendar.JULY && cal.get(Calendar.YEAR) == 2016){
             cal.add(Calendar.DAY_OF_MONTH, -1);
             checkPreviousDay(cal);
             skipRecursion = true;
         }
-        if(cal.DAY_OF_MONTH == 24 && cal.MONTH == Calendar.NOVEMBER && cal.YEAR == 2016){
+        if(cal.get(Calendar.DAY_OF_MONTH) == 5 && cal.get(Calendar.MONTH) == Calendar.SEPTEMBER && cal.get(Calendar.YEAR) == 2016){
             cal.add(Calendar.DAY_OF_MONTH, -1);
             checkPreviousDay(cal);
             skipRecursion = true;
         }
-        if(cal.DAY_OF_MONTH == 25 && cal.MONTH == Calendar.DECEMBER && cal.YEAR == 2016){
+        if(cal.get(Calendar.DAY_OF_MONTH) == 24 && cal.get(Calendar.MONTH) == Calendar.NOVEMBER && cal.get(Calendar.YEAR) == 2016){
+            cal.add(Calendar.DAY_OF_MONTH, -1);
+            checkPreviousDay(cal);
+            skipRecursion = true;
+        }
+        if(cal.get(Calendar.DAY_OF_MONTH) == 25 && cal.get(Calendar.MONTH) == Calendar.DECEMBER && cal.get(Calendar.YEAR) == 2016){
             cal.add(Calendar.DAY_OF_MONTH, -1);
             checkPreviousDay(cal);
             skipRecursion = true;
