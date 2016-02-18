@@ -5,7 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.TextView;
+
 import org.json.JSONException;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements ParseData.AsyncListener {
 
@@ -27,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements ParseData.AsyncLi
 
     }
 
-
     public void getData(View v) throws JSONException {
         new ParseData(this, this).execute();
     }
@@ -42,8 +44,15 @@ public class MainActivity extends AppCompatActivity implements ParseData.AsyncLi
         super.onPause();
     }
 
-    public void onRemoteCallComplete(String result){
-        dataTextView.setText(result);
+    public void onRemoteCallComplete(MarketDay marketDay){
+        String output = "";
+        ArrayList<MarketCandle> marketCandles = new ArrayList<MarketCandle>();
+        marketCandles = marketDay.getMarketCandles();
+
+        for(MarketCandle marCan : marketCandles){
+            output = output + Double.toString(marCan.getOpen());
+        }
+        dataTextView.setText(output);
     }
 
 }

@@ -2,7 +2,6 @@ package com.chariotinstruments.markets;
 
 import android.text.format.DateFormat;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
@@ -17,7 +16,7 @@ public class MarketDay {
         _marketCandles = new ArrayList<MarketCandle>();
     }
 
-    private void addMinute(int curMinute, BigDecimal open, BigDecimal high, BigDecimal low, BigDecimal close, Long volume){
+    public void addCandle(int curMinute, double open, double low, double high, double close, Long volume){
 
         MarketCandle candle = new MarketCandle();
 
@@ -29,6 +28,10 @@ public class MarketDay {
         candle.setVolume(volume);
 
         this._marketCandles.add(candle);
+    }
+
+    public ArrayList<MarketCandle> getMarketCandles(){
+        return _marketCandles;
     }
 
 

@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,10 +89,10 @@ public class SQLMarketMinutesDataSource {
             System.out.println("NO GOOD - NULL");
         }else {
             marCan.setId(cursor.getInt(0));
-            marCan.setOpen(new BigDecimal(cursor.getFloat(1)));
-            marCan.setLow(new BigDecimal(cursor.getFloat(2)));
-            marCan.setHigh(new BigDecimal(cursor.getFloat(3)));
-            marCan.setClose(new BigDecimal(cursor.getFloat(4)));
+            marCan.setOpen(new Double(cursor.getFloat(1)));
+            marCan.setLow(new Double(cursor.getFloat(2)));
+            marCan.setHigh(new Double(cursor.getFloat(3)));
+            marCan.setClose(new Double(cursor.getFloat(4)));
             marCan.setVolume(Long.valueOf(cursor.getLong(5)));
             marCan.setDate(cursor.getLong(6));
             marCan.setIsOpen(cursor.getInt(7));

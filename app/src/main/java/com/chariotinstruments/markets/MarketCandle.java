@@ -1,7 +1,5 @@
 package com.chariotinstruments.markets;
 
-import java.math.BigDecimal;
-
 /**
  * Created by user on 2/17/16.
  */
@@ -9,10 +7,10 @@ public class MarketCandle {
 
     private int _id;
     private int _minute;
-    private BigDecimal _open;
-    private BigDecimal _high;
-    private BigDecimal _low;
-    private BigDecimal _close;
+    private double _open;
+    private double _high;
+    private double _low;
+    private double _close;
     private long _volume;
     private long _date;
     private int _isOpen;
@@ -41,35 +39,35 @@ public class MarketCandle {
         _minute = minuteIn;
     }
 
-    public BigDecimal getOpen(){
+    public double getOpen(){
         return _open;
     }
 
-    public void setOpen(BigDecimal openIn){
+    public void setOpen(double openIn){
         _open = openIn;
     }
 
-    public BigDecimal getHigh(){
+    public double getHigh(){
         return _high;
     }
 
-    public void setHigh(BigDecimal highIn){
+    public void setHigh(double highIn){
         _high = highIn;
     }
 
-    public BigDecimal getLow(){
+    public double getLow(){
         return _low;
     }
 
-    public void setLow(BigDecimal lowIn){
+    public void setLow(double lowIn){
         _low = lowIn;
     }
 
-    public BigDecimal getClose(){
+    public double getClose(){
         return _close;
     }
 
-    public void setClose(BigDecimal closeIn){
+    public void setClose(double closeIn){
         _close = closeIn;
     }
 

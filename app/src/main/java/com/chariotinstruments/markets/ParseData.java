@@ -20,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Created by user on 1/25/16.
  */
-public class ParseData extends AsyncTask<Void, Void, String> {
+public class ParseData extends AsyncTask<Void, Void, MarketDay> {
 
     private String _target;
     private ArrayList<String> _data;
@@ -48,8 +48,9 @@ public class ParseData extends AsyncTask<Void, Void, String> {
         pDialog.show();
     }
 
-    protected String doInBackground(Void... arg0){
-        String res = "";
+    protected MarketDay doInBackground(Void... arg0){
+        //not sure if this is right if the assignment below will happen correctly.
+        MarketDay marketDay = new MarketDay();
 
         //Build the OAuth service
         final OAuth10aService service = new ServiceBuilder()
@@ -65,28 +66,29 @@ public class ParseData extends AsyncTask<Void, Void, String> {
 
         //try parsing the JSON data.
         try {
-            res = parseJSON(response);
+            marketDay = parseJSON(response);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return res;
+        return marketDay;
     }
 
     //This will pass the parsed result back to the main thread.
-    protected void onPostExecute(String result){
-        super.onPostExecute(result);
+    protected void onPostExecute(MarketDay marketDay){
+        super.onPostExecute(marketDay);
         if (pDialog.isShowing())
             pDialog.dismiss();
-        asyncListener.onRemoteCallComplete(result);
+        asyncListener.onRemoteCallComplete(marketDay);
     }
 
     //call this from the main thread to pass the data up once the response is complete.
     public interface AsyncListener{
-        public void onRemoteCallComplete(String concat);
+        public void onRemoteCallComplete(MarketDay marketDay);
     }
 
-    private String parseJSON(Response response) throws JSONException {
+    private MarketDay parseJSON(Response response) throws JSONException {
+        MarketDay marketDay = new MarketDay();
         JSONObject json = new JSONObject();
         JSONObject jsonResponse = new JSONObject();
         JSONObject jsonQuotes = new JSONObject();
@@ -102,14 +104,15 @@ public class ParseData extends AsyncTask<Void, Void, String> {
         //Loop through the quote array and do something with the data..
         for (int i = 0; i < jsonQuote.length(); i++){
             JSONObject curQuote = jsonQuote.getJSONObject(i);
-            if(i == 0){
-                output = curQuote.getString("opn");
-            }else {
-                output = output + ", " + curQuote.getString("opn");
-            }
+            marketDay.addCandle(1,
+                                curQuote.getDouble("opn"),
+                                curQuote.getDouble("lo"),
+                                curQuote.getDouble("hi"),
+                                curQuote.getDouble("last"),
+                                curQuote.getLong("vl"));
         }
 
-        return output;
+        return marketDay;
     }
 
 }
