@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements ParseData.AsyncListener {
 
     TextView dataTextView;
+    EditText symbolEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,18 +23,25 @@ public class MainActivity extends AppCompatActivity implements ParseData.AsyncLi
         setContentView(R.layout.activity_main);
         dataTextView = (TextView)findViewById(R.id.dataTextView);
         dataTextView.setMovementMethod(new ScrollingMovementMethod());
+        symbolEditText = (EditText)findViewById(R.id.symbolEditText);
     }
 
-    public void setData(View v){
-
-    }
-
-    public void parseData(View v){
+    public void getOptionData(View v){
 
     }
 
-    public void getData(View v) throws JSONException {
-        new ParseData(this, this).execute();
+    public void getAccountData(View v){
+
+    }
+
+    public void getSymbolData(View v) throws JSONException {
+        String symbol = symbolEditText.getText().toString().toUpperCase();
+        if(symbol.trim().length() == 0){
+            Toast toast = Toast.makeText(this, "Enter a symbol", Toast.LENGTH_SHORT);
+            toast.show();
+        }else {
+            new ParseData(this, this, symbol).execute();
+        }
     }
 
     @Override

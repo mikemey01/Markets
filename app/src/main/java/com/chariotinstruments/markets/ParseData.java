@@ -28,6 +28,7 @@ public class ParseData extends AsyncTask<Void, Void, MarketDay> {
     private APIKeys apiKeys = new APIKeys();
     private TradeKingApiCalls tk = new TradeKingApiCalls();
     private ProgressDialog pDialog;
+    private String symbol;
 
     private static final String GET_QUOTES = "quotes";
     private static final String GET_RESPONSE = "response";
@@ -35,9 +36,10 @@ public class ParseData extends AsyncTask<Void, Void, MarketDay> {
 
     AsyncListener asyncListener;
 
-    public ParseData(Activity activity, AsyncListener asyncListener){
+    public ParseData(Activity activity, AsyncListener asyncListener, String symbol){
         pDialog = new ProgressDialog(activity);
         this.asyncListener = asyncListener;
+        this.symbol = symbol;
 
     }
 
@@ -60,7 +62,7 @@ public class ParseData extends AsyncTask<Void, Void, MarketDay> {
         Token accessToken = new Token(apiKeys.OAUTH_TOKEN, apiKeys.OAUTH_TOKEN_SECRET);
 
         // Fetch the JSON data
-        OAuthRequest request = new OAuthRequest(Verb.GET, tk.getMarketYesterdaysMinuteData("SPY"), service);
+        OAuthRequest request = new OAuthRequest(Verb.GET, tk.getMarketYesterdaysMinuteData(symbol), service);
         service.signRequest(accessToken, request);
         Response response = request.send();
 

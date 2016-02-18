@@ -9,40 +9,50 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.chariotinstruments.markets.MainActivity">
 
-    <Button
-        android:id="@+id/getDataButton"
-        android:text="Get Data"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:onClick="getData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/setDataButton"
-        android:text="Set Data"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:onClick="setData"
+    <EditText
+        android:id="@+id/symbolEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/getDataButton"/>
+        android:inputType="text"
+        android:hint="Enter Ticker Symbol" />
 
     <Button
-        android:id="@+id/parseDataButton"
-        android:text="Parse Data"
+        android:id="@+id/getSymbolDataButton"
+        android:text="Get Symbol"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
-        android:onClick="parseData"
+        android:onClick="getSymbolData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/setDataButton"/>
+        android:layout_below="@+id/symbolEditText"/>
+
+    <Button
+        android:id="@+id/accountDataButton"
+        android:text="Account"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:onClick="getAccountData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/getSymbolDataButton"
+        android:layout_below="@+id/symbolEditText"/>
+
+    <Button
+        android:id="@+id/optionDataButton"
+        android:text="Option"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:onClick="getOptionData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/accountDataButton"
+        android:layout_below="@+id/symbolEditText"/>
 
     <TextView
         android:id="@+id/dataTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/getDataButton"
+        android:layout_below="@+id/getSymbolDataButton"
         android:text="Hello World!"
         android:scrollbars="vertical"/>
 </RelativeLayout>
