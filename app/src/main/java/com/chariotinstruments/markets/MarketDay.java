@@ -3,9 +3,7 @@ package com.chariotinstruments.markets;
 import android.text.format.DateFormat;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by user on 1/25/16.
@@ -13,24 +11,24 @@ import java.util.Date;
 public class MarketDay {
 
     private DateFormat _marketDate;
-    private ArrayList<MarketMinute> _marketMinutes;
+    private ArrayList<MarketCandle> _marketCandles;
 
     public MarketDay(){
-        _marketMinutes = new ArrayList<MarketMinute>();
+        _marketCandles = new ArrayList<MarketCandle>();
     }
 
     private void addMinute(int curMinute, BigDecimal open, BigDecimal high, BigDecimal low, BigDecimal close, Long volume){
 
-        MarketMinute minute = new MarketMinute();
+        MarketCandle candle = new MarketCandle();
 
-        minute.setMinute(curMinute);
-        minute.setOpen(open);
-        minute.setHigh(high);
-        minute.setLow(low);
-        minute.setClose(close);
-        minute.setVolume(volume);
+        candle.setMinute(curMinute);
+        candle.setOpen(open);
+        candle.setHigh(high);
+        candle.setLow(low);
+        candle.setClose(close);
+        candle.setVolume(volume);
 
-        this._marketMinutes.add(minute);
+        this._marketCandles.add(candle);
     }
 
 

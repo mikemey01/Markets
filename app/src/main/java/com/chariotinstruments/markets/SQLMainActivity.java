@@ -47,20 +47,20 @@ public class SQLMainActivity extends AppCompatActivity {
 
 
     public void getData(View v) {
-        List<MarketMinute> marMinList = datasource.getAllMarketMinutes();
-        for(int i = 0; i<marMinList.size(); i++){
-            MarketMinute tempMarMin;
-            tempMarMin = marMinList.get(i);
-            System.out.println(tempMarMin.getLow());
-            System.out.println(tempMarMin.getHigh());
-            System.out.println(tempMarMin.getVolume());
-            deleteData(tempMarMin);
+        List<MarketCandle> marCanList = datasource.getAllMarketMinutes();
+        for(int i = 0; i<marCanList.size(); i++){
+            MarketCandle tempMarCan;
+            tempMarCan = marCanList.get(i);
+            System.out.println(tempMarCan.getLow());
+            System.out.println(tempMarCan.getHigh());
+            System.out.println(tempMarCan.getVolume());
+            deleteData(tempMarCan);
 
         }
     }
 
-    public void deleteData(MarketMinute marMinIn){
-        datasource.deleteMarketMinute(marMinIn);
+    public void deleteData(MarketCandle marCanIn){
+        datasource.deleteMarketMinute(marCanIn);
     }
 
     @Override

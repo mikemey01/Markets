@@ -56,49 +56,49 @@ public class SQLMarketMinutesDataSource {
         return insertId;
     }
 
-    public void deleteMarketMinute(MarketMinute marMin) {
-        long id = marMin.getId();
+    public void deleteMarketMinute(MarketCandle marCan) {
+        long id = marCan.getId();
         System.out.println("Comment deleted with id: " + id);
         database.delete(SQLiteHelper.TABLE_MARKETMINUTES, SQLiteHelper.COLUMN_ID + " = " + id, null);
     }
 
     //TODO: need a way to update a column
-    public void updateMarketMinute(MarketMinute marMinIn){
+    public void updateMarketMinute(MarketCandle marCanIn){
 
     }
 
     //TODO: make this an arraylist for fast enumeration.
-    public List<MarketMinute> getAllMarketMinutes() {
-        List<MarketMinute> marMins = new ArrayList<MarketMinute>();
+    public List<MarketCandle> getAllMarketMinutes() {
+        List<MarketCandle> marCans = new ArrayList<MarketCandle>();
 
         Cursor cursor = database.query(SQLiteHelper.TABLE_MARKETMINUTES, allColumns, null, null, null, null, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            MarketMinute marMin = cursorToMarMin(cursor);
-            marMins.add(marMin);
+            MarketCandle marCan = cursorToMarMin(cursor);
+            marCans.add(marCan);
             cursor.moveToNext();
         }
         // make sure to close the cursor
         cursor.close();
-        return marMins;
+        return marCans;
     }
 
-    private MarketMinute cursorToMarMin(Cursor cursor) {
-        MarketMinute marMin = new MarketMinute();
+    private MarketCandle cursorToMarMin(Cursor cursor) {
+        MarketCandle marCan = new MarketCandle();
         if(cursor.isNull(0)){
             System.out.println("NO GOOD - NULL");
         }else {
-            marMin.setId(cursor.getInt(0));
-            marMin.setOpen(new BigDecimal(cursor.getFloat(1)));
-            marMin.setLow(new BigDecimal(cursor.getFloat(2)));
-            marMin.setHigh(new BigDecimal(cursor.getFloat(3)));
-            marMin.setClose(new BigDecimal(cursor.getFloat(4)));
-            marMin.setVolume(Long.valueOf(cursor.getLong(5)));
-            marMin.setDate(cursor.getLong(6));
-            marMin.setIsOpen(cursor.getInt(7));
-            marMin.setIsClose(cursor.getInt(8));
+            marCan.setId(cursor.getInt(0));
+            marCan.setOpen(new BigDecimal(cursor.getFloat(1)));
+            marCan.setLow(new BigDecimal(cursor.getFloat(2)));
+            marCan.setHigh(new BigDecimal(cursor.getFloat(3)));
+            marCan.setClose(new BigDecimal(cursor.getFloat(4)));
+            marCan.setVolume(Long.valueOf(cursor.getLong(5)));
+            marCan.setDate(cursor.getLong(6));
+            marCan.setIsOpen(cursor.getInt(7));
+            marCan.setIsClose(cursor.getInt(8));
         }
-        return marMin;
+        return marCan;
     }
 }
