@@ -12,22 +12,24 @@ public class TradeKingApiCalls {
 
     private static final String RESPONSE_TYPE = ".json";
     private Calendar previousMarketDay;
+    private APIKeys apiKeys;
 
     public TradeKingApiCalls(){
-
+        apiKeys = new APIKeys();
     }
 
     //region accounts
 
     private static final String PROFILE_URL = "https://api.tradeking.com/v1/member/profile"+RESPONSE_TYPE;
     private static final String ACCOUNT_INFO_URL = "https://api.tradeking.com/v1/accounts"+RESPONSE_TYPE;
+    private final String ACCOUNT_BALANCE_URL = "https://api.tradeking.com/v1/accounts/"+apiKeys.ACCOUNT_NUMBER+"/balances"+RESPONSE_TYPE;
 
     public String getProfile(){
         return PROFILE_URL;
     }
 
     public String getFullAccountInfo() {
-        return ACCOUNT_INFO_URL;
+        return ACCOUNT_BALANCE_URL;
     }
 
     //endregion

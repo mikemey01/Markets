@@ -12,6 +12,7 @@ import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by user on 2/17/16.
@@ -65,6 +66,10 @@ public class ParseAccountData extends AsyncTask<Void, Void, AccountData> {
 
     private AccountData parseJSON(String response) throws JSONException{
         AccountData accountData = new AccountData();
+        JSONObject json = new JSONObject();
+        JSONObject jsonResponse = new JSONObject();
 
+
+        return accountData;
     }
 }
