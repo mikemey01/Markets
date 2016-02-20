@@ -20,7 +20,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements ParseData.AsyncListener {
+public class MainActivity extends AppCompatActivity implements ParseData.ParseDataAsyncListener, ParseAccountData.ParseAccountDataAsyncListener {
 
     TextView dataTextView;
     EditText symbolEditText;
@@ -50,10 +50,6 @@ public class MainActivity extends AppCompatActivity implements ParseData.AsyncLi
     }
 
     public void getOptionData(View v){
-
-    }
-
-    public void getAccountData(View v){
         final OAuth10aService service = new ServiceBuilder()
                 .apiKey(apiKeys.CONSUMER_KEY)
                 .apiSecret(apiKeys.CONSUMER_SECRET)
@@ -67,6 +63,10 @@ public class MainActivity extends AppCompatActivity implements ParseData.AsyncLi
 
         System.out.println(tk.getFullAccountInfo());
         dataTextView.setText(response.getBody());
+    }
+
+    public void getAccountData(View v){
+        new ParseAccountData(this, this).execute();
     }
 
     public void getSymbolData(View v) throws JSONException {
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements ParseData.AsyncLi
         super.onPause();
     }
 
-    public void onRemoteCallComplete(MarketDay marketDay){
+    public void onParseDataComplete(MarketDay marketDay){
         String output = "";
         ArrayList<MarketCandle> marketCandles = new ArrayList<MarketCandle>();
         marketCandles = marketDay.getMarketCandles();
@@ -97,6 +97,18 @@ public class MainActivity extends AppCompatActivity implements ParseData.AsyncLi
         for(MarketCandle marCan : marketCandles){
             output = output + Double.toString(marCan.getOpen());
         }
+        dataTextView.setText(output);
+    }
+
+    public void onParseAccountDataComplete(AccountData aData){
+        String output = "";
+
+        output = output + "Total cash: ";
+        output = output + Double.toString(aData.getAccountValue());
+        output = output + ", ";
+        output = output + "Cash Available: ";
+        output = output + Double.toString(aData.getCashAvailable());
+
         dataTextView.setText(output);
     }
 

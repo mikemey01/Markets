@@ -34,9 +34,9 @@ public class ParseData extends AsyncTask<Void, Void, MarketDay> {
     private static final String GET_RESPONSE = "response";
     private static final String GET_QUOTE = "quote";
 
-    AsyncListener asyncListener;
+    ParseDataAsyncListener asyncListener;
 
-    public ParseData(Activity activity, AsyncListener asyncListener, String symbol){
+    public ParseData(Activity activity, ParseDataAsyncListener asyncListener, String symbol){
         pDialog = new ProgressDialog(activity);
         this.asyncListener = asyncListener;
         this.symbol = symbol;
@@ -81,12 +81,12 @@ public class ParseData extends AsyncTask<Void, Void, MarketDay> {
         super.onPostExecute(marketDay);
         if (pDialog.isShowing())
             pDialog.dismiss();
-        asyncListener.onRemoteCallComplete(marketDay);
+        asyncListener.onParseDataComplete(marketDay);
     }
 
     //call this from the main thread to pass the data up once the response is complete.
-    public interface AsyncListener{
-        public void onRemoteCallComplete(MarketDay marketDay);
+    public interface ParseDataAsyncListener{
+        public void onParseDataComplete(MarketDay marketDay);
     }
 
     private MarketDay parseJSON(Response response) throws JSONException {

@@ -20,13 +20,19 @@ import org.json.JSONObject;
 public class ParseAccountData extends AsyncTask<Void, Void, AccountData> {
 
     private AccountData _accountData;
-    private AsyncListener _asyncListener;
+    private ParseAccountDataAsyncListener _asyncListener;
     private APIKeys apiKeys;
     private TradeKingApiCalls tk = new TradeKingApiCalls();
     private ProgressDialog pDialog;
     private String symbol;
 
-    public ParseAccountData(Activity activity, AsyncListener aListener){
+    //json object constants
+    public static final String GET_RESPONSE = "response";
+    private static final String GET_ACCOUNT_BAL = "accountbalance";
+    private static final String GET_MONEY = "money";
+
+
+    public ParseAccountData(Activity activity, ParseAccountDataAsyncListener aListener){
 
         _accountData = new AccountData();
         _asyncListener = aListener;
@@ -51,25 +57,40 @@ public class ParseAccountData extends AsyncTask<Void, Void, AccountData> {
         service.signRequest(accessToken, request);
         Response response = request.send();
 
-
+        //parse json
+        try {
+            aData = parseJSON(response);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         return aData;
     }
 
     protected void onPostExecute(AccountData result){
-
+        super.onPostExecute(result);
+        _asyncListener.onParseAccountDataComplete(result);
     }
 
-    public interface AsyncListener{
-        public void onRemoteCallComplete(AccountData accountData);
-    }
-
-    private AccountData parseJSON(String response) throws JSONException{
+    private AccountData parseJSON(Response response) throws JSONException{
         AccountData accountData = new AccountData();
         JSONObject json = new JSONObject();
         JSONObject jsonResponse = new JSONObject();
+        JSONObject jsonAccountBal = new JSONObject();
+        JSONObject jsonMoney = new JSONObject();
 
+        json = new JSONObject(response.getBody());
+        jsonResponse = json.getJSONObject(GET_RESPONSE);
+        jsonAccountBal = jsonResponse.getJSONObject(GET_ACCOUNT_BAL);
+        jsonMoney = jsonAccountBal.getJSONObject(GET_MONEY);
+
+        accountData.setCashAvailable(jsonMoney.getDouble("cashavailable"));
+        accountData.setAccountValue(jsonMoney.getLong("total"));
 
         return accountData;
+    }
+
+    public interface ParseAccountDataAsyncListener{
+        public void onParseAccountDataComplete(AccountData aData);
     }
 }
