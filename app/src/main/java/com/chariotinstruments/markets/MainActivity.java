@@ -105,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements ParseData.ParseDa
 
         output = output + "Total cash: ";
         output = output + Double.toString(aData.getAccountValue());
-        output = output + ", ";
         output = output + "Cash Available: ";
         output = output + Double.toString(aData.getCashAvailable());
 

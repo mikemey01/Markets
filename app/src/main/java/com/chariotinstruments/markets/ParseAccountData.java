@@ -30,6 +30,7 @@ public class ParseAccountData extends AsyncTask<Void, Void, AccountData> {
     public static final String GET_RESPONSE = "response";
     private static final String GET_ACCOUNT_BAL = "accountbalance";
     private static final String GET_MONEY = "money";
+    private static final String GET_SECURITIES = "securities";
 
 
     public ParseAccountData(Activity activity, ParseAccountDataAsyncListener aListener){
@@ -78,14 +79,19 @@ public class ParseAccountData extends AsyncTask<Void, Void, AccountData> {
         JSONObject jsonResponse = new JSONObject();
         JSONObject jsonAccountBal = new JSONObject();
         JSONObject jsonMoney = new JSONObject();
+        JSONObject jsonSecurities = new JSONObject();
 
         json = new JSONObject(response.getBody());
         jsonResponse = json.getJSONObject(GET_RESPONSE);
         jsonAccountBal = jsonResponse.getJSONObject(GET_ACCOUNT_BAL);
         jsonMoney = jsonAccountBal.getJSONObject(GET_MONEY);
+        jsonSecurities = jsonAccountBal.getJSONObject(GET_SECURITIES);
 
         accountData.setCashAvailable(jsonMoney.getDouble("cashavailable"));
-        accountData.setAccountValue(jsonMoney.getLong("total"));
+        accountData.setAccountValue(jsonMoney.getDouble("total"));
+        accountData.setUnsettledFunds(jsonMoney.getDouble("unsettledfunds"));
+        accountData.setOptionValue(jsonSecurities.getDouble("options"));
+        accountData.setStockValue(jsonSecurities.getDouble("stocks"));
 
         return accountData;
     }
