@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements ParseData.ParseDa
         marketCandles = marketDay.getMarketCandles();
 
         for(MarketCandle marCan : marketCandles){
-            output = output + Double.toString(marCan.getOpen());
+            output = Double.toString(marCan.getOpen()) + output;
         }
         dataTextView.setText(output);
     }
@@ -107,6 +107,12 @@ public class MainActivity extends AppCompatActivity implements ParseData.ParseDa
         output = output + Double.toString(aData.getAccountValue()) + "\n";
         output = output + "Cash Available: ";
         output = output + Double.toString(aData.getCashAvailable()) + "\n";
+        output = output + "Unsettled Funds: ";
+        output = output + Double.toString(aData.getUnsettledFunds()) +"\n";
+        output = output + "Stcoks: ";
+        output = output + Double.toString(aData.getStockValue()) + "\n";
+        output = output + "Options: ";
+        output = output + Double.toString(aData.getOptionValue());
 
         dataTextView.setText(output);
     }

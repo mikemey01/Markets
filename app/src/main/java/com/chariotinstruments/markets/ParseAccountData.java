@@ -37,10 +37,14 @@ public class ParseAccountData extends AsyncTask<Void, Void, AccountData> {
 
         _accountData = new AccountData();
         _asyncListener = aListener;
+        pDialog = new ProgressDialog(activity);
     }
 
     protected void onPreExecute(){
         super.onPreExecute();
+        pDialog.setMessage("Getting Data..");
+        pDialog.setCancelable(false);
+        pDialog.show();
     }
 
     protected AccountData doInBackground(Void... voids) {
@@ -70,6 +74,7 @@ public class ParseAccountData extends AsyncTask<Void, Void, AccountData> {
 
     protected void onPostExecute(AccountData result){
         super.onPostExecute(result);
+        if (pDialog.isShowing()) {pDialog.dismiss();};
         _asyncListener.onParseAccountDataComplete(result);
     }
 

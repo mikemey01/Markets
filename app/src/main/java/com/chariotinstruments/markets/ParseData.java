@@ -79,8 +79,7 @@ public class ParseData extends AsyncTask<Void, Void, MarketDay> {
     //This will pass the parsed result back to the main thread.
     protected void onPostExecute(MarketDay marketDay){
         super.onPostExecute(marketDay);
-        if (pDialog.isShowing())
-            pDialog.dismiss();
+        if (pDialog.isShowing()) {pDialog.dismiss();}
         asyncListener.onParseDataComplete(marketDay);
     }
 
