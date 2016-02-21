@@ -104,9 +104,9 @@ public class MainActivity extends AppCompatActivity implements ParseData.ParseDa
         String output = "";
 
         output = output + "Total cash: ";
-        output = output + Double.toString(aData.getAccountValue());
+        output = output + Double.toString(aData.getAccountValue()) + "\n";
         output = output + "Cash Available: ";
-        output = output + Double.toString(aData.getCashAvailable());
+        output = output + Double.toString(aData.getCashAvailable()) + "\n";
 
         dataTextView.setText(output);
     }
