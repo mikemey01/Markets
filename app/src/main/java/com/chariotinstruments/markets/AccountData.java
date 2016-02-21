@@ -7,6 +7,9 @@ public class AccountData {
 
     private double _accountValue;
     private double _cashAvailable;
+    private double _optionValue;
+    private double _stockValue;
+    private double _unsettledFunds;
 
     public AccountData(){
 
@@ -26,5 +29,29 @@ public class AccountData {
 
     public void setCashAvailable(double cashIn){
         _cashAvailable = cashIn;
+    }
+
+    public double getOptionValue(){
+        return _optionValue;
+    }
+
+    public void setOptionValue(double optionValIn){
+        _optionValue = optionValIn;
+    }
+
+    public double getStockValue(){
+        return _stockValue;
+    }
+
+    public void setStockValue(double stockValIn){
+        _stockValue = stockValIn;
+    }
+
+    public double getUnsettledFunds(){
+        return _unsettledFunds;
+    }
+
+    public void setUnsettledFunds(double unSettledFundsIn){
+        _unsettledFunds = unSettledFundsIn;
     }
 }
