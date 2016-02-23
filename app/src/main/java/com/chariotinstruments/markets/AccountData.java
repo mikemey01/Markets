@@ -10,6 +10,7 @@ public class AccountData {
     private double _optionValue;
     private double _stockValue;
     private double _unsettledFunds;
+    private double _unclearedDeposits;
 
     public AccountData(){
 
@@ -53,5 +54,13 @@ public class AccountData {
 
     public void setUnsettledFunds(double unSettledFundsIn){
         _unsettledFunds = unSettledFundsIn;
+    }
+
+    public double getUnclearedDeposists(){
+        return _unclearedDeposits;
+    }
+
+    public void setUnclearedDeposits(double unclearedDepositsIn){
+        _unclearedDeposits = unclearedDepositsIn;
     }
 }

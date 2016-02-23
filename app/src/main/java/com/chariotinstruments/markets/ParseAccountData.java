@@ -97,6 +97,7 @@ public class ParseAccountData extends AsyncTask<Void, Void, AccountData> {
         accountData.setUnsettledFunds(jsonMoney.getDouble("unsettledfunds"));
         accountData.setOptionValue(jsonSecurities.getDouble("options"));
         accountData.setStockValue(jsonSecurities.getDouble("stocks"));
+        accountData.setUnclearedDeposits(jsonMoney.getDouble("uncleareddeposits"));
 
         return accountData;
     }
