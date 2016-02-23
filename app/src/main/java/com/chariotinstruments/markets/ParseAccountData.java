@@ -40,6 +40,10 @@ public class ParseAccountData extends AsyncTask<Void, Void, AccountData> {
         pDialog = new ProgressDialog(activity);
     }
 
+    public interface ParseAccountDataAsyncListener{
+        public void onParseAccountDataComplete(AccountData aData);
+    }
+
     protected void onPreExecute(){
         super.onPreExecute();
         pDialog.setMessage("Getting Data..");
@@ -102,7 +106,5 @@ public class ParseAccountData extends AsyncTask<Void, Void, AccountData> {
         return accountData;
     }
 
-    public interface ParseAccountDataAsyncListener{
-        public void onParseAccountDataComplete(AccountData aData);
-    }
+
 }
