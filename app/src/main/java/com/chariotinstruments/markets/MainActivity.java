@@ -9,18 +9,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.scribejava.core.builder.ServiceBuilder;
-import com.github.scribejava.core.model.OAuthRequest;
-import com.github.scribejava.core.model.Response;
-import com.github.scribejava.core.model.Token;
-import com.github.scribejava.core.model.Verb;
-import com.github.scribejava.core.oauth.OAuth10aService;
-
 import org.json.JSONException;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements ParseData.ParseDataAsyncListener, ParseAccountData.ParseAccountDataAsyncListener {
+public class MainActivity extends AppCompatActivity implements ParseData.ParseDataAsyncListener, ParseAccountData.ParseAccountDataAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener {
 
     TextView dataTextView;
     EditText symbolEditText;
@@ -50,19 +43,8 @@ public class MainActivity extends AppCompatActivity implements ParseData.ParseDa
     }
 
     public void getOptionData(View v){
-        final OAuth10aService service = new ServiceBuilder()
-                .apiKey(apiKeys.CONSUMER_KEY)
-                .apiSecret(apiKeys.CONSUMER_SECRET)
-                .build(TradeKingApi.instance());
-        Token accessToken = new Token(apiKeys.OAUTH_TOKEN, apiKeys.OAUTH_TOKEN_SECRET);
 
-        // Fetch the JSON data
-        OAuthRequest request = new OAuthRequest(Verb.GET, tk.getFullAccountInfo(), service);
-        service.signRequest(accessToken, request);
-        Response response = request.send();
-
-        System.out.println(tk.getFullAccountInfo());
-        dataTextView.setText(response.getBody());
+        new ParseOptionOrderPreview(this, this).execute();
     }
 
     public void getAccountData(View v){
@@ -117,6 +99,10 @@ public class MainActivity extends AppCompatActivity implements ParseData.ParseDa
         output = output + Double.toString(aData.getUnclearedDeposists());
 
         dataTextView.setText(output);
+    }
+
+    public void onParseOptionOrderPreviewComplete(String response){
+        dataTextView.setText(response);
     }
 
 }

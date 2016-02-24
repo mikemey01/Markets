@@ -36,7 +36,11 @@ public class TradeKingApiCalls {
 
     //region orders
 
+    private final String OPTION_PREVIEW_URL = "https://api.tradeking.com/v1/accounts/"+apiKeys.ACCOUNT_NUMBER+"/orders/preview"+RESPONSE_TYPE;
 
+    public String getMarketOptionPreview(){
+        return OPTION_PREVIEW_URL;
+    }
 
     //endregion
 
