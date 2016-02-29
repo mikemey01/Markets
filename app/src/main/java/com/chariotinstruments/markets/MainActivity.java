@@ -11,9 +11,7 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 
-import java.util.ArrayList;
-
-public class MainActivity extends AppCompatActivity implements ParseData.ParseDataAsyncListener, ParseAccountData.ParseAccountDataAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener {
+public class MainActivity extends AppCompatActivity implements ParseAccountData.ParseAccountDataAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener {
 
     TextView dataTextView;
     EditText symbolEditText;
@@ -57,7 +55,8 @@ public class MainActivity extends AppCompatActivity implements ParseData.ParseDa
             Toast toast = Toast.makeText(this, "Enter a symbol", Toast.LENGTH_SHORT);
             toast.show();
         }else {
-            new ParseData(this, this, symbol).execute();
+            PhaseOneControl p1 = new PhaseOneControl(this, symbol);
+            p1.start();
         }
     }
 
@@ -69,17 +68,6 @@ public class MainActivity extends AppCompatActivity implements ParseData.ParseDa
     @Override
     protected void onPause() {
         super.onPause();
-    }
-
-    public void onParseDataComplete(MarketDay marketDay){
-        String output = "";
-        ArrayList<MarketCandle> marketCandles = new ArrayList<MarketCandle>();
-        marketCandles = marketDay.getMarketCandles();
-
-        for(MarketCandle marCan : marketCandles){
-            output = Double.toString(marCan.getClose()) + ", " + output;
-        }
-        dataTextView.setText(output);
     }
 
     public void onParseAccountDataComplete(AccountData aData){
