@@ -1,7 +1,6 @@
 package com.chariotinstruments.markets;
 
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
@@ -28,16 +27,6 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
         apiKeys = new APIKeys();
         tk = new TradeKingApiCalls();
 
-        //this potentially avoids the error in running network operations on the main thread.
-        int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        if (SDK_INT > 8)
-        {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                    .permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            //your codes here
-
-        }
     }
 
     public void getOptionData(View v){
