@@ -14,12 +14,14 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener{
     Activity uiActivity;
     String symbol;
     Boolean isActive;
+    PhaseOneIndicatorControl indicatorControl;
 
     public PhaseOneControl(Activity activity, String symbol){
         uiActivity = activity;
         this.symbol = symbol;
         consoleView = (TextView)activity.findViewById(R.id.dataTextView);
         isActive = false;
+        indicatorControl = new PhaseOneIndicatorControl();
     }
 
     public void start(){
@@ -39,6 +41,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener{
 
     private void submitOrder(){
 
+        isActive = false;
     }
 
     private void stop(){
@@ -55,9 +58,13 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener{
         for(MarketCandle marCan : marketCandles){
             output = Double.toString(marCan.getClose()) + ", " + output;
         }
-        //check indicators
+
+        indicatorControl.setMarketDay(marketDay);
         //maybe return a bool, if true submit the trade, false run the retrival loop again.
         consoleView.setText(output);
+
+        //Always call the loop again, on/off is handled there.
+        dataRetrievalLoop();
     }
 
     //endregion

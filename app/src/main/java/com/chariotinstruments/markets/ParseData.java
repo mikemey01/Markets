@@ -53,7 +53,7 @@ public class ParseData extends AsyncTask<Void, Void, MarketDay> {
 
     protected MarketDay doInBackground(Void... arg0){
         //adding one second of sleep so we don't go over 60/sec api calls
-        SystemClock.sleep(7000);
+        SystemClock.sleep(1000);
 
         //not sure if this is right if the assignment below will happen correctly.
         MarketDay marketDay = new MarketDay();
