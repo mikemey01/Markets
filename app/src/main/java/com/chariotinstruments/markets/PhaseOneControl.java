@@ -51,6 +51,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener{
     //region Async Callbacks
 
     public void onParseDataComplete(MarketDay marketDay){
+        Boolean favorableConditions = false;
         String output = "";
         ArrayList<MarketCandle> marketCandles = new ArrayList<MarketCandle>();
         marketCandles = marketDay.getMarketCandles();
@@ -58,10 +59,17 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener{
         for(MarketCandle marCan : marketCandles){
             output = Double.toString(marCan.getClose()) + ", " + output;
         }
-
-        indicatorControl.setMarketDay(marketDay);
-        //maybe return a bool, if true submit the trade, false run the retrival loop again.
         consoleView.setText(output);
+
+        //pass the market data to the indicator control.
+        indicatorControl.setMarketDay(marketDay);
+        favorableConditions = indicatorControl.calculateIndicators();
+
+        //if the indicators show favorable conditions, submit a trade and stop the looping.
+        if(favorableConditions){
+            isActive = false;
+            //submit trade
+        }
 
         //Always call the loop again, on/off is handled there.
         dataRetrievalLoop();
