@@ -13,6 +13,7 @@ import org.json.JSONException;
 public class MainActivity extends AppCompatActivity implements ParseAccountData.ParseAccountDataAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener {
 
     TextView dataTextView;
+    EditText currentTextBox;
     EditText symbolEditText;
     APIKeys apiKeys;
     TradeKingApiCalls tk;
@@ -23,6 +24,8 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
         setContentView(R.layout.activity_main);
         dataTextView = (TextView)findViewById(R.id.dataTextView);
         dataTextView.setMovementMethod(new ScrollingMovementMethod());
+        currentTextBox = (EditText)findViewById(R.id.currentTextBox);
+        currentTextBox.setEnabled(false);
         symbolEditText = (EditText)findViewById(R.id.symbolEditText);
         apiKeys = new APIKeys();
         tk = new TradeKingApiCalls();
