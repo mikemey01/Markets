@@ -78,6 +78,8 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseM
 
     public void onParseMarketQuoteComplete(String response){
         consoleView.setText(response);
+
+        dataRetrievalLoop();
     }
 
     //endregion

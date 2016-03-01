@@ -3,6 +3,7 @@ package com.chariotinstruments.markets;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.os.SystemClock;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -31,12 +32,13 @@ public class ParseMarketQuote extends AsyncTask<Void, Void, String> {
 
     public void onPreExecute(){
         super.onPreExecute();
-        pDialog.setMessage("Creating Order..");
-        pDialog.setCancelable(false);
-        pDialog.show();
+//        pDialog.setMessage("Getting Quote..");
+//        pDialog.setCancelable(false);
+//        pDialog.show();
     }
 
     protected String doInBackground(Void... voids){
+        SystemClock.sleep(1000);
         //Build the OAuth service
         final OAuth10aService service = new ServiceBuilder()
                 .apiKey(apiKeys.CONSUMER_KEY)
@@ -55,7 +57,7 @@ public class ParseMarketQuote extends AsyncTask<Void, Void, String> {
     //This will pass the parsed result back to the main thread.
     protected void onPostExecute(String response){
         super.onPostExecute(response);
-        if (pDialog.isShowing()) {pDialog.dismiss();}
+        //if (pDialog.isShowing()) {pDialog.dismiss();}
         _asyncListener.onParseMarketQuoteComplete(response);
     }
 
