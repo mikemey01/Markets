@@ -34,7 +34,6 @@ public class ParseStockQuote  extends AsyncTask<Void, Void, StockQuote> {
         _asyncListener = aListener;
         pDialog = new ProgressDialog(activity);
         this.symbol = symbol;
-
     }
 
     public void onPreExecute(){
@@ -93,7 +92,7 @@ public class ParseStockQuote  extends AsyncTask<Void, Void, StockQuote> {
                 jsonQuote.getDouble("bidsz"),
                 jsonQuote.getDouble("hi"),
                 jsonQuote.getDouble("lo"),
-                jsonQuote.getDouble("vl"),
+                jsonQuote.getLong("vl"),
                 jsonQuote.getLong("timestamp"));
 
         return quote;

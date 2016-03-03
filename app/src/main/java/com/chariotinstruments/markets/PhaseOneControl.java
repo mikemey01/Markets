@@ -10,18 +10,26 @@ import java.util.ArrayList;
  */
 public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseStockQuote.ParseStockQuoteAsyncListener{
 
-    TextView consoleView;
-    Activity uiActivity;
-    String symbol;
-    Boolean isActive;
-    PhaseOneIndicatorControl indicatorControl;
+    private TextView consoleView;
+    private Activity uiActivity;
+    private String symbol;
+    private Boolean isActive;
+    private PhaseOneIndicatorControl indicatorControl;
+    private Boolean isLoop;
 
-    public PhaseOneControl(Activity activity, String symbol){
+    public PhaseOneControl(Activity activity){
         uiActivity = activity;
-        this.symbol = symbol;
         consoleView = (TextView)activity.findViewById(R.id.dataTextView);
         isActive = false;
         indicatorControl = new PhaseOneIndicatorControl();
+    }
+
+    public void setSymbol(String sym){
+        this.symbol = sym;
+    }
+
+    public void setIsLoop(Boolean loop){
+        this.isLoop = loop;
     }
 
     public void start(){
@@ -45,7 +53,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         isActive = false;
     }
 
-    private void stop(){
+    public void stop(){
         isActive = false;
     }
 
@@ -88,7 +96,9 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
                         "Day Vol: " + Long.toString(quote.getCumulativeVolume()) + "\n";
         consoleView.setText(output);
 
-        //dataRetrievalLoop();
+        if(isLoop) {
+            dataRetrievalLoop();
+        }
     }
 
     //endregion

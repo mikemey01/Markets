@@ -19,8 +19,8 @@
     <Button
         android:id="@+id/getSymbolDataButton"
         android:text="Get Symbol"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:onClick="getSymbolData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,8 +29,8 @@
     <Button
         android:id="@+id/accountDataButton"
         android:text="Account"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:onClick="getAccountData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,19 +40,40 @@
     <Button
         android:id="@+id/optionDataButton"
         android:text="Option"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:onClick="getOptionData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/accountDataButton"
         android:layout_below="@+id/symbolEditText"/>
 
+    <Button
+        android:id="@+id/startButton"
+        android:text="Start"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:onClick="startProcess"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/getSymbolDataButton"/>
+
+    <Button
+        android:id="@+id/stopButton"
+        android:text="Stop"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:onClick="stopProcess"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/optionDataButton"
+        android:layout_toRightOf="@+id/startButton"/>
+
     <EditText
         android:id="@+id/currentTextBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/getSymbolDataButton"
+        android:layout_below="@+id/startButton"
         android:hint="current data"/>
 
     <TextView
