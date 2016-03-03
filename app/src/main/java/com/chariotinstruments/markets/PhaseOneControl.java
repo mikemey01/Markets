@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by user on 2/28/16.
  */
-public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseMarketQuote.ParseMarketQuoteAsyncListener{
+public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseStockQuote.ParseStockQuoteAsyncListener{
 
     TextView consoleView;
     Activity uiActivity;
@@ -32,7 +32,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseM
     private void dataRetrievalLoop(){
         if(isActive){
             //new ParseData(this.uiActivity, this, symbol).execute();
-            new ParseMarketQuote(this.uiActivity, this, symbol).execute();
+            new ParseStockQuote(this.uiActivity, this, symbol).execute();
         }
     }
 
@@ -76,7 +76,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseM
         dataRetrievalLoop();
     }
 
-    public void onParseMarketQuoteComplete(String response){
+    public void onParseStockQuoteComplete(String response){
         consoleView.setText(response);
 
         dataRetrievalLoop();
