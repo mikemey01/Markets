@@ -39,8 +39,8 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
     private void dataRetrievalLoop(){
         if(isActive){
-            //new ParseData(this.uiActivity, this, symbol).execute();
-            new ParseStockQuote(this.uiActivity, this, symbol).execute();
+            new ParseData(this.uiActivity, this, symbol).execute();
+            //new ParseStockQuote(this.uiActivity, this, symbol).execute();
         }
     }
 
@@ -68,6 +68,13 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         for(MarketCandle marCan : marketCandles){
             output = Double.toString(marCan.getClose()) + ", " + output;
         }
+
+        //test area
+        CalcRSI rsi = new CalcRSI(marketDay);
+        output = rsi.tester();
+        //test area
+
+
         consoleView.setText(output);
 
         //pass the market data to the indicator control.
@@ -80,8 +87,9 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
             //submit trade
         }
 
-        //Always call the loop again, on/off is handled there.
-        dataRetrievalLoop();
+        if(isLoop) {
+            dataRetrievalLoop();
+        }
     }
 
     public void onParseStockQuoteComplete(StockQuote quote){
