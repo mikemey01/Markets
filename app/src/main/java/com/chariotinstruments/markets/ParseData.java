@@ -98,7 +98,6 @@ public class ParseData extends AsyncTask<Void, Void, MarketDay> {
         JSONObject jsonResponse = new JSONObject();
         JSONObject jsonQuotes = new JSONObject();
         JSONArray jsonQuote = new JSONArray();
-        String output = "";
 
         //Make sure to respect the object(array(object)) hierarchy of the response.
         json = new JSONObject(response.getBody());

@@ -12,10 +12,17 @@ import com.github.scribejava.core.model.Token;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by user on 3/2/16.
  */
-public class ParseStockQuote  extends AsyncTask<Void, Void, String> {
+public class ParseStockQuote  extends AsyncTask<Void, Void, StockQuote> {
+
+    private static final String GET_QUOTES = "quotes";
+    private static final String GET_RESPONSE = "response";
+    private static final String GET_QUOTE = "quote";
 
     private APIKeys apiKeys;
     private TradeKingApiCalls tk = new TradeKingApiCalls();
@@ -34,7 +41,7 @@ public class ParseStockQuote  extends AsyncTask<Void, Void, String> {
         super.onPreExecute();
     }
 
-    protected String doInBackground(Void... voids){
+    protected StockQuote doInBackground(Void... voids){
         SystemClock.sleep(1000);
         //Build the OAuth service
         final OAuth10aService service = new ServiceBuilder()
@@ -48,19 +55,48 @@ public class ParseStockQuote  extends AsyncTask<Void, Void, String> {
         service.signRequest(accessToken, request);
         Response response = request.send();
 
-        return response.getBody();
+        StockQuote quote = new StockQuote(symbol);
+        try {
+            quote = parseJSON(response);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return quote;
     }
 
     //This will pass the parsed result back to the main thread.
-    protected void onPostExecute(String response){
-        super.onPostExecute(response);
-        _asyncListener.onParseStockQuoteComplete(response);
+    protected void onPostExecute(StockQuote quote){
+        super.onPostExecute(quote);
+        _asyncListener.onParseStockQuoteComplete(quote);
     }
 
     public interface ParseStockQuoteAsyncListener{
-        public void onParseStockQuoteComplete(String response);
+        public void onParseStockQuoteComplete(StockQuote quote);
     }
 
+    public StockQuote parseJSON(Response response) throws JSONException{
+        StockQuote quote = new StockQuote(symbol);
+        JSONObject jsonResponse = new JSONObject();
+        JSONObject jsonQuotes = new JSONObject();
+        JSONObject jsonQuote = new JSONObject();
 
+        JSONObject json = new JSONObject(response.getBody());
+        jsonResponse = json.getJSONObject(GET_RESPONSE);
+        jsonQuotes = jsonResponse.getJSONObject(GET_QUOTES);
+        jsonQuote = jsonQuotes.getJSONObject(GET_QUOTE);
+
+        quote.setStockQuoteData(
+                jsonQuote.getDouble("ask"),
+                jsonQuote.getDouble("asksz"),
+                jsonQuote.getDouble("bid"),
+                jsonQuote.getDouble("bidsz"),
+                jsonQuote.getDouble("hi"),
+                jsonQuote.getDouble("lo"),
+                jsonQuote.getDouble("vl"));
+
+        return quote;
+
+    }
 
 }
