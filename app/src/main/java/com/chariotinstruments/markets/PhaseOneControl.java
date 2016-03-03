@@ -77,15 +77,16 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
     }
 
     public void onParseStockQuoteComplete(StockQuote quote){
-        String output = "Symbol: " + Double.toString(quote.getSymbol()) + "\n" +
+        String output = "Symbol: " + quote.getSymbol() + "\n" +
+                        "Time: " + Long.toString(quote.getTime()) + "\n" +
                         "Ask Price: " + Double.toString(quote.getAskPrice()) + "\n" +
                         "Ask Size: " + Double.toString(quote.getAskSize()) + "\n" +
                         "Bid Price: " + Double.toString(quote.getBidPrice()) + "\n" +
-        consoleView.setText(
-                "Symbol: " + Double.toString(quote.getSymbol()) +
-                Double.toString(quote.getAskPrice()) + "\n" +
-                Double.toString(quote.getAskSize()) + "\n"
-        );
+                        "Bid Size: " + Double.toString(quote.getBidSize()) + "\n" +
+                        "Day High: " + Double.toString(quote.getDayHighPrice())+ "\n" +
+                        "Day Low: " + Double.toString(quote.getDayLowPrice()) + "\n" +
+                        "Day Vol: " + Long.toString(quote.getCumulativeVolume()) + "\n";
+        consoleView.setText(output);
 
         //dataRetrievalLoop();
     }

@@ -12,13 +12,14 @@ public class StockQuote {
     private double bidSize; //in 100s
     private double dayHighPrice;
     private double dayLowPrice;
-    private double cumulativeVolume;
+    private long cumulativeVolume;
+    private long time;
 
     public StockQuote(String symbol){
         this.symbol = symbol;
     }
 
-    public void setStockQuoteData(double askPriceIn, double askSizeIn, double bidPriceIn, double bidSizeIn, double dayHighPriceIn, double dayLowPriceIn, double cumulativeVolumeIn){
+    public void setStockQuoteData(double askPriceIn, double askSizeIn, double bidPriceIn, double bidSizeIn, double dayHighPriceIn, double dayLowPriceIn, long cumulativeVolumeIn, long timeIn){
         this.askPrice = askPriceIn;
         this.askSize = askSizeIn;
         this.bidPrice = bidPriceIn;
@@ -26,6 +27,7 @@ public class StockQuote {
         this.dayHighPrice = dayHighPriceIn;
         this.dayLowPrice = dayLowPriceIn;
         this.cumulativeVolume = cumulativeVolumeIn;
+        this.time = timeIn;
     }
 
     public String getSymbol(){
@@ -84,12 +86,19 @@ public class StockQuote {
         dayLowPrice = dayLow;
     }
 
-    public double getCumulativeVolume(){
+    public long getCumulativeVolume(){
         return cumulativeVolume;
     }
 
-    public void setCumulativeVolume(double cumIn){
+    public void setCumulativeVolume(long cumIn){
         cumulativeVolume = cumIn;
     }
 
+    public Long getTime(){
+        return time;
+    }
+
+    public void setTime(long timeIn){
+        time = timeIn;
+    }
 }
