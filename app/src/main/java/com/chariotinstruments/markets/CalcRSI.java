@@ -28,6 +28,16 @@ public class CalcRSI {
         return retList;
     }
 
+    private double getGainAverage(ArrayList<Double> list){
+        //Todo: calc average gain over 14 periods.
+        return 0.0;
+    }
+
+    private double getLossAverage(ArrayList<Double> list){
+        //todo: calc average losses over 14 periods.
+        return 0.0;
+    }
+
     public String tester(){
         ArrayList<Double> inList = get14Periods();
         String output = "";
