@@ -16,12 +16,14 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
     private Boolean isActive;
     private PhaseOneIndicatorControl indicatorControl;
     private Boolean isLoop;
+    private Double RSI;
 
     public PhaseOneControl(Activity activity){
         uiActivity = activity;
         consoleView = (TextView)activity.findViewById(R.id.dataTextView);
         isActive = false;
         indicatorControl = new PhaseOneIndicatorControl();
+        RSI = 0.0;
     }
 
     public void setSymbol(String sym){
@@ -40,7 +42,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
     private void dataRetrievalLoop(){
         if(isActive){
             new ParseData(this.uiActivity, this, symbol).execute();
-            //new ParseStockQuote(this.uiActivity, this, symbol).execute();
+            new ParseStockQuote(this.uiActivity, this, symbol).execute();
         }
     }
 
@@ -72,6 +74,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         //test area
         CalcRSI rsi = new CalcRSI(marketDay);
         output = rsi.tester();
+        RSI = rsi.getCurrentRSI();
         //test area
 
 
@@ -88,7 +91,8 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         }
 
         if(isLoop) {
-            dataRetrievalLoop();
+            //handled in the onParseStockQuoteComplete area for now while running both
+            //dataRetrievalLoop();
         }
     }
 
@@ -101,7 +105,9 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
                         "Bid Size: " + Double.toString(quote.getBidSize()) + "\n" +
                         "Day High: " + Double.toString(quote.getDayHighPrice())+ "\n" +
                         "Day Low: " + Double.toString(quote.getDayLowPrice()) + "\n" +
-                        "Day Vol: " + Long.toString(quote.getCumulativeVolume()) + "\n";
+                        "Day Vol: " + Long.toString(quote.getCumulativeVolume()) + "\n" +
+                        "Indicators: " + "\n" +
+                        "RSI: " + Double.toString(RSI) + "\n";
         consoleView.setText(output);
 
         if(isLoop) {

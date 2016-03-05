@@ -16,6 +16,15 @@ public class CalcRSI {
         marketCandles = this.marketDay.getMarketCandles();
     }
 
+    public double getCurrentRSI(){
+        ArrayList<Double> list = getRSIPeriods();
+        double avgGain = getGainAverage(list);
+        double avgLoss = getLossAverage(list);
+        double RSI = getRSI(avgGain, avgLoss);
+
+        return RSI;
+    }
+
     private ArrayList<Double> getRSIPeriods(){
         ArrayList<Double> retList = new ArrayList<Double>();
         int startIndex = marketCandles.size()-15; // need 15 periods so we can subtract the first.

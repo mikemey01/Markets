@@ -46,9 +46,9 @@ public class ParseData extends AsyncTask<Void, Void, MarketDay> {
 
     protected void onPreExecute(){
         super.onPreExecute();
-        pDialog.setMessage("Getting Data..");
-        pDialog.setCancelable(false);
-        pDialog.show();
+//        pDialog.setMessage("Getting Data..");
+//        pDialog.setCancelable(false);
+//        pDialog.show();
     }
 
     protected MarketDay doInBackground(Void... arg0){
@@ -83,7 +83,7 @@ public class ParseData extends AsyncTask<Void, Void, MarketDay> {
     //This will pass the parsed result back to the main thread.
     protected void onPostExecute(MarketDay marketDay){
         super.onPostExecute(marketDay);
-        if (pDialog.isShowing()) {pDialog.dismiss();}
+        //if (pDialog.isShowing()) {pDialog.dismiss();}
         asyncListener.onParseDataComplete(marketDay);
     }
 
@@ -106,7 +106,7 @@ public class ParseData extends AsyncTask<Void, Void, MarketDay> {
         jsonQuote = jsonQuotes.getJSONArray(GET_QUOTE);
 
         //Loop through the quote array and do something with the data..
-        for (int i = 0; i < jsonQuote.length(); i++){
+        for (int i = 0; i < jsonQuote.length()-1; i++){
             JSONObject curQuote = jsonQuote.getJSONObject(i);
             marketDay.addCandle(1,
                                 curQuote.getDouble("opn"),
