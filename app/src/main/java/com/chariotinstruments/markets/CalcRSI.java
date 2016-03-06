@@ -12,12 +12,6 @@ public class CalcRSI {
     private double gainAverage;
     private double lossAverage;
 
-    public String gainList;
-    public String lossList;
-    public String output;
-    public int listSize;
-    public double lastAmount;
-
     public CalcRSI(MarketDay marDay){
         this.marketDay = marDay;
         marketCandles = new ArrayList<MarketCandle>();
@@ -55,27 +49,17 @@ public class CalcRSI {
     public void getAverages(ArrayList<Double> list){
         double curAmount = 0.0;
         double prevAmount = 0.0;
-        double sum = 0;
-        lossList = "";
-        gainList = "";
-        lastAmount = 0.0;
-        output = "";
-        listSize = 0;
+        double sum = 0.0;
+        double lastAmount = 0.0;
 
         for(int i = 1; i < list.size()-1; i++) { //exclude the 1st and 16th period for now.
             curAmount = list.get(i);
             prevAmount = list.get(i-1);
             sum = curAmount - prevAmount;
-            output = output + "\n" + curAmount;
-            listSize += 1;
 
             if(sum < 0){
-                lossList = lossList + Double.toString(sum) + "\n";
-                gainList = gainList + Double.toString(0.0) + "\n";
                 lossAverage += (sum * -1);
             }else{
-                lossList = lossList + Double.toString(0.0) + "\n";
-                gainList = gainList + Double.toString(sum) + "\n";
                 gainAverage += sum;
             }
         }
