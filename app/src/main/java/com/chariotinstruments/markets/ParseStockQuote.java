@@ -41,7 +41,7 @@ public class ParseStockQuote  extends AsyncTask<Void, Void, StockQuote> {
     }
 
     protected StockQuote doInBackground(Void... voids){
-        SystemClock.sleep(1000);
+        SystemClock.sleep(500);
         //Build the OAuth service
         final OAuth10aService service = new ServiceBuilder()
                 .apiKey(apiKeys.CONSUMER_KEY)
