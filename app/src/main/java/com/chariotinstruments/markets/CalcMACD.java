@@ -52,7 +52,6 @@ public class CalcMACD {
         for(int i = startIndex; i<=stopIndex; i++){
             periodList.add(marketCandles.get(i).getClose());
             if(i <= stopIndex-9){
-                avgList = avgList + "\n" + marketCandles.get(i).getClose();
                 firstTwelveAvg += marketCandles.get(i).getClose();
             }
         }
@@ -66,10 +65,11 @@ public class CalcMACD {
         //calculate multiplier
         multiplier = 2.0d/13.0d;
 
-        int i = stopIndex-8;
-        curEMA = (marketCandles.get(i).getClose() * multiplier) + (firstTwelveAvg2 * (1.0 - multiplier));
-        while(i <= stopIndex) {
-            curEMA = (marketCandles.get(i).getClose() * multiplier) + (curEMA * (1.0 - multiplier));
+        int i = 12;
+        curEMA = (periodList.get(i) * multiplier) + (firstTwelveAvg2 * (1.0 - multiplier));
+        i++;
+        while(i <= periodList.size()-1) {
+            curEMA = (periodList.get(i) * multiplier) + (curEMA * (1.0 - multiplier));
             i++;
         }
 
@@ -106,11 +106,12 @@ public class CalcMACD {
 
         multiplier = 2.0d/27.0d;
 
-        int i = stopIndex-8;
-        curEMA = (marketCandles.get(i).getClose() * multiplier) + (firstTwentySixAvg2 * (1.0d - multiplier));
-        while(i <= stopIndex) {
+        int i = 26;
+        curEMA = (periodList.get(i) * multiplier) + (firstTwentySixAvg2 * (1.0 - multiplier));
+        i++;
+        while(i <= periodList.size()-1) {
             count += 1;
-            curEMA = (marketCandles.get(i).getClose() * multiplier) + (curEMA * (1.0d - multiplier));
+            curEMA = (periodList.get(i) * multiplier) + (curEMA * (1.0 - multiplier));
             i++;
         }
 
