@@ -106,14 +106,14 @@ public class ParseData extends AsyncTask<Void, Void, MarketDay> {
         jsonQuote = jsonQuotes.getJSONArray(GET_QUOTE);
 
         //Loop through the quote array and do something with the data..
-        for (int i = 0; i < jsonQuote.length()-1; i++){
+        for (int i = 0; i < jsonQuote.length(); i++){
             JSONObject curQuote = jsonQuote.getJSONObject(i);
             marketDay.addCandle(1,
                                 curQuote.getDouble("opn"),
                                 curQuote.getDouble("lo"),
                                 curQuote.getDouble("hi"),
                                 curQuote.getDouble("last"),
-                                curQuote.getLong("vl"));
+                                curQuote.getLong("incr_vl"));
         }
 
         return marketDay;

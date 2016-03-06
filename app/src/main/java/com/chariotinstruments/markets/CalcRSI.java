@@ -9,6 +9,14 @@ public class CalcRSI {
 
     private MarketDay marketDay;
     private ArrayList<MarketCandle> marketCandles;
+    private double gainAverage;
+    private double lossAverage;
+
+    public String gainList;
+    public String lossList;
+    public String output;
+    public int listSize;
+    public double lastAmount;
 
     public CalcRSI(MarketDay marDay){
         this.marketDay = marDay;
@@ -16,18 +24,24 @@ public class CalcRSI {
         marketCandles = this.marketDay.getMarketCandles();
     }
 
-    public double getCurrentRSI(){
-        ArrayList<Double> list = getRSIPeriods();
-        double avgGain = getGainAverage(list);
-        double avgLoss = getLossAverage(list);
-        double RSI = getRSI(avgGain, avgLoss);
-
-        return RSI;
+    public double getGainAverage(){
+        return gainAverage;
+    }
+    public double getLossAverage(){
+        return lossAverage;
     }
 
-    private ArrayList<Double> getRSIPeriods(){
+    public String getCurrentRSI(){
+        ArrayList<Double> list = getRSIPeriods();
+        getAverages(list);
+        double RSI = getRSI(gainAverage, lossAverage);
+
+        return String.format("%.2f", RSI);
+    }
+
+    public ArrayList<Double> getRSIPeriods(){
         ArrayList<Double> retList = new ArrayList<Double>();
-        int startIndex = marketCandles.size()-15; // need 15 periods so we can subtract the first.
+        int startIndex = marketCandles.size()-16; // need 16 periods so we can subtract the first.
         int stopIndex = marketCandles.size()-1;
 
         for(int i = startIndex; i<=stopIndex; i++){
@@ -37,36 +51,48 @@ public class CalcRSI {
         return retList;
     }
 
-    private double getGainAverage(ArrayList<Double> list){
-        double curAmount = 0;
-        double prevAmount = 0;
-        double sum = 0;
 
-        for(int i = 1; i <= list.size()-1; i++) {
+    public void getAverages(ArrayList<Double> list){
+        double curAmount = 0.0;
+        double prevAmount = 0.0;
+        double sum = 0;
+        lossList = "";
+        gainList = "";
+        lastAmount = 0.0;
+        output = "";
+        listSize = 0;
+
+        for(int i = 1; i < list.size()-1; i++) { //exclude the 1st and 16th period for now.
             curAmount = list.get(i);
             prevAmount = list.get(i-1);
-            sum = curAmount - prevAmount > 0 ? sum + curAmount - prevAmount : sum + 0;
+            sum = curAmount - prevAmount;
+            output = output + "\n" + curAmount;
+            listSize += 1;
+
+            if(sum < 0){
+                lossList = lossList + Double.toString(sum) + "\n";
+                gainList = gainList + Double.toString(0.0) + "\n";
+                lossAverage += (sum * -1);
+            }else{
+                lossList = lossList + Double.toString(0.0) + "\n";
+                gainList = gainList + Double.toString(sum) + "\n";
+                gainAverage += sum;
+            }
         }
 
-        sum = sum / 14;
+        lossAverage = lossAverage / 14;
+        gainAverage = gainAverage / 14;
 
-        return sum;
-    }
+        lastAmount = list.get(list.size()-1) - list.get(list.size()-2);
 
-    private double getLossAverage(ArrayList<Double> list){
-        double curAmount = 0;
-        double prevAmount = 0;
-        double sum = 0;
-
-        for(int i = 1; i <= list.size()-1; i++) {
-            curAmount = list.get(i);
-            prevAmount = list.get(i-1);
-            sum = curAmount - prevAmount < 0 ? sum + (curAmount - prevAmount)*-1 : sum + 0; //losses are still expressed as 0;
+        if(lastAmount < 0) {
+            lossAverage = ((lossAverage * 13) + (lastAmount * -1)) / 14;
+            gainAverage = ((gainAverage * 13) + 0) / 14;
+        }else{
+            lossAverage = ((lossAverage * 13) + 0) / 14;
+            gainAverage = ((gainAverage * 13) + lastAmount) / 14;
         }
 
-        sum = sum / 14;
-
-        return sum;
     }
 
     private double getRSI(double avgGain, double avgLoss){
@@ -83,8 +109,8 @@ public class CalcRSI {
     public String tester(){
         ArrayList<Double> inList = getRSIPeriods();
         String output = "";
-        for(int i = 0; i<= inList.size()-1; i++){
-            output = Double.toString(inList.get(i))+"\n"+output;
+        for(int i = 0; i < inList.size(); i++){
+            output = output + "\n" + Double.toString(inList.get(i));
         }
         return output;
     }
