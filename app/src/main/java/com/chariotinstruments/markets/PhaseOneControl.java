@@ -16,14 +16,14 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
     private Boolean isActive;
     private PhaseOneIndicatorControl indicatorControl;
     private Boolean isLoop;
-    private String RSI;
+    private String indicators;
 
     public PhaseOneControl(Activity activity){
         uiActivity = activity;
         consoleView = (TextView)activity.findViewById(R.id.dataTextView);
         isActive = false;
         indicatorControl = new PhaseOneIndicatorControl();
-        RSI = "";
+        indicators = "";
     }
 
     public void setSymbol(String sym){
@@ -71,9 +71,17 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
             output = Double.toString(marCan.getClose()) + ", " + output;
         }
 
-        //test area
+        //Do indicators
+        //RSI
         CalcRSI rsi = new CalcRSI(marketDay);
-        RSI = rsi.getCurrentRSI();
+        indicators = indicators + "RSI: " + rsi.getCurrentRSI() + "\n";
+
+        //MACD
+        CalcMACD macd = new CalcMACD(marketDay);
+        indicators = indicators + "MACD: " + macd.getCurrentMACD() + "\n";
+        indicators = indicators + "12 avg: " + macd.avg12 + "\n";
+        indicators = indicators + "count: " + macd.count + "\n";
+        indicators = indicators + "26 avg: " + macd.avg26 + "\n";
 
 
         //consoleView.setText(output);
@@ -105,7 +113,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
                         "Day Low: " + Double.toString(quote.getDayLowPrice()) + "\n" +
                         "Day Vol: " + Long.toString(quote.getCumulativeVolume()) + "\n" +
                         "--------------------------: " + "\n" +
-                        "RSI: " + RSI + "\n";
+                        indicators + "\n";
         consoleView.setText(output);
 
         if(isLoop) {

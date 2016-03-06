@@ -71,7 +71,7 @@ public class TradeKingApiCalls {
     public String getMarketYesterdaysMinuteData(String symbol){
         String yesterdaysDate = getPreviousDayDate();
 
-        return MARKET_HISTORICAL_QUOTE+symbol+"&startdate="+yesterdaysDate+"&interval=1min";
+        return MARKET_HISTORICAL_QUOTE+symbol+"&startdate="+yesterdaysDate+"&interval=5min";
     }
 
 

@@ -16,7 +16,7 @@ public class MarketDay {
         _marketCandles = new ArrayList<MarketCandle>();
     }
 
-    public void addCandle(int curMinute, double open, double low, double high, double close, Long volume){
+    public void addCandle(int curMinute, double open, double low, double high, double close, long volume){
 
         MarketCandle candle = new MarketCandle();
 
