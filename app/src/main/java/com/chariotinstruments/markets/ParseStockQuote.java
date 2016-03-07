@@ -3,7 +3,6 @@ package com.chariotinstruments.markets;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.os.SystemClock;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -41,7 +40,6 @@ public class ParseStockQuote  extends AsyncTask<Void, Void, StockQuote> {
     }
 
     protected StockQuote doInBackground(Void... voids){
-        SystemClock.sleep(500);
         //Build the OAuth service
         final OAuth10aService service = new ServiceBuilder()
                 .apiKey(apiKeys.CONSUMER_KEY)

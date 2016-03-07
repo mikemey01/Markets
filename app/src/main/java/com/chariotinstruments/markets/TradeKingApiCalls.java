@@ -71,7 +71,7 @@ public class TradeKingApiCalls {
     public String getMarketYesterdaysMinuteData(String symbol){
         String yesterdaysDate = getPreviousDayDate();
 
-        return MARKET_HISTORICAL_QUOTE+symbol+"&startdate="+yesterdaysDate+"&interval=5min";
+        return MARKET_HISTORICAL_QUOTE+symbol+"&startdate="+yesterdaysDate+"&interval=1min";
     }
 
 
@@ -102,7 +102,7 @@ public class TradeKingApiCalls {
         checkPreviousDay(previousMarketDay);
 
         String yesterdaysDate = sdf.format(previousMarketDay.getTime());
-        System.out.println(yesterdaysDate);
+        //System.out.println(yesterdaysDate);
 
         return yesterdaysDate;
     }

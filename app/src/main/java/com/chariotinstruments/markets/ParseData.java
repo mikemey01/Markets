@@ -3,7 +3,6 @@ package com.chariotinstruments.markets;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.os.SystemClock;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -52,8 +51,6 @@ public class ParseData extends AsyncTask<Void, Void, MarketDay> {
     }
 
     protected MarketDay doInBackground(Void... arg0){
-        //adding one second of sleep so we don't go over 60/sec api calls
-        SystemClock.sleep(500);
 
         //not sure if this is right if the assignment below will happen correctly.
         MarketDay marketDay = new MarketDay();

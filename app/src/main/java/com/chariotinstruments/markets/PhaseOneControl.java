@@ -1,6 +1,7 @@
 package com.chariotinstruments.markets;
 
 import android.app.Activity;
+import android.os.SystemClock;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
     private void dataRetrievalLoop(){
         if(isActive){
+            SystemClock.sleep(1000);
             new ParseData(this.uiActivity, this, symbol).execute();
             new ParseStockQuote(this.uiActivity, this, symbol).execute();
         }
@@ -64,12 +66,10 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
     public void onParseDataComplete(MarketDay marketDay){
         Boolean favorableConditions = false;
         String output = "";
+        indicators = "";
         ArrayList<MarketCandle> marketCandles = new ArrayList<MarketCandle>();
         marketCandles = marketDay.getMarketCandles();
 
-        for(MarketCandle marCan : marketCandles){
-            output = Double.toString(marCan.getClose()) + ", " + output;
-        }
 
         //Do indicators
         //RSI
@@ -79,9 +79,6 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         //MACD
         CalcMACD macd = new CalcMACD(marketDay);
         indicators = indicators + "MACD: " + macd.getCurrentMACD() + "\n";
-        indicators = indicators + "12 avg: " + macd.avg12 + "\n";
-        indicators = indicators + "count: " + macd.count + "\n";
-        indicators = indicators + "26 avg: " + macd.avg26 + "\n";
 
 
         //consoleView.setText(output);

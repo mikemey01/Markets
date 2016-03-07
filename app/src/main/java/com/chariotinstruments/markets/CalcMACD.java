@@ -10,15 +10,10 @@ public class CalcMACD {
     private MarketDay marketDay;
     private ArrayList<MarketCandle> marketCandles;
 
-    public int count;
-    public ArrayList<Double> periodTesterList;
-    public double avg12;
-    public double avg26;
-    public String avgList;
-
     public CalcMACD(MarketDay marDay){
         marketDay = marDay;
-        marketCandles = marketDay.getMarketCandles();
+        this.marketCandles = new ArrayList<MarketCandle>();
+        marketCandles = this.marketDay.getMarketCandles();
 
     }
 
@@ -55,11 +50,6 @@ public class CalcMACD {
                 firstTwelveAvg += marketCandles.get(i).getClose();
             }
         }
-
-        periodTesterList = periodList;
-
-        secondToLastAmount = marketCandles.get(marketCandles.size()-2).getClose();
-        lastAmount = marketCandles.get(marketCandles.size()-1).getClose();
         firstTwelveAvg2 = firstTwelveAvg/12.0d;
 
         //calculate multiplier
@@ -73,59 +63,57 @@ public class CalcMACD {
             i++;
         }
 
-        avg12 = curEMA;
-
         return curEMA;
-
     }
 
     private double get26PeriodEMA(){
+        //Get an arraylist of 26 periods
         ArrayList<Double> periodList = new ArrayList<Double>();
         int startIndex = marketCandles.size()-35; // need 16 periods so we can subtract the first.
         int stopIndex = marketCandles.size()-1;
-        double firstTwentySixAvg = 0.0;
-        double firstTwentySixAvg2 = 0.0;
-        double lastAmount = 0.0;
-        double secondToLastAmount = 0.0;
-        double curEMA = 0.0;
+        double firstTwentysixAvg = 0.0;
+        double firstTwentysixAvg2 = 0.0;
         double multiplier = 0.0;
-        double retAmount = 0.0;
+        double curEMA = 0.0;
+        double count = 0.0;
+        double count2 = 0.0;
+        double secondTwentysixAvg = 0.0;
 
-        //get all close values for 27 periods, sum/average the first 26.
+        //get all close values for 13 periods, sum/average the first 12.
         for(int i = startIndex; i<=stopIndex; i++){
-
             periodList.add(marketCandles.get(i).getClose());
+
             if(i <= stopIndex-9){
-                firstTwentySixAvg += marketCandles.get(i).getClose();
+                if(i<= stopIndex-20){
+                    count++;
+                    firstTwentysixAvg += marketCandles.get(i).getClose();
+                }else{
+                    count2++;
+                    secondTwentysixAvg += (marketCandles.get(i).getClose()*.2) + (marketCandles.get(i-1).getClose()*.8);
+                }
+
+                //firstTwentysixAvg += marketCandles.get(i).getClose();
             }
         }
 
-        secondToLastAmount = marketCandles.get(marketCandles.size()-2).getClose();
-        lastAmount = marketCandles.get(marketCandles.size()-1).getClose();
-        firstTwentySixAvg2 = firstTwentySixAvg/26.0d;
+        firstTwentysixAvg = ((firstTwentysixAvg / count) + (secondTwentysixAvg/count2))/2;
+        firstTwentysixAvg2 = firstTwentysixAvg;///26.0d;
 
-        multiplier = 2.0d/27.0d;
+        //calculate multiplier
+        multiplier = 2.0/27.0;
 
         int i = 26;
-        curEMA = (periodList.get(i) * multiplier) + (firstTwentySixAvg2 * (1.0 - multiplier));
-        i++;
         while(i <= periodList.size()-1) {
-            count += 1;
+            if(i==26) {
+                double curAmount = periodList.get(i);
+                curEMA = ((curAmount * multiplier) + (firstTwentysixAvg2 * (1.0 - multiplier)));
+                i++;
+            }
             curEMA = (periodList.get(i) * multiplier) + (curEMA * (1.0 - multiplier));
             i++;
         }
 
-        avg26 = curEMA;
-
         return curEMA;
     }
 
-    public String tester(){
-
-        String output = "";
-        for(double dbl : periodTesterList){
-            output = output + "\n" + Double.toString(dbl);
-        }
-        return output;
-    }
 }

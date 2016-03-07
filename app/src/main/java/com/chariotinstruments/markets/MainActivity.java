@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
         apiKeys = new APIKeys();
         tk = new TradeKingApiCalls();
         p1 = new PhaseOneControl(this);
+        symbolEditText.setText("SPY");
 
     }
 
