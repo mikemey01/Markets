@@ -21,13 +21,13 @@ public class CalcRSI {
     public double getGainAverage(){
         return gainAverage;
     }
+
     public double getLossAverage(){
         return lossAverage;
     }
 
     public String getCurrentRSI(){
-        ArrayList<Double> list = getRSIPeriods();
-        getAverages(list);
+        getFirstAverages();
         double RSI = getRSI(gainAverage, lossAverage);
 
         return String.format("%.2f", RSI);
@@ -46,15 +46,15 @@ public class CalcRSI {
     }
 
 
-    public void getAverages(ArrayList<Double> list){
+    public void getFirstAverages(){
         double curAmount = 0.0;
         double prevAmount = 0.0;
         double sum = 0.0;
         double lastAmount = 0.0;
 
-        for(int i = 1; i < list.size()-1; i++) { //exclude the 1st and 16th period for now.
-            curAmount = list.get(i);
-            prevAmount = list.get(i-1);
+        for(int i = 1; i < 15; i++) { //start from the beginning to get the first SMA
+            curAmount = marketCandles.get(i).getClose();
+            prevAmount = marketCandles.get(i-1).getClose();
             sum = curAmount - prevAmount;
 
             if(sum < 0){
@@ -67,16 +67,31 @@ public class CalcRSI {
         lossAverage = lossAverage / 14;
         gainAverage = gainAverage / 14;
 
-        lastAmount = list.get(list.size()-1) - list.get(list.size()-2);
+        getSmoothAverages(lossAverage, gainAverage);
+    }
 
-        if(lastAmount < 0) {
-            lossAverage = ((lossAverage * 13) + (lastAmount * -1)) / 14;
-            gainAverage = ((gainAverage * 13) + 0) / 14;
-        }else{
-            lossAverage = ((lossAverage * 13) + 0) / 14;
-            gainAverage = ((gainAverage * 13) + lastAmount) / 14;
+    public void getSmoothAverages(double lossAvg, double gainAvg){
+
+        double curAmount = 0.0;
+        double prevAmount = 0.0;
+        double lastAmount = 0.0;
+
+        //loop through the remaining amounts in the marketDay and calc the smoothed avgs
+        for(int i = 15; i < marketCandles.size(); i++){
+            curAmount = marketCandles.get(i).getClose();
+            prevAmount = marketCandles.get(i-1).getClose();
+            lastAmount = curAmount - prevAmount;
+
+            if(lastAmount < 0) {
+                lossAvg = ((lossAvg * 13) + (lastAmount * -1)) / 14;
+                gainAvg = ((gainAvg * 13) + 0) / 14;
+            }else{
+                lossAvg = ((lossAvg * 13) + 0) / 14;
+                gainAvg = ((gainAvg * 13) + lastAmount) / 14;
+            }
         }
-
+        lossAverage = lossAvg;
+        gainAverage = gainAvg;
     }
 
     private double getRSI(double avgGain, double avgLoss){
