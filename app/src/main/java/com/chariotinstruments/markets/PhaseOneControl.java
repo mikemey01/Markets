@@ -80,12 +80,6 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         CalcMACD macd = new CalcMACD(marketDay);
         indicators = indicators + "MACD: " + macd.getCurrentMACD() + "\n";
 
-        indicators = indicators + "12 ema: " + macd.ema12 + "\n";
-        indicators = indicators + "26 ema: " + macd.ema26 + "\n";
-
-
-        //consoleView.setText(output);
-
         //pass the market data to the indicator control.
         indicatorControl.setMarketDay(marketDay);
         favorableConditions = indicatorControl.calculateIndicators();

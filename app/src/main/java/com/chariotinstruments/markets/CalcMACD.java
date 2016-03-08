@@ -10,9 +10,6 @@ public class CalcMACD {
     private MarketDay marketDay;
     private ArrayList<MarketCandle> marketCandles;
 
-    public double ema12;
-    public double ema26;
-
     public CalcMACD(MarketDay marDay){
         marketDay = marDay;
         this.marketCandles = new ArrayList<MarketCandle>();
@@ -27,13 +24,13 @@ public class CalcMACD {
 
         twelveEMA = get12PeriodEMA();
         twentysixEMA = get26PeriodEMA();
-
-        ema12 = twelveEMA;
-        ema26 = twentysixEMA;
-
         ret = twelveEMA - twentysixEMA;
 
         return String.format("%.4f", ret);
+    }
+
+    public String getCurrentSignal(){
+        return "";
     }
 
     private double get12PeriodEMA(){

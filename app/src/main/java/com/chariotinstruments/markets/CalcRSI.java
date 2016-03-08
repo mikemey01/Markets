@@ -33,19 +33,6 @@ public class CalcRSI {
         return String.format("%.2f", RSI);
     }
 
-    public ArrayList<Double> getRSIPeriods(){
-        ArrayList<Double> retList = new ArrayList<Double>();
-        int startIndex = marketCandles.size()-16; // need 16 periods so we can subtract the first.
-        int stopIndex = marketCandles.size()-1;
-
-        for(int i = startIndex; i<=stopIndex; i++){
-            retList.add(marketCandles.get(i).getClose());
-        }
-
-        return retList;
-    }
-
-
     public void getFirstAverages(){
         double curAmount = 0.0;
         double prevAmount = 0.0;
@@ -106,10 +93,9 @@ public class CalcRSI {
     }
 
     public String tester(){
-        ArrayList<Double> inList = getRSIPeriods();
         String output = "";
-        for(int i = 0; i < inList.size(); i++){
-            output = output + "\n" + Double.toString(inList.get(i));
+        for(int i = 0; i < marketCandles.size(); i++){
+            output = output + "\n" + Double.toString(marketCandles.get(i).getClose());
         }
         return output;
     }
