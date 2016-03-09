@@ -6,6 +6,7 @@ package com.chariotinstruments.markets;
 public class StockQuote {
 
     private String symbol;
+    private double lastTradePrice;
     private double askPrice;
     private double askSize; //in 100s
     private double bidPrice;
@@ -20,7 +21,8 @@ public class StockQuote {
         this.symbol = symbol;
     }
 
-    public void setStockQuoteData(double askPriceIn, double askSizeIn, double bidPriceIn, double bidSizeIn, double dayHighPriceIn, double dayLowPriceIn, long cumulativeVolumeIn, long increaseVolIn, long timeIn){
+    public void setStockQuoteData(double lastIn, double askPriceIn, double askSizeIn, double bidPriceIn, double bidSizeIn, double dayHighPriceIn, double dayLowPriceIn, long cumulativeVolumeIn, long increaseVolIn, long timeIn){
+        this.lastTradePrice = lastIn;
         this.askPrice = askPriceIn;
         this.askSize = askSizeIn;
         this.bidPrice = bidPriceIn;
@@ -38,6 +40,14 @@ public class StockQuote {
 
     public void setSymbol(String sym){
         symbol = sym;
+    }
+
+    public double getLastTradePrice(){
+        return lastTradePrice;
+    }
+
+    public void setLastTradePrice(double lastIn){
+        lastTradePrice = lastIn;
     }
 
     public double getAskPrice(){

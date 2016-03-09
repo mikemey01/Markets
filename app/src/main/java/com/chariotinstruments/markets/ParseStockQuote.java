@@ -84,6 +84,7 @@ public class ParseStockQuote  extends AsyncTask<Void, Void, StockQuote> {
         jsonQuote = jsonQuotes.getJSONObject(GET_QUOTE);
 
         quote.setStockQuoteData(
+                jsonQuote.getDouble("last"),
                 jsonQuote.getDouble("ask"),
                 jsonQuote.getDouble("asksz"),
                 jsonQuote.getDouble("bid"),

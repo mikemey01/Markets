@@ -18,6 +18,8 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
     private PhaseOneIndicatorControl indicatorControl;
     private Boolean isLoop;
     private String indicators;
+    private String stockQuoteOutput;
+    private double currentStockPrice;
 
     public PhaseOneControl(Activity activity){
         uiActivity = activity;
@@ -25,6 +27,8 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         isActive = false;
         indicatorControl = new PhaseOneIndicatorControl();
         indicators = "";
+        stockQuoteOutput = "";
+        currentStockPrice = 0.0;
     }
 
     public void setSymbol(String sym){
@@ -43,8 +47,8 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
     private void dataRetrievalLoop(){
         if(isActive){
             SystemClock.sleep(1000);
-            new ParseData(this.uiActivity, this, symbol).execute();
             new ParseStockQuote(this.uiActivity, this, symbol).execute();
+            new ParseData(this.uiActivity, this, symbol).execute();
         }
     }
 
@@ -67,6 +71,10 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         Boolean favorableConditions = false;
         String output = "";
         indicators = "";
+
+        //Add the latest real-time price from the onParseStockQuoteComplete call-back
+        marketDay.addCandle(1, 0.0, 0.0, 0.0, currentStockPrice, 0);
+
         ArrayList<MarketCandle> marketCandles = new ArrayList<MarketCandle>();
         marketCandles = marketDay.getMarketCandles();
 
@@ -90,15 +98,19 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
             //submit trade
         }
 
+        stockQuoteOutput = stockQuoteOutput + "\n" +
+                            indicators + "\n";
+        consoleView.setText(stockQuoteOutput);
+
         if(isLoop) {
-            //handled in the onParseStockQuoteComplete area for now while running both
-            //dataRetrievalLoop();
+            dataRetrievalLoop();
         }
     }
 
     public void onParseStockQuoteComplete(StockQuote quote){
-        String output = "Symbol: " + quote.getSymbol() + "\n" +
+        stockQuoteOutput = "Symbol: " + quote.getSymbol() + "\n" +
                         "Time: " + Long.toString(quote.getTime()) + "\n" +
+                        "Last Price: " + Double.toString(quote.getLastTradePrice()) + "\n" +
                         "Ask Price: " + Double.toString(quote.getAskPrice()) + "\n" +
                         "Ask Size: " + Double.toString(quote.getAskSize()) + "\n" +
                         "Bid Price: " + Double.toString(quote.getBidPrice()) + "\n" +
@@ -106,12 +118,14 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
                         "Day High: " + Double.toString(quote.getDayHighPrice())+ "\n" +
                         "Day Low: " + Double.toString(quote.getDayLowPrice()) + "\n" +
                         "Increase Vol: " + Long.toString(quote.getIncreaseVolume()) + "\n" +
-                        "--------------------------: " + "\n" +
-                        indicators + "\n";
-        consoleView.setText(output);
+                        "--------------------------------";
+        //consoleView.setText(output);
+
+        currentStockPrice = quote.getLastTradePrice();
 
         if(isLoop) {
-            dataRetrievalLoop();
+            //handled in onParseDataComplete for the looping
+            //dataRetrievalLoop();
         }
     }
 
