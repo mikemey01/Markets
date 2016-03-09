@@ -91,6 +91,7 @@ public class ParseStockQuote  extends AsyncTask<Void, Void, StockQuote> {
                 jsonQuote.getDouble("hi"),
                 jsonQuote.getDouble("lo"),
                 jsonQuote.getLong("vl"),
+                jsonQuote.getLong("incr_vl"),
                 jsonQuote.getLong("timestamp"));
 
         return quote;
