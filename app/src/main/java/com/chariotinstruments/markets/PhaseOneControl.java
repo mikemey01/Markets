@@ -46,7 +46,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
     private void dataRetrievalLoop(){
         if(isActive){
-            SystemClock.sleep(1000);
+            SystemClock.sleep(800);
             new ParseStockQuote(this.uiActivity, this, symbol).execute();
             new ParseData(this.uiActivity, this, symbol).execute();
         }
@@ -81,16 +81,16 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
         //Do indicators
         //RSI
-        CalcRSI rsi = new CalcRSI(marketDay);
-        indicators = indicators + "RSI: " + rsi.getCurrentRSI() + "\n";
-
-        //MACD
-        CalcMACD macd = new CalcMACD(marketDay);
-        indicators = indicators + "MACD: " + macd.getCurrentMACD() + "\n";
+//        CalcRSI rsi = new CalcRSI(marketDay);
+//        indicators = indicators + "RSI: " + rsi.getCurrentRSI() + "\n";
+//
+//        //MACD
+//        CalcMACD macd = new CalcMACD(marketDay);
+//        indicators = indicators + "MACD: " + macd.getCurrentMACD() + "\n";
 
         //pass the market data to the indicator control.
         indicatorControl.setMarketDay(marketDay);
-        favorableConditions = indicatorControl.calculateIndicators();
+        indicators = indicatorControl.calculateIndicators();
 
         //if the indicators show favorable conditions, submit a trade and stop the looping.
         if(favorableConditions){

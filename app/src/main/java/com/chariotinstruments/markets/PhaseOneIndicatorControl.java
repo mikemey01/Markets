@@ -8,49 +8,61 @@ public class PhaseOneIndicatorControl {
     private Boolean rsiGoAhead;
     private Boolean macdGoAhead;
     private Boolean stochasticGoAhead;
-    private MarketDay _marketDay;
+    private MarketDay marketDay;
 
 
     public PhaseOneIndicatorControl(){
         rsiGoAhead = false;
         macdGoAhead = false;
         stochasticGoAhead = false;
-        _marketDay = new MarketDay();
+        marketDay = new MarketDay();
     }
 
     public void setMarketDay(MarketDay marketDay){
-        _marketDay = marketDay;
+        this.marketDay = marketDay;
     }
 
     public MarketDay getMarketDay(){
-        return _marketDay;
+        return marketDay;
     }
 
-    public boolean calculateIndicators(){
-        rsiGoAhead = calcRSI();
-        macdGoAhead = calcMACD();
-        stochasticGoAhead = calcStochastics();
+    public String calculateIndicators(){
+        String ret = "";
 
-        if(rsiGoAhead && macdGoAhead && stochasticGoAhead){
-            return true;
-        }else{
-            return false;
-        }
+        ret = calcRSI();
+        ret = ret + calcMACD();
+
+        return ret;
     }
 
-    private boolean calcRSI(){
-        //pass market day to CalcRSI here.
-        return false;
+    public String calcRSI(){
+        String ret = "";
+        CalcRSI rsi = new CalcRSI(marketDay);
+        ret = "RSI: " + rsi.getCurrentRSI() + "\n";
+
+        return ret;
     }
 
-    private boolean calcMACD(){
-        //pass market day to CalcMACD.
-        return false;
+    public String calcMACD(){
+        String ret = "";
+        CalcMACD macd = new CalcMACD(marketDay);
+        ret = ret + "MACD: " + macd.getCurrentMACD() + "\n";
+
+        return ret;
     }
 
-    private boolean calcStochastics(){
-        //pass market day to CalcStochastics
-        return false;
+    public String calcStochastics(){
+        String ret = "";
+
+        return ret;
+    }
+
+    public String calc50EMAPeriods(){
+        String ret = "";
+
+        
+
+        return ret;
     }
 
 
