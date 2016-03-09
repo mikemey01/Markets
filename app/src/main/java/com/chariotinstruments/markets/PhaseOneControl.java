@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.os.SystemClock;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 /**
  * Created by user on 2/28/16.
  */
@@ -47,6 +45,8 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
     private void dataRetrievalLoop(){
         if(isActive){
             SystemClock.sleep(800);
+
+            //must run in this order to make sure the last trade price is passed into the indicator calcs.
             new ParseStockQuote(this.uiActivity, this, symbol).execute();
             new ParseData(this.uiActivity, this, symbol).execute();
         }
@@ -75,19 +75,6 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         //Add the latest real-time price from the onParseStockQuoteComplete call-back
         marketDay.addCandle(1, 0.0, 0.0, 0.0, currentStockPrice, 0);
 
-        ArrayList<MarketCandle> marketCandles = new ArrayList<MarketCandle>();
-        marketCandles = marketDay.getMarketCandles();
-
-
-        //Do indicators
-        //RSI
-//        CalcRSI rsi = new CalcRSI(marketDay);
-//        indicators = indicators + "RSI: " + rsi.getCurrentRSI() + "\n";
-//
-//        //MACD
-//        CalcMACD macd = new CalcMACD(marketDay);
-//        indicators = indicators + "MACD: " + macd.getCurrentMACD() + "\n";
-
         //pass the market data to the indicator control.
         indicatorControl.setMarketDay(marketDay);
         indicators = indicatorControl.calculateIndicators();
@@ -98,6 +85,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
             //submit trade
         }
 
+        //Build the console output
         stockQuoteOutput = stockQuoteOutput + "\n" +
                             indicators + "\n";
         consoleView.setText(stockQuoteOutput);
