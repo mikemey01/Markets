@@ -23,10 +23,12 @@ public class ParseOptionOrderPreview extends AsyncTask<Void, Void, String> {
     private TradeKingApiCalls tk = new TradeKingApiCalls();
     private ProgressDialog pDialog;
     private ParseOptionOrderPreviewListener _asyncListener;
+    private FixmlModel fixml;
 
-    public ParseOptionOrderPreview(Activity activity, ParseOptionOrderPreviewListener aListener){
+    public ParseOptionOrderPreview(Activity activity, ParseOptionOrderPreviewListener aListener, FixmlModel fixml){
         _asyncListener = aListener;
         pDialog = new ProgressDialog(activity);
+        this.fixml = fixml;
     }
 
     public interface ParseOptionOrderPreviewListener{
@@ -51,7 +53,7 @@ public class ParseOptionOrderPreview extends AsyncTask<Void, Void, String> {
 
         // Fetch the JSON data
         OAuthRequest request = new OAuthRequest(Verb.POST, tk.getMarketOptionPreview(), service);
-        request.addPayload(createDummyFIXML());
+        request.addPayload(fixml.getFixmlString());
         service.signRequest(accessToken, request);
         Response response = request.send();
         return response.getBody();
@@ -62,6 +64,7 @@ public class ParseOptionOrderPreview extends AsyncTask<Void, Void, String> {
         if(pDialog.isShowing()){pDialog.dismiss();}
         _asyncListener.onParseOptionOrderPreviewComplete(response);
     }
+
 
     //todo: need to create dummy FIXML data and setup the post
     //todo: need to create a structure for the POST response probably to capture it.
