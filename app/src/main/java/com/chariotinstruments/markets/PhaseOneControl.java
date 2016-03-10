@@ -1,7 +1,6 @@
 package com.chariotinstruments.markets;
 
 import android.app.Activity;
-import android.os.SystemClock;
 import android.widget.TextView;
 
 /**
@@ -44,7 +43,6 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
     private void dataRetrievalLoop(){
         if(isActive){
-            SystemClock.sleep(800);
 
             //must run in this order to make sure the last trade price is passed into the indicator calcs.
             new ParseStockQuote(this.uiActivity, this, symbol).execute();
