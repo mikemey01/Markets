@@ -36,6 +36,10 @@ public class ParseStockQuote  extends AsyncTask<Void, Void, StockQuote> {
         this.symbol = symbol;
     }
 
+    public interface ParseStockQuoteAsyncListener{
+        public void onParseStockQuoteComplete(StockQuote quote);
+    }
+
     public void onPreExecute(){
         super.onPreExecute();
     }
@@ -70,10 +74,6 @@ public class ParseStockQuote  extends AsyncTask<Void, Void, StockQuote> {
     protected void onPostExecute(StockQuote quote){
         super.onPostExecute(quote);
         _asyncListener.onParseStockQuoteComplete(quote);
-    }
-
-    public interface ParseStockQuoteAsyncListener{
-        public void onParseStockQuoteComplete(StockQuote quote);
     }
 
     public StockQuote parseJSON(Response response) throws JSONException{

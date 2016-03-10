@@ -12,7 +12,9 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 
-public class MainActivity extends AppCompatActivity implements ParseAccountData.ParseAccountDataAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener {
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity implements ParseAccountData.ParseAccountDataAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener, ParseOptionStrikePrice.ParseOptionStrikePriceAsyncListener {
 
     TextView dataTextView;
     EditText currentTextBox;
@@ -38,8 +40,11 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
     }
 
     public void getOptionData(View v){
+        String symbol = symbolEditText.getText().toString().toUpperCase();
         hideKeyboard();
-        new ParseOptionOrderPreview(this, this).execute();
+        //todo: need to change this to actual fixml model
+        //new ParseOptionOrderPreview(this, this, new FixmlModel(false)).execute();
+        new ParseOptionStrikePrice(this, this, symbol).execute();
     }
 
     public void getAccountData(View v){
@@ -103,6 +108,16 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
         output = output + Double.toString(aData.getOptionValue()) + "\n";
         output = output + "Uncleared Deposits: ";
         output = output + Double.toString(aData.getUnclearedDeposists());
+
+        dataTextView.setText(output);
+    }
+
+    public void onParseOptionStrikePriceComplete(ArrayList<Double> response){
+        String output = "";
+
+        for(int i = 0; i < response.size(); i++){
+            output = Double.toString(response.get(i)) + "\n" + output;
+        }
 
         dataTextView.setText(output);
     }

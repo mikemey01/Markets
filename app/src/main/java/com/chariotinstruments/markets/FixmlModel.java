@@ -15,7 +15,7 @@ public class FixmlModel {
     private String stockOrOption; //"CFI" "classification of financial instrument", used for options to distinguish "OC" for call option or "OP" for put option.
     private String secType; // "secTyp" Security type attribute is needed. "CS" for common stock or "OPT" for option.
     private String expDate; // "MatDt" Represents the expiration date of a option. Needs to be in the format of "YYYY‐MM‐ DDT00:00:00.000‐05:00".
-    private int strikePrice; // "strkPx" Strike price of option contract
+    private double strikePrice; // "strkPx" Strike price of option contract
     private String symbol; // "Sym" Current symbol being traded.
     private int quantity; // "Qty" order quantity.
 
@@ -23,7 +23,7 @@ public class FixmlModel {
         isOrderLive = isLive;
     }
 
-    public FixmlModel(boolean isLive, int orderType, int orderSide, String positionEffect, String stockOrOption, String secType, String expDate, int strikePrice, String symbol, int quantity){
+    public FixmlModel(boolean isLive, int orderType, int orderSide, String positionEffect, String stockOrOption, String secType, String expDate, double strikePrice, String symbol, int quantity){
         this.isOrderLive = isLive;
         this.orderType = orderType;
         this.orderSide = orderSide;
@@ -36,7 +36,7 @@ public class FixmlModel {
         this.quantity = quantity;
     }
 
-    public void createFIXMLObject(boolean isLive, int orderType, int orderSide, String positionEffect, String stockOrOption, String secType, String expDate, int strikePrice, String symbol, int quantity){
+    public void createFIXMLObject(boolean isLive, int orderType, int orderSide, String positionEffect, String stockOrOption, String secType, String expDate, double strikePrice, String symbol, int quantity){
         this.isOrderLive = isLive;
         this.orderType = orderType;
         this.orderSide = orderSide;
