@@ -37,7 +37,6 @@ public class TradeKingApiCalls {
     //region orders
 
     private static final String OPTION_STRIKE_URL = "https://api.tradeking.com/v1/market/options/strikes"+RESPONSE_TYPE+"?symbol=";
-
     private final String OPTION_PREVIEW_URL = "https://api.tradeking.com/v1/accounts/"+apiKeys.ACCOUNT_NUMBER+"/orders/preview"+RESPONSE_TYPE;
 
     public String getMarketOptionPreview(){
@@ -173,6 +172,5 @@ public class TradeKingApiCalls {
     }
 
     //endregion
-
-
+    
 }
