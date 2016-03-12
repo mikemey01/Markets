@@ -50,7 +50,7 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
     }
 
     public void onParseOptionOrderPreviewComplete(String response){
-        
+
     }
 
     public void onParseOptionExpirationsComplete(String expiration) {
