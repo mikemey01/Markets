@@ -112,14 +112,8 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
         dataTextView.setText(output);
     }
 
-    public void onParseOptionExpirationsComplete(ArrayList<String> expirations){
-        String output = "";
-
-        for(int i = 0; i < expirations.size(); i++){
-            output = expirations.get(i) + "\n" + output;
-        }
-
-        dataTextView.setText(output);
+    public void onParseOptionExpirationsComplete(String expiration){
+        dataTextView.setText(expiration);
     }
 
     public void onParseOptionStrikePriceComplete(ArrayList<Double> response){

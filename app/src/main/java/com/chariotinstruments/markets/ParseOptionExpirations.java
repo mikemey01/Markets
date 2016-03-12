@@ -23,7 +23,7 @@ import java.util.Locale;
 /**
  * Created by user on 3/9/16.
  */
-public class ParseOptionExpirations extends AsyncTask<Void, Void, ArrayList<String>> {
+public class ParseOptionExpirations extends AsyncTask<Void, Void, String> {
 
     private static final String GET_RESPONSE = "response";
     private static final String GET_EXPIRATION_DATES = "expirationdates";
@@ -40,15 +40,17 @@ public class ParseOptionExpirations extends AsyncTask<Void, Void, ArrayList<Stri
     }
 
     public interface ParseOptionExpirationsAsyncListener{
-        public void onParseOptionExpirationsComplete(ArrayList<String> expirations);
+        public void onParseOptionExpirationsComplete(String expiration);
     }
 
     public void onPreExecute(){
         super.onPreExecute();
     }
 
-    protected ArrayList<String> doInBackground(Void... voids){
+    protected String doInBackground(Void... voids){
         ArrayList<String> ret = new ArrayList<String>();
+        ArrayList<Calendar> calRet = new ArrayList<Calendar>();
+        String nextExpiryRet = "";
 
         //Build the OAuth service
         final OAuth10aService service = new ServiceBuilder()
@@ -68,12 +70,20 @@ public class ParseOptionExpirations extends AsyncTask<Void, Void, ArrayList<Stri
             e.printStackTrace();
         }
 
-        return ret;
+        try {
+            calRet = parseCalendarDates(ret);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        nextExpiryRet = getNextExpiryDate(calRet);
+
+        return nextExpiryRet;
     }
 
-    protected void onPostExecute(ArrayList<String> expirations){
-        super.onPostExecute(expirations);
-        _asyncListener.onParseOptionExpirationsComplete(expirations);
+    protected void onPostExecute(String expiration){
+        super.onPostExecute(expiration);
+        _asyncListener.onParseOptionExpirationsComplete(expiration);
     }
 
     public ArrayList<String> parseJSON(Response response) throws JSONException{
@@ -110,17 +120,42 @@ public class ParseOptionExpirations extends AsyncTask<Void, Void, ArrayList<Stri
 
         for(String expiration : expirationStrings){
             Calendar curCal = Calendar.getInstance();
+            curCal.set(Calendar.MILLISECOND, 0);
             curCal.setTime(sdf.parse(expiration));
             String formattedCal = sdf2.format(curCal.getTime());
             calList.add(curCal);
             calListFormatted.add(formattedCal);
         }
 
-        for(String cal : calListFormatted){
-            System.out.println(cal);
-        }
+//        for(String cal : calListFormatted){
+//            System.out.println(cal);
+//        }
+
+        getNextExpiryDate(calList);
 
         return calList;
+    }
+
+    public String getNextExpiryDate(ArrayList<Calendar> calList){
+        String ret = "";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US);
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.MILLISECOND, 0);
+
+        for(Calendar cal : calList){
+            cal.set(Calendar.MILLISECOND, 0);
+            long diff;
+            int dayDiff;
+            diff = cal.getTimeInMillis() - today.getTimeInMillis();
+            dayDiff = (int) ((diff/(1000 * 60 * 60 * 24))+1);
+
+            if(dayDiff > 2){
+                ret = sdf.format(cal.getTime());
+                return ret;
+            }
+        }
+
+        return ret;
     }
 }
 
