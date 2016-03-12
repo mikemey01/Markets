@@ -40,7 +40,6 @@ public class ParseData extends AsyncTask<Void, Void, MarketDay> {
         pDialog = new ProgressDialog(activity);
         this.asyncListener = asyncListener;
         this.symbol = symbol;
-
     }
 
     protected void onPreExecute(){

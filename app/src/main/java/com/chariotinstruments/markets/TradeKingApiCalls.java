@@ -38,6 +38,7 @@ public class TradeKingApiCalls {
 
     private static final String OPTION_STRIKE_URL = "https://api.tradeking.com/v1/market/options/strikes"+RESPONSE_TYPE+"?symbol=";
     private final String OPTION_PREVIEW_URL = "https://api.tradeking.com/v1/accounts/"+apiKeys.ACCOUNT_NUMBER+"/orders/preview"+RESPONSE_TYPE;
+    private final String OPTION_EXPIRATION_URL = "https://api.tradeking.com/v1/market/options/expirations"+RESPONSE_TYPE+"?symbol=";
 
     public String getMarketOptionPreview(){
         return OPTION_PREVIEW_URL;
@@ -46,6 +47,8 @@ public class TradeKingApiCalls {
     public String getOptionStrikePrices(String symbol){
         return OPTION_STRIKE_URL + symbol;
     }
+
+    public String getOptionExpirations(String symbol) { return OPTION_EXPIRATION_URL + symbol; }
 
     //endregion
 
@@ -172,5 +175,5 @@ public class TradeKingApiCalls {
     }
 
     //endregion
-    
+
 }
