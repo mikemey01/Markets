@@ -14,7 +14,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Created by user on 3/9/16.
@@ -89,7 +93,34 @@ public class ParseOptionExpirations extends AsyncTask<Void, Void, ArrayList<Stri
             ret.add(curDate);
         }
 
+        try {
+            ArrayList<Calendar> calList = parseCalendarDates(ret);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         return ret;
+    }
+
+    public ArrayList<Calendar> parseCalendarDates(ArrayList<String> expirationStrings) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US);
+        ArrayList<Calendar> calList = new ArrayList<Calendar>();
+        ArrayList<String> calListFormatted = new ArrayList<String>();
+
+        for(String expiration : expirationStrings){
+            Calendar curCal = Calendar.getInstance();
+            curCal.setTime(sdf.parse(expiration));
+            String formattedCal = sdf2.format(curCal.getTime());
+            calList.add(curCal);
+            calListFormatted.add(formattedCal);
+        }
+
+        for(String cal : calListFormatted){
+            System.out.println(cal);
+        }
+
+        return calList;
     }
 }
 
