@@ -114,24 +114,14 @@ public class ParseOptionExpirations extends AsyncTask<Void, Void, String> {
 
     public ArrayList<Calendar> parseCalendarDates(ArrayList<String> expirationStrings) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US);
         ArrayList<Calendar> calList = new ArrayList<Calendar>();
-        ArrayList<String> calListFormatted = new ArrayList<String>();
 
         for(String expiration : expirationStrings){
             Calendar curCal = Calendar.getInstance();
             curCal.set(Calendar.MILLISECOND, 0);
             curCal.setTime(sdf.parse(expiration));
-            String formattedCal = sdf2.format(curCal.getTime());
             calList.add(curCal);
-            calListFormatted.add(formattedCal);
         }
-
-//        for(String cal : calListFormatted){
-//            System.out.println(cal);
-//        }
-
-        getNextExpiryDate(calList);
 
         return calList;
     }
