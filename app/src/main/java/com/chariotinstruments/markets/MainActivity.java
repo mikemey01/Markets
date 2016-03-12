@@ -14,7 +14,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements ParseAccountData.ParseAccountDataAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener, ParseOptionStrikePrice.ParseOptionStrikePriceAsyncListener {
+public class MainActivity extends AppCompatActivity implements ParseAccountData.ParseAccountDataAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener, ParseOptionExpirations.ParseOptionExpirationsAsyncListener {
 
     TextView dataTextView;
     EditText currentTextBox;
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
         hideKeyboard();
         //todo: need to change this to actual fixml model
         //new ParseOptionOrderPreview(this, this, new FixmlModel(false)).execute();
-        new ParseOptionStrikePrice(this, this, symbol).execute();
+        new ParseOptionExpirations(this, this, symbol).execute();
     }
 
     public void getAccountData(View v){
@@ -108,6 +108,16 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
         output = output + Double.toString(aData.getOptionValue()) + "\n";
         output = output + "Uncleared Deposits: ";
         output = output + Double.toString(aData.getUnclearedDeposists());
+
+        dataTextView.setText(output);
+    }
+
+    public void onParseOptionExpirationsComplete(ArrayList<String> expirations){
+        String output = "";
+
+        for(int i = 0; i < expirations.size(); i++){
+            output = expirations.get(i) + "\n" + output;
+        }
 
         dataTextView.setText(output);
     }

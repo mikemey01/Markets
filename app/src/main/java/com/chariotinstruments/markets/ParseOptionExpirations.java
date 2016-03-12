@@ -22,8 +22,8 @@ import java.util.ArrayList;
 public class ParseOptionExpirations extends AsyncTask<Void, Void, ArrayList<String>> {
 
     private static final String GET_RESPONSE = "response";
-    private static final String GET_PRICES = "prices";
-    private static final String GET_PRICE = "price";
+    private static final String GET_EXPIRATION_DATES = "expirationdates";
+    private static final String GET_DATE = "date";
 
     private APIKeys apiKeys;
     private TradeKingApiCalls tk = new TradeKingApiCalls();
@@ -36,7 +36,7 @@ public class ParseOptionExpirations extends AsyncTask<Void, Void, ArrayList<Stri
     }
 
     public interface ParseOptionExpirationsAsyncListener{
-        public void onParseOptionExpirationsComplete(ArrayList<Double> strikePrice);
+        public void onParseOptionExpirationsComplete(ArrayList<String> expirations);
     }
 
     public void onPreExecute(){
@@ -54,7 +54,7 @@ public class ParseOptionExpirations extends AsyncTask<Void, Void, ArrayList<Stri
         Token accessToken = new Token(apiKeys.OAUTH_TOKEN, apiKeys.OAUTH_TOKEN_SECRET);
 
         // Fetch the JSON data
-        OAuthRequest request = new OAuthRequest(Verb.GET, tk.getOptionStrikePrices(symbol), service);
+        OAuthRequest request = new OAuthRequest(Verb.GET, tk.getOptionExpirations(symbol), service);
         service.signRequest(accessToken, request);
         Response response = request.send();
 
@@ -76,20 +76,20 @@ public class ParseOptionExpirations extends AsyncTask<Void, Void, ArrayList<Stri
         ArrayList<String> ret = new ArrayList<String>();
 
         JSONObject jsonResponse = new JSONObject();
-        JSONObject jsonPrices = new JSONObject();
-        JSONArray jsonPrice = new JSONArray();
+        JSONObject jsonExpirationDates = new JSONObject();
+        JSONArray jsonDate = new JSONArray();
 
         JSONObject json = new JSONObject(response.getBody());
         jsonResponse = json.getJSONObject(GET_RESPONSE);
-        jsonPrices = jsonResponse.getJSONObject(GET_PRICES);
-        jsonPrice = jsonPrices.getJSONArray(GET_PRICE);
+        jsonExpirationDates = jsonResponse.getJSONObject(GET_EXPIRATION_DATES);
+        jsonDate = jsonExpirationDates.getJSONArray(GET_DATE);
 
-        for(int i = 0; i < jsonPrice.length(); i++){
-            String curPrice = jsonPrice.getString(i);
-            //ret.add(Double.parseDouble(curPrice));
+        for(int i = 0; i < jsonDate.length(); i++){
+            String curDate = jsonDate.getString(i);
+            ret.add(curDate);
         }
 
         return ret;
     }
 }
-}
+
