@@ -57,6 +57,8 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
     private void submitOrder(){
 
         isActive = false;
+        PhaseOneTradeControl trade = new PhaseOneTradeControl(true, true, uiActivity, symbol, currentStockPrice);
+        trade.executeTrade();
     }
 
     public void stop(){
@@ -89,7 +91,8 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         consoleView.setText(stockQuoteOutput);
 
         if(isLoop) {
-            dataRetrievalLoop();
+            //dataRetrievalLoop();
+            submitOrder();
         }
     }
 
@@ -108,6 +111,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         //consoleView.setText(output);
 
         currentStockPrice = quote.getLastTradePrice();
+        symbol = quote.getSymbol();
 
         if(isLoop) {
             //handled in onParseDataComplete for the looping

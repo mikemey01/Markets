@@ -1,6 +1,7 @@
 package com.chariotinstruments.markets;
 
 import android.app.Activity;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -8,6 +9,8 @@ import java.util.ArrayList;
  * Created by user on 3/12/16.
  */
 public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionStrikePriceAsyncListener, ParseOptionExpirations.ParseOptionExpirationsAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener{
+    private TextView consoleView;
+
     private boolean isOpeningTrade;
     private boolean isCall;
     private ArrayList<Double> strikeList;
@@ -24,6 +27,7 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
         this.uiActivity = activity;
         this.symbol = symbol;
         this.curPrice = curPrice;
+        consoleView = (TextView)activity.findViewById(R.id.dataTextView);
     }
 
     public void setStrikeList(ArrayList<Double> list){
@@ -39,18 +43,14 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
         String ret = "";
         FixmlModel fixml;
 
-        new ParseOptionExpirations(uiActivity, this, symbol);
-        new ParseOptionStrikePrice(uiActivity, this, symbol);
-
-        fixml = buildFixml();
-
-        new ParseOptionOrderPreview(uiActivity, this, fixml);
+        new ParseOptionExpirations(uiActivity, this, symbol).execute();
+        new ParseOptionStrikePrice(uiActivity, this, symbol).execute();
 
         return ret;
     }
 
     public void onParseOptionOrderPreviewComplete(String response){
-
+        consoleView.setText(response);
     }
 
     public void onParseOptionExpirationsComplete(String expiration) {
@@ -58,6 +58,8 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
     }
 
     public void onParseOptionStrikePriceComplete(ArrayList<Double> strikeList){
+        FixmlModel fixml = new FixmlModel(false);
+
         if(isCall){
             double retStrikePrice = 0.0;
             int index = -1;
@@ -79,6 +81,14 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
                 this.strikePrice = retStrikePrice;
             }
         }
+
+        fixml = buildFixml();
+
+        System.out.println(fixml.getFixmlString());
+
+
+        //TODO: Start here this isn't working
+        new ParseOptionOrderPreview(uiActivity, this, fixml);
 
     }
 
