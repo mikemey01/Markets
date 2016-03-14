@@ -17,6 +17,26 @@
         android:hint="Enter Ticker Symbol" />
 
     <Button
+        android:id="@+id/startButton"
+        android:text="Start"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:onClick="startProcess"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/symbolEditText"/>
+
+    <Button
+        android:id="@+id/stopButton"
+        android:text="Stop"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:onClick="stopProcess"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/startButton"/>
+
+    <Button
         android:id="@+id/getSymbolDataButton"
         android:text="Get Symbol"
         android:paddingTop="10dp"
@@ -48,32 +68,12 @@
         android:layout_toRightOf="@+id/accountDataButton"
         android:layout_below="@+id/symbolEditText"/>
 
-    <Button
-        android:id="@+id/startButton"
-        android:text="Start"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:onClick="startProcess"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/getSymbolDataButton"/>
-
-    <Button
-        android:id="@+id/stopButton"
-        android:text="Stop"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:onClick="stopProcess"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/optionDataButton"
-        android:layout_toRightOf="@+id/startButton"/>
 
     <EditText
         android:id="@+id/currentTextBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/startButton"
+        android:layout_below="@+id/getSymbolDataButton"
         android:hint="current data"/>
 
     <TextView
