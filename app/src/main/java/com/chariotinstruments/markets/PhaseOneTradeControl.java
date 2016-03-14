@@ -87,8 +87,7 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
         System.out.println(fixml.getFixmlString());
 
 
-        //TODO: Start here this isn't working
-        new ParseOptionOrderPreview(uiActivity, this, fixml);
+        new ParseOptionOrderPreview(uiActivity, this, fixml).execute();
 
     }
 

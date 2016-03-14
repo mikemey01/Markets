@@ -128,7 +128,7 @@ public class ParseOptionExpirations extends AsyncTask<Void, Void, String> {
 
     public String getNextExpiryDate(ArrayList<Calendar> calList){
         String ret = "";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ", Locale.US);
         Calendar today = Calendar.getInstance();
         today.set(Calendar.MILLISECOND, 0);
 

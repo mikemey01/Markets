@@ -11,10 +11,6 @@ import com.github.scribejava.core.model.Token;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
-
 /**
  * Created by user on 2/23/16.
  */
@@ -74,20 +70,12 @@ public class ParseOptionOrderPreview extends AsyncTask<Void, Void, String> {
 
         output = "<FIXML xmlns=\"http://www.fixprotocol.org/FIXML-5-0-SP2\">";
         output = output + "<Order TmInForce=\"0\" Typ=\"1\" Side=\"1\" PosEfct=\"O\" Acct=\""+apiKeys.ACCOUNT_NUMBER+"\">";
-        output = output + "<Instrmt CFI=\"OC\" SecTyp=\"OPT\" MatDt=\"2016-03-24T00:00:00.000-05:00\" StrkPx=\"193\" Sym=\"SPY\"/>";
+        output = output + "<Instrmt CFI=\"OC\" SecTyp=\"OPT\" MatDt=\"2016-03-18T00:00:00.000-06:00\" StrkPx=\"204.0\" Sym=\"SPY\"/>";
         output = output + "<OrdQty Qty=\"3\"/>";
         output = output + "</Order>";
         output = output + "</FIXML>";
 
         return output;
     }
-
-    private String buildExpiryDate(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US);
-        Calendar cal = Calendar.getInstance();
-        cal.set(2016, 3, 26, 0, 0, 0);
-        String output = sdf.format(cal.getTime());
-
-        return output;
-    }
+    
 }
