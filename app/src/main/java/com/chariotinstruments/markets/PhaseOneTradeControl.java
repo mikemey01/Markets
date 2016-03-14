@@ -7,6 +7,11 @@ import java.util.ArrayList;
 
 /**
  * Created by user on 3/12/16.
+ * The flow of this class is:
+ * 1. executeTrade()
+ * 2. wait for the expirations and strike to return (onComplete methods)
+ * 3. The order is created and executed in the onStrikeComplete method
+ * 4. The order response is pushed to the UI in the onParseOptionOrderPreviewComplete class
  */
 public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionStrikePriceAsyncListener, ParseOptionExpirations.ParseOptionExpirationsAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener{
     private TextView consoleView;
@@ -39,14 +44,10 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
     }
 
 
-    protected String executeTrade(){
-        String ret = "";
-        FixmlModel fixml;
+    protected void executeTrade(){
 
         new ParseOptionExpirations(uiActivity, this, symbol).execute();
         new ParseOptionStrikePrice(uiActivity, this, symbol).execute();
-
-        return ret;
     }
 
     public void onParseOptionOrderPreviewComplete(String response){
@@ -57,6 +58,7 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
         this.expiration = expiration;
     }
 
+    //TODO: move this to the ParseStrike class, need to pass in if put or call.
     public void onParseOptionStrikePriceComplete(ArrayList<Double> strikeList){
         FixmlModel fixml = new FixmlModel(false);
 
@@ -84,11 +86,7 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
 
         fixml = buildFixml();
 
-        System.out.println(fixml.getFixmlString());
-
-
         new ParseOptionOrderPreview(uiActivity, this, fixml).execute();
-
     }
 
     private FixmlModel buildFixml(){

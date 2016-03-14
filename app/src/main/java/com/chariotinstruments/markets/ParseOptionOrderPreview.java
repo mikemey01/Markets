@@ -61,21 +61,4 @@ public class ParseOptionOrderPreview extends AsyncTask<Void, Void, String> {
         _asyncListener.onParseOptionOrderPreviewComplete(response);
     }
 
-
-    //todo: need to create dummy FIXML data and setup the post
-    //todo: need to create a structure for the POST response probably to capture it.
-    private String createDummyFIXML(){
-
-        String output = "";
-
-        output = "<FIXML xmlns=\"http://www.fixprotocol.org/FIXML-5-0-SP2\">";
-        output = output + "<Order TmInForce=\"0\" Typ=\"1\" Side=\"1\" PosEfct=\"O\" Acct=\""+apiKeys.ACCOUNT_NUMBER+"\">";
-        output = output + "<Instrmt CFI=\"OC\" SecTyp=\"OPT\" MatDt=\"2016-03-18T00:00:00.000-06:00\" StrkPx=\"204.0\" Sym=\"SPY\"/>";
-        output = output + "<OrdQty Qty=\"3\"/>";
-        output = output + "</Order>";
-        output = output + "</FIXML>";
-
-        return output;
-    }
-    
 }

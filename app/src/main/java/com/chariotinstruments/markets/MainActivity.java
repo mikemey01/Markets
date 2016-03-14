@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -37,13 +38,13 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
         p1 = new PhaseOneControl(this);
         symbolEditText.setText("SPY");
 
+        //keep the screen on
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     public void getOptionData(View v){
         String symbol = symbolEditText.getText().toString().toUpperCase();
         hideKeyboard();
-        //todo: need to change this to actual fixml model
-        //new ParseOptionOrderPreview(this, this, new FixmlModel(false)).execute();
         new ParseOptionStrikePrice(this, this, symbol).execute();
     }
 
