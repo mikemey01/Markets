@@ -24,7 +24,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     //compile files('/Users/user/Desktop/AndroidStudio/Markets/scribejava-apis-2.2.0/scribejava-apis-2.2.0.jar')
     //compile files('libs/scribejava-apis-2.2.0.jar')
-    
+
 
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.github.scribejava:scribejava-apis:2.2.0'
