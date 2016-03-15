@@ -26,11 +26,11 @@ public class CalcRSI {
         return lossAverage;
     }
 
-    public String getCurrentRSI(){
+    public double getCurrentRSI(){
         getFirstAverages();
         double RSI = getRSI(gainAverage, lossAverage);
 
-        return String.format("%.2f", RSI);
+        return RSI;
     }
 
     public void getFirstAverages(){

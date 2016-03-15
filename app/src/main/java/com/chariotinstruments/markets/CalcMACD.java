@@ -17,7 +17,7 @@ public class CalcMACD {
 
     }
 
-    public String getCurrentMACD(){
+    public double getCurrentMACD(){
         double twelveEMA = 0.0;
         double twentysixEMA = 0.0;
         double ret = 0.0;
@@ -26,7 +26,7 @@ public class CalcMACD {
         twentysixEMA = get26PeriodEMA();
         ret = twelveEMA - twentysixEMA;
 
-        return String.format("%.4f", ret);
+        return ret;
     }
 
     public String getCurrentSignal(){

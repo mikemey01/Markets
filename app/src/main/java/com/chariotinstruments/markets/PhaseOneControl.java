@@ -41,6 +41,10 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         dataRetrievalLoop();
     }
 
+    public void stop(){
+        isActive = false;
+    }
+
     private void dataRetrievalLoop(){
         if(isActive){
 
@@ -50,18 +54,19 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         }
     }
 
-    private void checkIndicators(){
+    private void checkIndicators(PhaseOneIndicatorControl indicatorControl){
 
+        //check if the tradeable conditions have been found.
+        if(indicatorControl.getTradeableConditionsFound()){
+            isActive = false;
+            submitOrder(indicatorControl.getIsUp());
+        }
     }
 
-    private void submitOrder(){
+    private void submitOrder(boolean isCall){
         isActive = false;
-        PhaseOneTradeControl trade = new PhaseOneTradeControl(true, true, uiActivity, symbol, currentStockPrice);
+        PhaseOneTradeControl trade = new PhaseOneTradeControl(true, isCall, uiActivity, symbol, currentStockPrice);
         trade.executeTrade();
-    }
-
-    public void stop(){
-        isActive = false;
     }
 
     //region Async Callbacks
@@ -78,11 +83,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         indicatorControl.setMarketDay(marketDay);
         indicators = indicatorControl.calculateIndicators();
 
-        //if the indicators show favorable conditions, submit a trade and stop the looping.
-        if(favorableConditions){
-            isActive = false;
-            //submit trade
-        }
+        checkIndicators(indicatorControl);
 
         //Build the console output
         stockQuoteOutput = stockQuoteOutput + "\n" +
@@ -91,8 +92,6 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
         if(isLoop) {
             dataRetrievalLoop();
-        }else{
-            submitOrder();
         }
     }
 

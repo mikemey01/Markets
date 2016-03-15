@@ -12,12 +12,43 @@ public class PhaseOneIndicatorControl {
     private Boolean stochasticGoAhead;
     private MarketDay marketDay;
 
+    private double curRSI;
+    private double curMACD;
+    private double curEMA;
+
+    private boolean preTradeFavorableConditionsFound;
+    private boolean isUp;
+    private boolean tradeableConditionsFound;
+
 
     public PhaseOneIndicatorControl(){
         rsiGoAhead = false;
         macdGoAhead = false;
         stochasticGoAhead = false;
         marketDay = new MarketDay();
+        preTradeFavorableConditionsFound = false;
+        isUp = false;
+        tradeableConditionsFound = false;
+    }
+
+    public void setPreTradeFavorableConditionsFound(boolean condition){
+        preTradeFavorableConditionsFound = condition;
+    }
+
+    public boolean getPreTradeFavorableConditionsFound(){
+        return preTradeFavorableConditionsFound;
+    }
+
+    public void setTradeableConditionsFound(boolean condition){
+        tradeableConditionsFound = condition;
+    }
+
+    public boolean getTradeableConditionsFound(){
+        return tradeableConditionsFound;
+    }
+
+    public boolean getIsUp(){
+        return isUp;
     }
 
     public void setMarketDay(MarketDay marketDay){
@@ -35,27 +66,40 @@ public class PhaseOneIndicatorControl {
         ret = ret + calcMACD();
         ret = ret + calc50EMAPeriods();
 
+        preTradeFavorableConditionsFound();
+
+        if(preTradeFavorableConditionsFound){
+            tradeableConditionsFound();
+        }
+
         return ret;
     }
 
     public String calcRSI(){
         String ret = "";
+        String rsiString = "";
         CalcRSI rsi = new CalcRSI(marketDay);
-        ret = "RSI: " + rsi.getCurrentRSI() + "\n";
+        curRSI = rsi.getCurrentRSI();
+        rsiString = String.format("%.2f", curRSI);
+        ret = "RSI: " + rsiString + "\n";
 
         return ret;
     }
 
     public String calcMACD(){
         String ret = "";
+        String macdString = "";
         CalcMACD macd = new CalcMACD(marketDay);
-        ret = ret + "MACD: " + macd.getCurrentMACD() + "\n";
+        curMACD = macd.getCurrentMACD();
+        macdString = String.format("%.4f", curMACD);
+        ret = ret + "MACD: " + macdString + "\n";
 
         return ret;
     }
 
     public String calcStochastics(){
         String ret = "";
+        String stochString = "";
 
         return ret;
     }
@@ -65,7 +109,7 @@ public class PhaseOneIndicatorControl {
 
         double firstFiftyAvg = 0.0;
         double multiplier = 0.0;
-        double curEMA = 0.0;
+        double ema = 0.0;
         ArrayList<MarketCandle> marketCandles = new ArrayList<MarketCandle>();
         marketCandles = marketDay.getMarketCandles();
 
@@ -78,15 +122,46 @@ public class PhaseOneIndicatorControl {
         //calculate multiplier
         multiplier = 2.0d/51.0d;
 
-        curEMA = (marketCandles.get(50).getClose() * multiplier) + (firstFiftyAvg * (1.0 - multiplier));
+        ema = (marketCandles.get(50).getClose() * multiplier) + (firstFiftyAvg * (1.0 - multiplier));
 
         for(int i = 51; i < marketCandles.size(); i++) {
-            curEMA = (marketCandles.get(i).getClose() - curEMA) * multiplier + curEMA;
+            ema = (marketCandles.get(i).getClose() - ema) * multiplier + ema;
         }
 
-        ret = "50 EMA: " + String.format("%.2f", curEMA) + "\n";
+        ret = "50 EMA: " + String.format("%.2f", curEMA);
+        this.curEMA = ema;
 
         return ret;
+    }
+
+    public void preTradeFavorableConditionsFound(){
+        boolean ret = false;
+
+        if(curRSI > 71){
+            isUp = false;
+            preTradeFavorableConditionsFound = true;
+        }else if(curRSI < 29){
+            isUp = true;
+            preTradeFavorableConditionsFound = true;
+        }
+
+        preTradeFavorableConditionsFound = ret;
+    }
+
+    public void tradeableConditionsFound(){
+        tradeableConditionsFound = false;
+
+        if(preTradeFavorableConditionsFound) { //first checked that we've crossed the first hysteresis threshold.
+            if (isUp) { //if we're trading up (IE RSI was below 29)
+                if (curRSI > 35) { //if we've crossed the buying hysteresis mark;
+                    tradeableConditionsFound = true;
+                }
+            } else { //Otherwise RSI was above 71
+                if (curRSI < 65) { //if we've crossed the selling hysteresis mark;
+                    tradeableConditionsFound = true;
+                }
+            }
+        }
     }
 
 
