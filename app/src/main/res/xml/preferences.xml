@@ -4,4 +4,11 @@
         android:key="username"
         android:summary="Please provide your username">
     </EditTextPreference>
+
+    <CheckBoxPreference android:title="Trade Occurred?"
+        android:defaultValue="false"
+        android:summary="Has a trade occurred today?"
+        android:key="hasTradeOccurred"
+        android:persistent="true">
+    </CheckBoxPreference>
 </PreferenceScreen>

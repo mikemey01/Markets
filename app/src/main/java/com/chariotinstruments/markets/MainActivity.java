@@ -1,7 +1,10 @@
 package com.chariotinstruments.markets;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
@@ -42,10 +45,11 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-    public void getOptionData(View v){
-        String symbol = symbolEditText.getText().toString().toUpperCase();
+    public void getPrefsActivity(View v){
         hideKeyboard();
-        new ParseOptionStrikePrice(this, this, symbol).execute();
+
+        Intent i = new Intent(this, PrefsActivity.class);
+        startActivity(i);
     }
 
     public void getAccountData(View v){
@@ -134,6 +138,13 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
     private void hideKeyboard(){
         InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow((null == getCurrentFocus()) ? null : getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    private void prefsInit(){
+        SharedPreferences sp= PreferenceManager.getDefaultSharedPreferences(this);
+        boolean tradeOccurred = sp.getBoolean("hasTradeOccurred", false);
+
+        System.out.println(tradeOccurred);
     }
 
 }

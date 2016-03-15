@@ -18,6 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".PrefsActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity android:name=".SQLMainActivity" />
     </application>
 

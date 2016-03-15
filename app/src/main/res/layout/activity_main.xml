@@ -58,11 +58,11 @@
         android:layout_below="@+id/symbolEditText"/>
 
     <Button
-        android:id="@+id/optionDataButton"
-        android:text="Option"
+        android:id="@+id/prefsButton"
+        android:text="Prefs"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:onClick="getOptionData"
+        android:onClick="getPrefsActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/accountDataButton"
