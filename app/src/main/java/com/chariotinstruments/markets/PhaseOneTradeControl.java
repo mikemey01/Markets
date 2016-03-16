@@ -51,6 +51,8 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
     }
 
     public void onParseOptionOrderPreviewComplete(String response){
+        //TODO: Need to parse this data into an object
+        //TODO: Need to make a call to make sure we have enough cash to execute the trade.
         consoleView.setText(response);
     }
 
