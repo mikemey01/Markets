@@ -92,6 +92,8 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
         if(isLoop) {
             dataRetrievalLoop();
+        }else{
+            submitOrder(true);
         }
     }
 

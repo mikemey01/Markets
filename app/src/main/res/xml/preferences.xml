@@ -1,14 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <EditTextPreference android:title="Your Name"
-        android:key="username"
-        android:summary="Please provide your username">
+    <EditTextPreference android:title="Last Trade Date"
+        android:key="lastTradeDate"
+        android:summary="Date the last trade occurred">
     </EditTextPreference>
 
-    <CheckBoxPreference android:title="Trade Occurred?"
-        android:defaultValue="false"
-        android:summary="Has a trade occurred today?"
-        android:key="hasTradeOccurred"
-        android:persistent="true">
-    </CheckBoxPreference>
+    <EditTextPreference android:title="Order Type"
+        android:key="orderType"
+        android:summary="">
+    </EditTextPreference>
+
+    <EditTextPreference android:title="Order Side"
+        android:key="orderSide"
+        android:summary="">
+    </EditTextPreference>
+
+    <EditTextPreference android:title="Position Effect"
+        android:key="positionEffect"
+        android:summary="">
+    </EditTextPreference>
+
+    <EditTextPreference android:title="CFI"
+        android:key="CFI"
+        android:summary="">
+    </EditTextPreference>
+
+    <EditTextPreference android:title="Security Type"
+        android:key="secType"
+        android:summary="">
+    </EditTextPreference>
+
+    <EditTextPreference android:title="Expiration Date"
+        android:key="expDate"
+        android:summary="">
+    </EditTextPreference>
+
+    <EditTextPreference android:title="Strike Price"
+        android:key="strikePrice"
+        android:summary="">
+    </EditTextPreference>
+
+    <EditTextPreference android:title="Symbol"
+        android:key="symbol"
+        android:summary="">
+    </EditTextPreference>
+
+    <EditTextPreference android:title="Quantity"
+        android:key="quantity"
+        android:summary="">
+    </EditTextPreference>
+
+
+
 </PreferenceScreen>

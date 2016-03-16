@@ -128,14 +128,14 @@ public class PhaseOneIndicatorControl {
             ema = (marketCandles.get(i).getClose() - ema) * multiplier + ema;
         }
 
-        ret = "50 EMA: " + String.format("%.2f", curEMA);
+        ret = "50 EMA: " + String.format("%.2f", ema);
         this.curEMA = ema;
 
         return ret;
     }
 
     public void preTradeFavorableConditionsFound(){
-        
+
         if(curRSI > 71){
             isUp = false;
             preTradeFavorableConditionsFound = true;
