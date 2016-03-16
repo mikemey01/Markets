@@ -135,8 +135,7 @@ public class PhaseOneIndicatorControl {
     }
 
     public void preTradeFavorableConditionsFound(){
-        boolean ret = false;
-
+        
         if(curRSI > 71){
             isUp = false;
             preTradeFavorableConditionsFound = true;
@@ -145,7 +144,6 @@ public class PhaseOneIndicatorControl {
             preTradeFavorableConditionsFound = true;
         }
 
-        preTradeFavorableConditionsFound = ret;
     }
 
     public void tradeableConditionsFound(){
