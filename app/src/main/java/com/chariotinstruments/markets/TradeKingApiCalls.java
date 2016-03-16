@@ -22,6 +22,7 @@ public class TradeKingApiCalls {
 
     private static final String PROFILE_URL = "https://api.tradeking.com/v1/member/profile"+RESPONSE_TYPE;
     private static final String ACCOUNT_INFO_URL = "https://api.tradeking.com/v1/accounts"+RESPONSE_TYPE;
+    private final String OPEN_OPTION_POSITION_URL = "https://api.tradeking.com/v1/accounts/"+apiKeys.ACCOUNT_NUMBER+"/holdings"+RESPONSE_TYPE;
     private final String ACCOUNT_BALANCE_URL = "https://api.tradeking.com/v1/accounts/"+apiKeys.ACCOUNT_NUMBER+"/balances"+RESPONSE_TYPE;
 
     public String getProfile(){
@@ -30,6 +31,10 @@ public class TradeKingApiCalls {
 
     public String getFullAccountInfo() {
         return ACCOUNT_BALANCE_URL;
+    }
+
+    public String getOpenOptionPositions(){
+        return OPEN_OPTION_POSITION_URL;
     }
 
     //endregion

@@ -19,75 +19,75 @@ public class OpenOptionPosition {
 
     }
 
-    private String getCFI(){
+    public String getCFI(){
         return CFI;
     }
 
-    private void setCFI(String cfiIn){
+    public void setCFI(String cfiIn){
         CFI = cfiIn;
     }
 
-    private double getCostBasis(){
+    public double getCostBasis(){
         return costBasis;
     }
 
-    private void setCostBasis(Double costBasisIn){
+    public void setCostBasis(Double costBasisIn){
         costBasis = costBasisIn;
     }
 
-    private double getLastPrice(){
+    public double getLastPrice(){
         return lastPrice;
     }
 
-    private void setLastPrice(Double lastPriceIn){
+    public void setLastPrice(Double lastPriceIn){
         lastPrice = lastPriceIn;
     }
 
-    private String getExpiryDate(){
+    public String getExpiryDate(){
         return expiryDate;
     }
 
-    private void setExpiryDate(String expiryDateIn){
+    public void setExpiryDate(String expiryDateIn){
         expiryDate = expiryDateIn;
     }
 
-    private String getPutOrCall(){
+    public String getPutOrCall(){
         return putOrCall;
     }
 
-    private void setPutOrCall(String putOrCallIn){
+    public void setPutOrCall(String putOrCallIn){
         putOrCall = putOrCallIn;
     }
 
-    private int getQuantity(){
+    public int getQuantity(){
         return quantity;
     }
 
-    private void setQuantity(int quantityIn){
+    public void setQuantity(int quantityIn){
         quantity = quantityIn;
     }
 
-    private String getSecType(){
+    public String getSecType(){
         return secType;
     }
 
-    private void setSecType(String secTypeIn){
+    public void setSecType(String secTypeIn){
         secType = secTypeIn;
     }
 
-    private double getStrikePrice(){
+    public double getStrikePrice(){
         return strikePrice;
     }
 
-    private void setStrikePrice(double strikePriceIn){
+    public void setStrikePrice(double strikePriceIn){
         strikePrice = strikePriceIn;
     }
 
-    private String getSymbol(){
+    public String getSymbol(){
         return symbol;
     }
 
-    private void setSymbol(String symbolIn){
+    public void setSymbol(String symbolIn){
         symbol = symbolIn;
     }
 
