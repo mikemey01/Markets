@@ -67,6 +67,10 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         isActive = false;
         PhaseOneTradeControl trade = new PhaseOneTradeControl(true, isCall, uiActivity, symbol, currentStockPrice);
         trade.executeTrade();
+
+        //reset indicators in case we want to start phase one again.
+        indicatorControl.setPreTradeFavorableConditionsFound(false);
+        indicatorControl.setTradeableConditionsFound(false);
     }
 
     //region Async Callbacks
