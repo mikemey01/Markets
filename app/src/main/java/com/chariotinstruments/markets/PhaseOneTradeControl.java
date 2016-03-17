@@ -78,7 +78,7 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
             double retStrikePrice = 0.0;
             int index = -1;
             retStrikePrice = Math.floor(curPrice);
-            //retStrikePrice -= 1.0; //commenting this out to move the strike closer to ITM.
+            retStrikePrice -= 1.0; //commenting this out to move the strike closer to ITM.
             index = strikeList.indexOf(retStrikePrice);
 
             if(index > -1){

@@ -18,7 +18,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements ParseAccountData.ParseAccountDataAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener, ParseOptionStrikePrice.ParseOptionStrikePriceAsyncListener {
+public class MainActivity extends AppCompatActivity implements ParseAccountData.ParseAccountDataAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener, ParseOpenPosition.ParseOpenPositionAsyncListener {
 
     TextView dataTextView;
     EditText currentTextBox;
@@ -59,15 +59,16 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
 
     public void getSymbolData(View v) throws JSONException {
         String symbol = symbolEditText.getText().toString().toUpperCase();
-        if(symbol.trim().length() == 0){
-            Toast toast = Toast.makeText(this, "Enter a symbol", Toast.LENGTH_SHORT);
-            toast.show();
-        }else {
-            hideKeyboard();
-            p1.setSymbol(symbol);
-            p1.setIsLoop(false);
-            p1.start();
-        }
+//        if(symbol.trim().length() == 0){
+//            Toast toast = Toast.makeText(this, "Enter a symbol", Toast.LENGTH_SHORT);
+//            toast.show();
+//        }else {
+//            hideKeyboard();
+//            p1.setSymbol(symbol);
+//            p1.setIsLoop(false);
+//            p1.start();
+//        }
+        new ParseOpenPosition(this, this, "SPY").execute();
     }
 
     public void startProcess(View v) throws JSONException {
@@ -127,6 +128,22 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
         for(int i = 0; i < response.size(); i++){
             output = Double.toString(response.get(i)) + "\n" + output;
         }
+
+        dataTextView.setText(output);
+    }
+
+    public void onParseOpenPositionComplete(OpenOptionPosition position){
+        String output = "";
+
+        output = output + "CFI: " + position.getCFI() + "\n";
+        output = output + "Cost Basis: " + position.getCostBasis() + "\n";
+        output = output + "Last Price: " + position.getLastPrice() + "\n";
+        output = output + "Expiry: " + position.getExpiryDate() + "\n";
+        output = output + "PutCall: " + position.getPutOrCall() + "\n";
+        output = output + "Quantity: " + position.getQuantity() + "\n";
+        output = output + "Sec Type: " + position.getSecType() + "\n";
+        output = output + "Strike: " + position.getStrikePrice() + "\n";
+        output = output + "symbol: " + position.getSymbol() + "\n";
 
         dataTextView.setText(output);
     }

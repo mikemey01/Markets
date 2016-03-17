@@ -10,7 +10,6 @@ import com.github.scribejava.core.model.Token;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,6 +20,8 @@ public class ParseOpenPosition extends AsyncTask<Void, Void, OpenOptionPosition>
     private static final String GET_RESPONSE = "response";
     private static final String GET_HOLDINGS = "accountholdings";
     private static final String GET_HOLDING = "holding";
+    private static final String GET_INSTRUMENT = "instrument";
+    private static final String GET_QUOTE = "quote";
 
     private APIKeys apiKeys;
     private TradeKingApiCalls tk = new TradeKingApiCalls();
@@ -74,26 +75,27 @@ public class ParseOpenPosition extends AsyncTask<Void, Void, OpenOptionPosition>
 
         JSONObject jsonResponse = new JSONObject();
         JSONObject jsonAccountHoldings = new JSONObject();
-        JSONArray jsonAccountHolding = new JSONArray();
+        JSONObject jsonAccountHolding = new JSONObject();
+        JSONObject jsonInstrument = new JSONObject();
+        JSONObject jsonQuote = new JSONObject();
 
         JSONObject json = new JSONObject(response.getBody());
         jsonResponse = json.getJSONObject(GET_RESPONSE);
         jsonAccountHoldings = jsonResponse.getJSONObject(GET_HOLDINGS);
-        jsonAccountHolding = jsonAccountHoldings.getJSONArray(GET_HOLDING);
+        jsonAccountHolding = jsonAccountHoldings.getJSONObject(GET_HOLDING);
+        jsonInstrument = jsonAccountHolding.getJSONObject(GET_INSTRUMENT);
+        jsonQuote = jsonAccountHolding.getJSONObject(GET_QUOTE);
 
-        for(int i = 0; i < jsonAccountHolding.length(); i++){
-            JSONObject holding = jsonAccountHolding.getJSONObject(i);
+        position.setCFI(jsonInstrument.getString("cfi"));
+        position.setCostBasis(jsonAccountHolding.getDouble("costbasis"));
+        position.setLastPrice(jsonQuote.getDouble("lastprice"));
+        position.setExpiryDate(jsonInstrument.getString("matdt"));
+        position.setPutOrCall(jsonInstrument.getString("putcall"));
+        position.setQuantity(jsonAccountHolding.getInt("qty"));
+        position.setSecType(jsonInstrument.getString("sectyp"));
+        position.setStrikePrice(jsonInstrument.getDouble("strkpx"));
+        position.setSymbol(jsonInstrument.getString("sym"));
 
-            position.setCFI(holding.getString("cfi"));
-            position.setCostBasis(holding.getDouble("costbasis"));
-            position.setLastPrice(holding.getDouble("lastprice"));
-            position.setExpiryDate(holding.getString("matdt"));
-            position.setPutOrCall(holding.getString("putcall"));
-            position.setQuantity(holding.getInt("qty"));
-            position.setSecType(holding.getString("sectyp"));
-            position.setStrikePrice(holding.getDouble("strkpx"));
-            position.setSymbol(holding.getString("sym"));
-        }
 
         return position;
     }
