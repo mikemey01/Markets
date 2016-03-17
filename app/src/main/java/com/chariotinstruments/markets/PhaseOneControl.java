@@ -1,6 +1,8 @@
 package com.chariotinstruments.markets;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.widget.TextView;
 
 /**
@@ -17,6 +19,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
     private String indicators;
     private String stockQuoteOutput;
     private double currentStockPrice;
+    private boolean isTradingLive;
 
     public PhaseOneControl(Activity activity){
         uiActivity = activity;
@@ -26,6 +29,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         indicators = "";
         stockQuoteOutput = "";
         currentStockPrice = 0.0;
+
     }
 
     public void setSymbol(String sym){
@@ -47,7 +51,6 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
     private void dataRetrievalLoop(){
         if(isActive){
-
             //must run in this order to make sure the last trade price is passed into the indicator calcs.
             new ParseStockQuote(this.uiActivity, this, symbol).execute();
             new ParseData(this.uiActivity, this, symbol).execute();
@@ -59,7 +62,9 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         //check if the tradeable conditions have been found.
         if(indicatorControl.getTradeableConditionsFound()){
             isActive = false;
-            submitOrder(indicatorControl.getIsUp());
+            if(isTradingLive()) {
+                submitOrder(indicatorControl.getIsUp());
+            }
         }
     }
 
@@ -118,6 +123,11 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         currentStockPrice = quote.getLastTradePrice();
         symbol = quote.getSymbol();
 
+    }
+
+    private boolean isTradingLive(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(uiActivity);
+        return prefs.getBoolean("isTradingLive", false);
     }
 
     //endregion

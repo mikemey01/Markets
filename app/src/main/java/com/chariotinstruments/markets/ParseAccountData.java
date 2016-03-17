@@ -31,6 +31,7 @@ public class ParseAccountData extends AsyncTask<Void, Void, AccountData> {
     private static final String GET_ACCOUNT_BAL = "accountbalance";
     private static final String GET_MONEY = "money";
     private static final String GET_SECURITIES = "securities";
+    private static final String GET_BUYING_POWER = "buyingpower";
 
 
     public ParseAccountData(Activity activity, ParseAccountDataAsyncListener aListener){
@@ -89,19 +90,22 @@ public class ParseAccountData extends AsyncTask<Void, Void, AccountData> {
         JSONObject jsonAccountBal = new JSONObject();
         JSONObject jsonMoney = new JSONObject();
         JSONObject jsonSecurities = new JSONObject();
+        JSONObject jsonBuyPower = new JSONObject();
 
         json = new JSONObject(response.getBody());
         jsonResponse = json.getJSONObject(GET_RESPONSE);
         jsonAccountBal = jsonResponse.getJSONObject(GET_ACCOUNT_BAL);
         jsonMoney = jsonAccountBal.getJSONObject(GET_MONEY);
         jsonSecurities = jsonAccountBal.getJSONObject(GET_SECURITIES);
+        jsonBuyPower = jsonAccountBal.getJSONObject(GET_BUYING_POWER);
 
         accountData.setCashAvailable(jsonMoney.getDouble("cashavailable"));
-        accountData.setAccountValue(jsonMoney.getDouble("total"));
+        accountData.setAccountValue(jsonAccountBal.getDouble("accountvalue"));
         accountData.setUnsettledFunds(jsonMoney.getDouble("unsettledfunds"));
         accountData.setOptionValue(jsonSecurities.getDouble("options"));
         accountData.setStockValue(jsonSecurities.getDouble("stocks"));
         accountData.setUnclearedDeposits(jsonMoney.getDouble("uncleareddeposits"));
+        //accountData.setBuyingPower(jsonBuyPower.getDouble("options"));
 
         return accountData;
     }

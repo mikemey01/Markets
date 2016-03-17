@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
 
     public void getSymbolData(View v) throws JSONException {
         String symbol = symbolEditText.getText().toString().toUpperCase();
+        hideKeyboard();
 //        if(symbol.trim().length() == 0){
 //            Toast toast = Toast.makeText(this, "Enter a symbol", Toast.LENGTH_SHORT);
 //            toast.show();
@@ -102,6 +103,8 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
     public void onParseAccountDataComplete(AccountData aData){
         String output = "";
 
+        //output = output + "Buying Power: ";
+        //output = output + Double.toString(aData.getBuyingPower()) + "\n";
         output = output + "Total cash: ";
         output = output + Double.toString(aData.getAccountValue()) + "\n";
         output = output + "Cash Available: ";

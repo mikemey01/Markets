@@ -11,6 +11,7 @@ public class AccountData {
     private double _stockValue;
     private double _unsettledFunds;
     private double _unclearedDeposits;
+    private double _buyingPower;
 
     public AccountData(){
 
@@ -62,5 +63,13 @@ public class AccountData {
 
     public void setUnclearedDeposits(double unclearedDepositsIn){
         _unclearedDeposits = unclearedDepositsIn;
+    }
+
+    public double getBuyingPower(){
+        return _buyingPower;
+    }
+
+    public void setBuyingPower(double buyIn){
+        _buyingPower = buyIn;
     }
 }
