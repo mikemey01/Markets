@@ -49,7 +49,7 @@ public class CalcStochastics {
             }
             //test
             if(stopIndex == 15){
-                System.out.println("cur candle: " + curCandle);
+                //System.out.println("cur candle: " + curCandle);
             }
         }
 
@@ -66,7 +66,7 @@ public class CalcStochastics {
             kListFast.add(curFastK);
 
             //test
-            if(i < 16){
+            if(i == marketCandles.size()-1){
                 System.out.println("fast k: " + curFastK);
             }
         }
@@ -75,11 +75,17 @@ public class CalcStochastics {
     public void calcSlowK(){
         double curSlowK;
 
-        for(int i = 2; i < kListFast.size()-4; i++){
-            curSlowK = (kListFast.get(i) + kListFast.get(i-1) + kListFast.get(i-2)) / 3;
+        for(int i = 13; i < kListFast.size(); i++){
+            int j = i;
+            curSlowK = 0.0;
+            while(j >= i-13){
+                curSlowK += kListFast.get(j);
+                j--;
+            }
+            curSlowK = curSlowK / 14;
             kListSlow.add(curSlowK);
 
-            if(i == 2) {
+            if(i == kListFast.size()-1) {
                 System.out.println("slow k: " + curSlowK);
             }
         }
