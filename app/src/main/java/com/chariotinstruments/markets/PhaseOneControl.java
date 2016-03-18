@@ -19,7 +19,6 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
     private String indicators;
     private String stockQuoteOutput;
     private double currentStockPrice;
-    private boolean isTradingLive;
 
     public PhaseOneControl(Activity activity){
         uiActivity = activity;
@@ -57,6 +56,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         }
     }
 
+    //Checks to see if tradeable conditions were found with the last data retrieval.
     private void checkIndicators(PhaseOneIndicatorControl indicatorControl){
 
         //check if the tradeable conditions have been found.
@@ -68,6 +68,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         }
     }
 
+    //submits the opening order as a call or put.
     private void submitOrder(boolean isCall){
         isActive = false;
         PhaseOneTradeControl trade = new PhaseOneTradeControl(true, isCall, uiActivity, symbol, currentStockPrice);
@@ -80,6 +81,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
     //region Async Callbacks
 
+    //call back from parsing historical two-day data.
     public void onParseDataComplete(MarketDay marketDay){
         Boolean favorableConditions = false;
         String output = "";
@@ -87,6 +89,9 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
         //Add the latest real-time price from the onParseStockQuoteComplete call-back
         marketDay.addCandle(1, 0.0, 0.0, 0.0, currentStockPrice, 0);
+
+        CalcStochastics stochs = new CalcStochastics(marketDay);
+        stochs.startCalc();
 
         //pass the market data to the indicator control.
         indicatorControl.setMarketDay(marketDay);
@@ -106,6 +111,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         }
     }
 
+    //call back from parsing stock quote TK call.
     public void onParseStockQuoteComplete(StockQuote quote){
         stockQuoteOutput = "Symbol: " + quote.getSymbol() + "\n" +
                         "Time: " + Long.toString(quote.getTime()) + "\n" +
@@ -125,6 +131,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
     }
 
+    //returns whether the preference value for trading is turned on or not
     private boolean isTradingLive(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(uiActivity);
         return prefs.getBoolean("isTradingLive", false);
