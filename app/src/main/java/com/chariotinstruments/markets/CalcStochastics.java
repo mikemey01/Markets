@@ -32,24 +32,28 @@ public class CalcStochastics {
         StochasticHelper stochHelper = new StochasticHelper();
 
         stochHelper.setCurPrice(marketCandles.get(stopIndex).getClose());
-        double curCandle = 0.0;
+        double curLow = 0.0;
+        double curHigh = 0.0;
 
         //seed
-        stochHelper.setLowPrice(marketCandles.get(startIndex).getClose());
-        stochHelper.setHighPrice(marketCandles.get(startIndex).getClose());
+        stochHelper.setLowPrice(marketCandles.get(startIndex).getLow());
+        stochHelper.setHighPrice(marketCandles.get(startIndex).getHigh());
+        stochHelper.setCurPrice(marketCandles.get(stopIndex).getClose());
 
         for (int i = startIndex + 1; i < stopIndex; i++){ //note that I'm not including the last value since it's the current price added in PhaseOneControl.
-            curCandle = marketCandles.get(i).getClose();
+            curLow = marketCandles.get(i).getLow();
+            curHigh = marketCandles.get(i).getHigh();
 
-            if(curCandle < stochHelper.getLowprice()){
-                stochHelper.setLowPrice(curCandle);
+            if(curLow < stochHelper.getLowprice()){
+                stochHelper.setLowPrice(curLow);
             }
-            if(curCandle > stochHelper.getHighPrice()){
-                stochHelper.setHighPrice(curCandle);
+            if(curHigh > stochHelper.getHighPrice()){
+                stochHelper.setHighPrice(curHigh);
             }
             //test
-            if(stopIndex == 15){
-                //System.out.println("cur candle: " + curCandle);
+            if(stopIndex == marketCandles.size()-1){
+                System.out.println("cur candle: " + curLow);
+                System.out.println("Low: "+stochHelper.getLowprice());
             }
         }
 
@@ -57,37 +61,31 @@ public class CalcStochastics {
     }
 
     public void calcFastK(){
-        StochasticHelper stochHelper = new StochasticHelper();
         double curFastK;
 
         for(int i = 15; i < marketCandles.size(); i++){
+            StochasticHelper stochHelper = new StochasticHelper();
             stochHelper = getLowHighCurrent(i-15, i);
-            curFastK = ((stochHelper.curPrice - stochHelper.getLowprice()) / (stochHelper.getHighPrice() - stochHelper.getLowprice())) * 100;
+            curFastK = ((stochHelper.getCurPrice() - stochHelper.getLowprice()) / (stochHelper.getHighPrice() - stochHelper.getLowprice())) * 100;
             kListFast.add(curFastK);
 
-            //test
-            if(i == marketCandles.size()-1){
-                System.out.println("fast k: " + curFastK);
-            }
         }
+
+        System.out.println(kListFast.get(kListFast.size()-2));
     }
 
     public void calcSlowK(){
         double curSlowK;
 
-        for(int i = 13; i < kListFast.size(); i++){
+        for(int i = 2; i < kListFast.size(); i++){
             int j = i;
             curSlowK = 0.0;
-            while(j >= i-13){
+            while(j >= i-2){
                 curSlowK += kListFast.get(j);
                 j--;
             }
-            curSlowK = curSlowK / 14;
+            curSlowK = curSlowK / 3;
             kListSlow.add(curSlowK);
-
-            if(i == kListFast.size()-1) {
-                System.out.println("slow k: " + curSlowK);
-            }
         }
     }
 
