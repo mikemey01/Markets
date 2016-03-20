@@ -23,16 +23,19 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
     private Activity uiActivity;
     private String symbol;
     private String expiration;
-    private Double strikePrice;
-    private Double curPrice;
+    private double strikePrice;
+    private double curPrice;
+    private double buyingPower;
 
-    public PhaseOneTradeControl(boolean isOpeningTrade, boolean isCall, Activity activity, String symbol, Double curPrice){
+    public PhaseOneTradeControl(boolean isOpeningTrade, boolean isCall, Activity activity, String symbol, double curPrice, double buyingPower){
         this.isOpeningTrade = isOpeningTrade;
         this.isCall = isCall;
         this.uiActivity = activity;
         this.symbol = symbol;
         this.curPrice = curPrice;
+        this.buyingPower = buyingPower;
         consoleView = (TextView)activity.findViewById(R.id.dataTextView);
+
     }
 
     public void setStrikeList(ArrayList<Double> list){
@@ -45,6 +48,8 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
 
 
     protected void executeTrade(){
+
+        //TODO:compare buying power to price.
 
         new ParseOptionExpirations(uiActivity, this, symbol).execute();
         new ParseOptionStrikePrice(uiActivity, this, symbol).execute();

@@ -18,17 +18,18 @@ import java.util.Locale;
  * 3. If no, start data retrieval loop
  * 4. When favorable conditions are found, launch phase two.
  */
-public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseStockQuote.ParseStockQuoteAsyncListener, ParseOpenPosition.ParseOpenPositionAsyncListener{
+public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseStockQuote.ParseStockQuoteAsyncListener, ParseOpenPosition.ParseOpenPositionAsyncListener, ParseAccountData.ParseAccountDataAsyncListener{
 
     private TextView consoleView;
     private Activity uiActivity;
     private String symbol;
-    private Boolean isActive;
+    private boolean isActive;
     private PhaseOneIndicatorControl indicatorControl;
-    private Boolean isLoop;
+    private boolean isLoop;
     private String indicators;
     private String stockQuoteOutput;
     private double currentStockPrice;
+    private double buyingPower;
 
     public PhaseOneControl(Activity activity){
         uiActivity = activity;
@@ -38,6 +39,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         indicators = "";
         stockQuoteOutput = "";
         currentStockPrice = 0.0;
+        buyingPower = 0.0;
     }
 
     public void setSymbol(String sym){
@@ -53,9 +55,13 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
     public void start(){
         isActive = true;
-        //checkOpenOrder();
 
-        isWithinTimeFrame();
+        //Set the buying power first everytime we start.
+        getBuyingPower();
+
+        //This starts the processes of either jumping to p2 if an order is open
+        //or starting the pre-trade analysis.
+        checkOpenOrder();
     }
 
     public void stop(){
@@ -92,7 +98,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
     //submits the opening order as a call or put.
     private void submitOrder(boolean isCall){
         isActive = false;
-        PhaseOneTradeControl trade = new PhaseOneTradeControl(true, isCall, uiActivity, symbol, currentStockPrice);
+        PhaseOneTradeControl trade = new PhaseOneTradeControl(true, isCall, uiActivity, symbol, currentStockPrice, buyingPower);
         trade.executeTrade();
 
         //Save the date that the trade was opened
@@ -227,12 +233,25 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         }
     }
 
+    public void onParseAccountDataComplete(AccountData aData){
+        buyingPower = aData.getBuyingPower();
+        System.out.println("buying power: " + buyingPower);
+    }
+
     //endregion
 
     //region open order handling
 
     public void checkOpenOrder(){
         new ParseOpenPosition(uiActivity, this, symbol).execute();
+    }
+
+    //endregion
+
+    //region Account Data
+
+    public void getBuyingPower(){
+        new ParseAccountData(uiActivity, this).execute();
     }
 
     //endregion

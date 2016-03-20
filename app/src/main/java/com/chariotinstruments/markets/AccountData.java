@@ -14,7 +14,9 @@ public class AccountData {
     private double _buyingPower;
 
     public AccountData(){
-
+        _cashAvailable = 0.0;
+        _unclearedDeposits = 0.0;
+        _unsettledFunds = 0.0;
     }
 
     public double getAccountValue(){
@@ -65,8 +67,10 @@ public class AccountData {
         _unclearedDeposits = unclearedDepositsIn;
     }
 
+    //TODO: this should be just returning the buying power from TK but the API is broken for now.
     public double getBuyingPower(){
-        return _buyingPower;
+        //return _buyingPower;
+        return _cashAvailable - _unclearedDeposits; //leaving _unsettledFunds out of equation for now since that should be handled by lastTradeDate.
     }
 
     public void setBuyingPower(double buyIn){
