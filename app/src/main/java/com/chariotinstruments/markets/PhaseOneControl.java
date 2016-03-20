@@ -7,8 +7,13 @@ import android.widget.TextView;
 
 /**
  * Created by user on 2/28/16.
+ * The process for phase one is:
+ * 1. Check if there is an open position
+ * 2. If yes, launch phase two
+ * 3. If no, start data retrieval loop
+ * 4. When favorable conditions are found, launch phase two.
  */
-public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseStockQuote.ParseStockQuoteAsyncListener{
+public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseStockQuote.ParseStockQuoteAsyncListener, ParseOpenPosition.ParseOpenPositionAsyncListener{
 
     private TextView consoleView;
     private Activity uiActivity;
@@ -28,7 +33,6 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         indicators = "";
         stockQuoteOutput = "";
         currentStockPrice = 0.0;
-
     }
 
     public void setSymbol(String sym){
@@ -38,6 +42,14 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
     public void setIsLoop(Boolean loop){
         this.isLoop = loop;
     }
+
+    //returns whether the preference value for trading is turned on or not
+    private boolean isTradingLive(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(uiActivity);
+        return prefs.getBoolean("isTradingLive", false);
+    }
+
+    //region process
 
     public void start(){
         isActive = true;
@@ -79,6 +91,8 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         indicatorControl.setTradeableConditionsFound(false);
     }
 
+    //endregion
+
     //region Async Callbacks
 
     //call back from parsing historical two-day data.
@@ -89,9 +103,6 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
         //Add the latest real-time price from the onParseStockQuoteComplete call-back
         marketDay.addCandle(1, 0.0, 0.0, 0.0, currentStockPrice, 0);
-
-        CalcStochastics stochs = new CalcStochastics(marketDay);
-        stochs.startCalc();
 
         //pass the market data to the indicator control.
         indicatorControl.setMarketDay(marketDay);
@@ -131,10 +142,17 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
     }
 
-    //returns whether the preference value for trading is turned on or not
-    private boolean isTradingLive(){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(uiActivity);
-        return prefs.getBoolean("isTradingLive", false);
+    //Gets if there are open orders
+    public void onParseOpenPositionComplete(OpenOptionPosition position){
+
+    }
+
+    //endregion
+
+    //region open order handling
+
+    public void checkOpenOrder(){
+        new ParseOpenPosition(uiActivity, this, symbol).execute();
     }
 
     //endregion

@@ -40,7 +40,7 @@ public class CalcStochastics {
         stochHelper.setHighPrice(marketCandles.get(startIndex).getHigh());
         stochHelper.setCurPrice(marketCandles.get(stopIndex).getClose());
 
-        for (int i = startIndex + 1; i < stopIndex; i++){ //note that I'm not including the last value since it's the current price added in PhaseOneControl.
+        for (int i = startIndex + 1; i < stopIndex; i++){
             curLow = marketCandles.get(i).getLow();
             curHigh = marketCandles.get(i).getHigh();
 
