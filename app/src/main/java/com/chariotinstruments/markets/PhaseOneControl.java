@@ -5,6 +5,11 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 /**
  * Created by user on 2/28/16.
  * The process for phase one is:
@@ -53,7 +58,8 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
     public void start(){
         isActive = true;
-        checkOpenOrder();
+        //checkOpenOrder();
+        setTradeDate();
     }
 
     public void stop(){
@@ -86,9 +92,50 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         PhaseOneTradeControl trade = new PhaseOneTradeControl(true, isCall, uiActivity, symbol, currentStockPrice);
         trade.executeTrade();
 
+        //Save the date that the trade was opened
+        setTradeDate();
+
+        //Call phase two
+
+
         //reset indicators in case we want to start phase one again.
         indicatorControl.setPreTradeFavorableConditionsFound(false);
         indicatorControl.setTradeableConditionsFound(false);
+    }
+
+    private void setTradeDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        Calendar cal = Calendar.getInstance();
+        String todaysDate = sdf.format(cal.getTime());
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(uiActivity);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("lastTradeDate", todaysDate);
+        editor.commit();
+    }
+
+    private boolean tradeOccurredToday(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(uiActivity);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        String strDate = prefs.getString("lastTradeDate", "");
+        Calendar lastTradeDate = Calendar.getInstance();
+        Calendar todaysDate = Calendar.getInstance();
+
+        //returning false if it fails to parse a date A LITTLE RISKY.
+        try {
+            lastTradeDate.setTime(sdf.parse(strDate));
+        } catch (ParseException e) {
+            return false;
+        }
+
+        //Check if the dates match, return true if they do
+        if(todaysDate.get(Calendar.DAY_OF_MONTH) == lastTradeDate.get(Calendar.DAY_OF_MONTH) &&
+                todaysDate.get(Calendar.MONTH) == lastTradeDate.get(Calendar.MONTH) &&
+                todaysDate.get(Calendar.YEAR) == lastTradeDate.get(Calendar.YEAR)){
+            return true;
+        }
+
+        return false;
     }
 
     //endregion
