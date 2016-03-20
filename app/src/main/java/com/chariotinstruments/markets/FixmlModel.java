@@ -62,14 +62,14 @@ public class FixmlModel {
         return output;
     }
 
-    private String createDummyFIXML(){
+    public String createDummyFIXML(){
 
         String output = "";
 
         output = "<FIXML xmlns=\"http://www.fixprotocol.org/FIXML-5-0-SP2\">";
         output = output + "<Order TmInForce=\"0\" Typ=\"1\" Side=\"1\" PosEfct=\"O\" Acct=\""+apiKeys.ACCOUNT_NUMBER+"\">";
-        output = output + "<Instrmt CFI=\"OC\" SecTyp=\"OPT\" MatDt=\"2016-03-24T00:00:00.000-05:00\" StrkPx=\"193\" Sym=\"SPY\"/>";
-        output = output + "<OrdQty Qty=\"3\"/>";
+        output = output + "<Instrmt CFI=\"OC\" SecTyp=\"OPT\" MatDt=\"2016-03-24T00:00:00.000-05:00\" StrkPx=\"205\" Sym=\"SPY\"/>";
+        output = output + "<OrdQty Qty=\"10\"/>";
         output = output + "</Order>";
         output = output + "</FIXML>";
 

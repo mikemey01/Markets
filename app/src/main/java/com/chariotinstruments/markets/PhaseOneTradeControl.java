@@ -55,10 +55,10 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
         new ParseOptionStrikePrice(uiActivity, this, symbol).execute();
     }
 
-    public void onParseOptionOrderPreviewComplete(String response){
+    public void onParseOptionOrderPreviewComplete(OptionOrderPreview order){
         //TODO: Need to parse this data into an object
         //TODO: Need to make a call to make sure we have enough cash to execute the trade.
-        consoleView.setText(response);
+        //consoleView.setText(response);
     }
 
     public void onParseOptionExpirationsComplete(String expiration) {
@@ -120,5 +120,6 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
 
         return fixml;
     }
+
 
 }

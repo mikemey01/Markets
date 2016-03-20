@@ -18,7 +18,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements ParseAccountData.ParseAccountDataAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener, ParseOpenPosition.ParseOpenPositionAsyncListener {
+public class MainActivity extends AppCompatActivity implements ParseAccountData.ParseAccountDataAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener, ParseOpenPosition.ParseOpenPositionAsyncListener{
 
     TextView dataTextView;
     EditText currentTextBox;
@@ -69,7 +69,11 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
 //            p1.setIsLoop(false);
 //            p1.start();
 //        }
-        new ParseOpenPosition(this, this, "SPY").execute();
+        //new ParseOpenPosition(this, this, "SPY").execute();
+
+        FixmlModel fixml = new FixmlModel(false);
+
+        new ParseOptionOrderPreview(this, this, fixml).execute();
     }
 
     public void startProcess(View v) throws JSONException {
@@ -135,6 +139,16 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
         dataTextView.setText(output);
     }
 
+    public void onParseOptionOrderPreviewComplete(OptionOrderPreview order){
+        String output = "";
+
+        output = output + "est comms: " + order.getCommission() + "\n";
+        output = output + "principal: " + order.getOrderCost() + "\n";
+        output = output + "delta: " + order.getDelta();
+
+        dataTextView.setText(output);
+    }
+
     public void onParseOpenPositionComplete(OpenOptionPosition position){
         String output = "";
 
@@ -151,9 +165,6 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
         dataTextView.setText(output);
     }
 
-    public void onParseOptionOrderPreviewComplete(String response){
-        dataTextView.setText(response);
-    }
 
     private void hideKeyboard(){
         InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
