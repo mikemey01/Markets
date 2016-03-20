@@ -48,17 +48,14 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         this.isLoop = loop;
     }
 
-    //returns whether the preference value for trading is turned on or not
-    private boolean isTradingLive(){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(uiActivity);
-        return prefs.getBoolean("isTradingLive", false);
-    }
 
     //region process
 
     public void start(){
         isActive = true;
-        checkOpenOrder();
+        //checkOpenOrder();
+
+        isWithinTimeFrame();
     }
 
     public void stop(){
@@ -79,11 +76,14 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         //check if the tradeable conditions have been found.
         if(indicatorControl.getTradeableConditionsFound()){
             isActive = false;
-            //check if live trading is turned on.
+            //check if live trading is turned on in prefs.
             if(isTradingLive()) {
-                //check if a trade has already occurred today
-                if(!tradeOccurredToday()) {
-                    submitOrder(indicatorControl.getIsUp());
+                //Check if within 8:00 and 1:30 MST
+                if(isWithinTimeFrame()) {
+                    //check if a trade has already occurred today
+                    if (!tradeOccurredToday()) {
+                        submitOrder(indicatorControl.getIsUp());
+                    }
                 }
             }
         }
@@ -98,14 +98,15 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         //Save the date that the trade was opened
         setTradeDate();
 
-        //Call phase two
-
-
         //reset indicators in case we want to start phase one again.
         indicatorControl.setPreTradeFavorableConditionsFound(false);
         indicatorControl.setTradeableConditionsFound(false);
+
+        //call phase two
+        //TODO:call phase two control
     }
 
+    //Commits the current date to the prefs lastTradeDate.
     private void setTradeDate(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         Calendar cal = Calendar.getInstance();
@@ -117,6 +118,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         editor.commit();
     }
 
+    //Compares todays date with what's currently stored in prefs. returns true if the date in prefs matches.
     private boolean tradeOccurredToday(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(uiActivity);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
@@ -135,6 +137,28 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         if(todaysDate.get(Calendar.DAY_OF_MONTH) == lastTradeDate.get(Calendar.DAY_OF_MONTH) &&
                 todaysDate.get(Calendar.MONTH) == lastTradeDate.get(Calendar.MONTH) &&
                 todaysDate.get(Calendar.YEAR) == lastTradeDate.get(Calendar.YEAR)){
+            return true;
+        }
+
+        return false;
+    }
+
+    //returns whether the preference value for trading is turned on or not
+    private boolean isTradingLive(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(uiActivity);
+        return prefs.getBoolean("isTradingLive", false);
+    }
+
+    //Checks if the current time is within 8:00 and 1:30 MST. Returns true if so.
+    private boolean isWithinTimeFrame(){
+        Calendar rightNow = Calendar.getInstance();
+
+        long offset = rightNow.get(Calendar.ZONE_OFFSET) +
+                rightNow.get(Calendar.DST_OFFSET);
+        long sinceMid = (rightNow.getTimeInMillis() + offset) %
+                (24 * 60 * 60 * 1000);
+
+        if(sinceMid > 28800000 && sinceMid < 48600000){
             return true;
         }
 
