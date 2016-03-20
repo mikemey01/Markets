@@ -58,8 +58,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
     public void start(){
         isActive = true;
-        //checkOpenOrder();
-        setTradeDate();
+        checkOpenOrder();
     }
 
     public void stop(){
@@ -80,8 +79,12 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         //check if the tradeable conditions have been found.
         if(indicatorControl.getTradeableConditionsFound()){
             isActive = false;
+            //check if live trading is turned on.
             if(isTradingLive()) {
-                submitOrder(indicatorControl.getIsUp());
+                //check if a trade has already occurred today
+                if(!tradeOccurredToday()) {
+                    submitOrder(indicatorControl.getIsUp());
+                }
             }
         }
     }
