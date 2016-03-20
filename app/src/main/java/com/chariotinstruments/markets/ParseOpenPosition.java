@@ -95,6 +95,7 @@ public class ParseOpenPosition extends AsyncTask<Void, Void, OpenOptionPosition>
         position.setSecType(jsonInstrument.getString("sectyp"));
         position.setStrikePrice(jsonInstrument.getDouble("strkpx"));
         position.setSymbol(jsonInstrument.getString("sym"));
+        position.setGainLoss(jsonAccountHolding.getDouble("gainloss"));
 
 
         return position;

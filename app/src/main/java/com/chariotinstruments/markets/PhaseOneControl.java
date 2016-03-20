@@ -53,7 +53,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
     public void start(){
         isActive = true;
-        dataRetrievalLoop();
+        checkOpenOrder();
     }
 
     public void stop(){
@@ -144,7 +144,13 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
     //Gets if there are open orders
     public void onParseOpenPositionComplete(OpenOptionPosition position){
-
+        //check that the position is open and live trading is turned on.
+        if(position.isOpenOrder() && isTradingLive()){
+            isActive = false;
+            PhaseTwoControl p2 = new PhaseTwoControl(position, uiActivity);
+        }else{
+            dataRetrievalLoop();
+        }
     }
 
     //endregion

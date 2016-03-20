@@ -14,9 +14,18 @@ public class OpenOptionPosition {
     private String secType;
     private double strikePrice;
     private String symbol;
+    private double gainLoss;
 
     public OpenOptionPosition(){
 
+    }
+
+    public boolean isOpenOrder(){
+        if(this.quantity < 1){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     public String getCFI(){
@@ -89,6 +98,14 @@ public class OpenOptionPosition {
 
     public void setSymbol(String symbolIn){
         symbol = symbolIn;
+    }
+
+    public double getGainLoss(){
+        return gainLoss;
+    }
+
+    public void setGainLoss(double gainLossIn){
+        gainLoss = gainLossIn;
     }
 
 }
