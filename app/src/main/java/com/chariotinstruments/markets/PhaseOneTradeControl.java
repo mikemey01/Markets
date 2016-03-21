@@ -49,7 +49,7 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
 
     protected void executeTrade(){
 
-        //TODO:compare buying power to price.
+        //TODO:compare buying power to price. START HERE
 
         new ParseOptionExpirations(uiActivity, this, symbol).execute();
         new ParseOptionStrikePrice(uiActivity, this, symbol).execute();
