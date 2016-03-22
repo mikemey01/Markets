@@ -11,17 +11,34 @@ import java.util.Locale;
 /**
  * Created by user on 3/15/16.
  */
-public class PhaseTwoControl {
+public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsyncListener{
 
     private OpenOptionPosition position;
+    private OptionOrder order;
     private Activity uiActivity;
     private EditText console;
+    private double delta;
 
-    public PhaseTwoControl(OpenOptionPosition positionIn, Activity activity){
-        position = positionIn;
+    //this constructor is for new positions that are found during analysis.
+    public PhaseTwoControl(Activity activity, OptionOrder orderIn){
+        uiActivity = activity;
+        this.order = orderIn;
+        this.console = (EditText) uiActivity.findViewById(R.id.currentTextBox);
+
+        //get the recently opened order:
+        new ParseOpenPosition(uiActivity, this, "SPY").execute();
+    }
+
+    //This constructor is used for when a trade already existed when the app was first opened/started in p1.
+    public PhaseTwoControl(Activity activity, OpenOptionPosition positionIn){
         uiActivity = activity;
         this.console = (EditText) uiActivity.findViewById(R.id.currentTextBox);
-        outputPositioUI();
+        this.position = positionIn;
+        outputPositionUI();
+    }
+
+    public void setDelta(double deltaIn){
+        delta = deltaIn;
     }
 
     public void start(){
@@ -32,7 +49,12 @@ public class PhaseTwoControl {
 
     }
 
-    public void outputPositioUI(){
+    public void onParseOpenPositionComplete(OpenOptionPosition positionIn){
+        this.position = positionIn;
+        outputPositionUI();
+    }
+
+    public void outputPositionUI(){
         String output = "";
         String currentOutput = "";
         String formattedExpiry = "";
@@ -61,7 +83,8 @@ public class PhaseTwoControl {
         currentOutput = currentOutput + formattedExpiry + ", ";
         currentOutput = currentOutput + position.getStrikePrice() + ", ";
         currentOutput = currentOutput + position.getCFI() + ", ";
-        currentOutput = currentOutput + position.getGainLoss() + " ";
+        currentOutput = currentOutput + position.getGainLoss() + ", ";
+        currentOutput = currentOutput + delta + " ";
 
 
         this.console.setText(currentOutput);

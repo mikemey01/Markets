@@ -1,6 +1,7 @@
 package com.chariotinstruments.markets;
 
 import android.app.Activity;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -8,13 +9,15 @@ import java.util.ArrayList;
 /**
  * Created by user on 3/12/16.
  * The flow of this class is:
- * 1. executeTrade()
+ * 1. executeTrade() is called from outside.
  * 2. wait for the expirations and strike to return (onComplete methods)
- * 3. The order is created and executed in the onStrikeComplete method
- * 4. The order response is pushed to the UI in the onParseOptionOrderPreviewComplete class
+ * 3. The preview order is created and executed in the onStrikeComplete method
+ * 4. Check buying power in onOptionOrderPreviewComplete, execute real trade here (set delta).
+ * 5. Start p2 in onOptionOrderComplete;
  */
-public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionStrikePriceAsyncListener, ParseOptionExpirations.ParseOptionExpirationsAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener{
+public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionStrikePriceAsyncListener, ParseOptionExpirations.ParseOptionExpirationsAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener, ParseOptionOrder.ParseOptionOrderListener{
     private TextView consoleView;
+    private EditText currentTextBox;
 
     private boolean isOpeningTrade;
     private boolean isCall;
@@ -26,6 +29,7 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
     private double strikePrice;
     private double curPrice;
     private double buyingPower;
+    private double delta;
 
     public PhaseOneTradeControl(boolean isOpeningTrade, boolean isCall, Activity activity, String symbol, double curPrice, double buyingPower){
         this.isOpeningTrade = isOpeningTrade;
@@ -35,7 +39,6 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
         this.curPrice = curPrice;
         this.buyingPower = buyingPower;
         consoleView = (TextView)activity.findViewById(R.id.dataTextView);
-
     }
 
     public void setStrikeList(ArrayList<Double> list){
@@ -49,16 +52,8 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
 
     protected void executeTrade(){
 
-        //TODO:compare buying power to price. START HERE
-
         new ParseOptionExpirations(uiActivity, this, symbol).execute();
         new ParseOptionStrikePrice(uiActivity, this, symbol).execute();
-    }
-
-    public void onParseOptionOrderPreviewComplete(OptionOrderPreview order){
-        //TODO: Need to parse this data into an object
-        //TODO: Need to make a call to make sure we have enough cash to execute the trade.
-        //consoleView.setText(response);
     }
 
     public void onParseOptionExpirationsComplete(String expiration) {
@@ -94,6 +89,24 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
         fixml = buildFixml();
 
         new ParseOptionOrderPreview(uiActivity, this, fixml).execute();
+    }
+
+    public void onParseOptionOrderPreviewComplete(OptionOrderPreview order){
+        double totalCost = 0.0;
+
+        totalCost = order.getTotalCost();
+        this.delta = order.getDelta();
+
+        //make sure we have the funds.
+        if(totalCost < buyingPower){
+            //TODO: need to clean up the ParseOptionOrder Class, START HERE, DO THIS FIRST.
+            new ParseOptionOrder(uiActivity, this).execute();
+        }
+    }
+
+    public void onParseOptionOrderComplete(OptionOrder order){
+        PhaseTwoControl p2 = new PhaseTwoControl(uiActivity, order);
+        p2.setDelta(this.delta);
     }
 
     private FixmlModel buildFixml(){

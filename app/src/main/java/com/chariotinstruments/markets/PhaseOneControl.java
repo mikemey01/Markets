@@ -227,7 +227,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         //check that the position is open and live trading is turned on.
         if(position.isOpenOrder() && isTradingLive()){
             isActive = false;
-            PhaseTwoControl p2 = new PhaseTwoControl(position, uiActivity);
+            PhaseTwoControl p2 = new PhaseTwoControl(uiActivity, position);
         }else{
             dataRetrievalLoop();
         }
