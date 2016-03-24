@@ -107,9 +107,6 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         //reset indicators in case we want to start phase one again.
         indicatorControl.setPreTradeFavorableConditionsFound(false);
         indicatorControl.setTradeableConditionsFound(false);
-
-        //call phase two
-        //TODO:call phase two control
     }
 
     //Commits the current date to the prefs lastTradeDate.
