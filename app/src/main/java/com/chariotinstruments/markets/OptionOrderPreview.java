@@ -9,6 +9,7 @@ public class OptionOrderPreview {
     private double orderCost;
     private double totalCost;
     private double delta;
+    private FixmlModel fixml;
 
     public OptionOrderPreview(){
         commission = 0.0;
@@ -47,5 +48,13 @@ public class OptionOrderPreview {
 
     public double getDelta(){
         return delta;
+    }
+
+    public FixmlModel getFixml(){
+        return fixml;
+    }
+
+    public void setFixml(FixmlModel fixmlIn){
+        fixml = fixmlIn;
     }
 }

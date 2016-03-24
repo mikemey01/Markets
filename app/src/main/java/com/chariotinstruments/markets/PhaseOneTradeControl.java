@@ -30,6 +30,7 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
     private double curPrice;
     private double buyingPower;
     private double delta;
+    private FixmlModel liveFixml;
 
     public PhaseOneTradeControl(boolean isOpeningTrade, boolean isCall, Activity activity, String symbol, double curPrice, double buyingPower){
         this.isOpeningTrade = isOpeningTrade;
@@ -99,8 +100,8 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
 
         //make sure we have the funds.
         if(totalCost < buyingPower){
-            //TODO: need to clean up the ParseOptionOrder Class, START HERE, DO THIS FIRST.
-            new ParseOptionOrder(uiActivity, this).execute();
+            //use the same fixml data from the preview for consistency.
+            new ParseOptionOrder(uiActivity, this, order.getFixml()).execute();
         }
     }
 

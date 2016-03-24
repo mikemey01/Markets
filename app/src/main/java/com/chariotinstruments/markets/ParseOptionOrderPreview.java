@@ -92,6 +92,7 @@ public class ParseOptionOrderPreview extends AsyncTask<Void, Void, OptionOrderPr
         order.setOrderCost(jsonResponse.getDouble("principal"));
         order.setTotalCost();
         order.setDelta(jsonDisplayData.getDouble("delta"));
+        order.setFixml(fixml);
 
         return order;
     }
