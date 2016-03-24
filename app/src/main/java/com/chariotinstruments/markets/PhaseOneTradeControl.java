@@ -99,9 +99,12 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
     public void onParseOptionOrderComplete(OptionOrder order){
 
         //Ensure the order was successful.
-        if(order.getClientOrderID().length() > 2) {
+        if(!order.getIsException()) {
             PhaseTwoControl p2 = new PhaseTwoControl(uiActivity, order);
             p2.setDelta(this.delta);
+        }else{
+            //if there's a warning, set it to the console.
+            consoleView.setText(order.getException());
         }
     }
 
@@ -125,7 +128,8 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
             CFI = "OP";
         }
 
-        fixml.createFIXMLObject(false, 1, orderSide, posEffect, CFI, "OPT", this.expiration, this.strikePrice, this.symbol, 10);
+        //TODO:setting this to 1 for now so I don't lose it all on the first bet.
+        fixml.createFIXMLObject(false, 1, orderSide, posEffect, CFI, "OPT", this.expiration, this.strikePrice, this.symbol, 1);
 
         return fixml;
     }

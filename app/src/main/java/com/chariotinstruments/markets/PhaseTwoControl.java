@@ -2,6 +2,7 @@ package com.chariotinstruments.markets;
 
 import android.app.Activity;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,14 +17,16 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
     private OpenOptionPosition position;
     private OptionOrder order;
     private Activity uiActivity;
-    private EditText console;
+    private EditText curData;
+    private TextView console;
     private double delta;
 
     //this constructor is for new positions that are found during analysis.
     public PhaseTwoControl(Activity activity, OptionOrder orderIn){
         uiActivity = activity;
         this.order = orderIn;
-        this.console = (EditText) uiActivity.findViewById(R.id.currentTextBox);
+        this.console = (TextView) uiActivity.findViewById(R.id.dataTextView);
+        this.curData = (EditText) uiActivity.findViewById(R.id.currentTextBox);
 
         //get the recently opened order:
         new ParseOpenPosition(uiActivity, this, "SPY").execute();
@@ -32,7 +35,8 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
     //This constructor is used for when a trade already existed when the app was first opened/started in p1.
     public PhaseTwoControl(Activity activity, OpenOptionPosition positionIn){
         uiActivity = activity;
-        this.console = (EditText) uiActivity.findViewById(R.id.currentTextBox);
+        this.console = (TextView) uiActivity.findViewById(R.id.dataTextView);
+        this.curData = (EditText) uiActivity.findViewById(R.id.currentTextBox);
         this.position = positionIn;
         outputPositionUI();
     }
@@ -87,6 +91,8 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         currentOutput = currentOutput + delta + " ";
 
 
-        this.console.setText(currentOutput);
+        this.console.setText(output);
+        this.curData.setText(currentOutput);
+
     }
 }

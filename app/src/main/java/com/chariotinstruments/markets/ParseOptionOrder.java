@@ -3,7 +3,6 @@ package com.chariotinstruments.markets;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.widget.TextView;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -25,17 +24,14 @@ public class ParseOptionOrder extends AsyncTask<Void, Void, OptionOrder> {
     private ProgressDialog pDialog;
     private ParseOptionOrderListener _asyncListener;
     private FixmlModel fixml;
-    private Activity uiActivity;
-    private TextView console;
 
     private static final String GET_RESPONSE = "response";
+    private static final String GET_WARNING = "warning";
 
     public ParseOptionOrder(Activity activity, ParseOptionOrderListener aListener, FixmlModel fixml){
         _asyncListener = aListener;
         pDialog = new ProgressDialog(activity);
-        uiActivity = activity;
         this.fixml = fixml;
-        console = (TextView)activity.findViewById(R.id.dataTextView);
     }
 
     public interface ParseOptionOrderListener{
@@ -58,7 +54,7 @@ public class ParseOptionOrder extends AsyncTask<Void, Void, OptionOrder> {
 
         // Fetch the JSON data
         OAuthRequest request = new OAuthRequest(Verb.POST, tk.getMarketOptionLive(), service);
-        request.addHeader("TKI_OVERRIDE", "true");
+        //request.addHeader("TKI_OVERRIDE", "true");
         request.addPayload(fixml.getFixmlString());
         service.signRequest(accessToken, request);
         Response response = request.send();
@@ -81,11 +77,19 @@ public class ParseOptionOrder extends AsyncTask<Void, Void, OptionOrder> {
         OptionOrder order = new OptionOrder();
 
         JSONObject jsonResponse = new JSONObject();
+        JSONObject jsonWarning = new JSONObject();
         JSONObject json = new JSONObject(response.getBody());
         jsonResponse = json.getJSONObject(GET_RESPONSE);
+        jsonWarning = jsonResponse.getJSONObject(GET_WARNING);
 
-        order.setClientOrderID(jsonResponse.getString("clientorderid"));
-        order.setOrderStatus(jsonResponse.getInt("orderstatus"));
+        if(jsonResponse.has("warning")){
+            order.setException("warningtext");
+            order.setIsException(true);
+        }else {
+            order.setClientOrderID(jsonResponse.getString("clientorderid"));
+            order.setOrderStatus(jsonResponse.getInt("orderstatus"));
+            order.setIsException(false);
+        }
 
         return order;
     }

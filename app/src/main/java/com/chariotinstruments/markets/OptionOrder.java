@@ -8,9 +8,10 @@ public class OptionOrder {
     private String clientOrderID;
     private int orderStatus;
     private String exception;
+    private boolean isException;
 
     public OptionOrder(){
-
+        isException = false;
     }
 
     public String getClientOrderID(){
@@ -35,6 +36,14 @@ public class OptionOrder {
 
     public void setException(String exceptionIn){
         exception = exceptionIn;
+    }
+
+    public boolean getIsException(){
+        return isException;
+    }
+
+    public void setIsException(boolean isExceptionIn){
+        isException = isExceptionIn;
     }
 
 }
