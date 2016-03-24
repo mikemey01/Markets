@@ -42,15 +42,6 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
         consoleView = (TextView)activity.findViewById(R.id.dataTextView);
     }
 
-    public void setStrikeList(ArrayList<Double> list){
-        strikeList = list;
-    }
-
-    public void setFormattedExpiration(String formattedExpirationIn){
-        formattedExpiration = formattedExpirationIn;
-    }
-
-
     protected void executeTrade(){
 
         new ParseOptionExpirations(uiActivity, this, symbol).execute();
@@ -106,8 +97,12 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
     }
 
     public void onParseOptionOrderComplete(OptionOrder order){
-        PhaseTwoControl p2 = new PhaseTwoControl(uiActivity, order);
-        p2.setDelta(this.delta);
+
+        //Ensure the order was successful.
+        if(order.getClientOrderID().length() > 2) {
+            PhaseTwoControl p2 = new PhaseTwoControl(uiActivity, order);
+            p2.setDelta(this.delta);
+        }
     }
 
     private FixmlModel buildFixml(){

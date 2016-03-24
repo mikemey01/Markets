@@ -7,6 +7,7 @@ public class OptionOrder {
 
     private String clientOrderID;
     private int orderStatus;
+    private String exception;
 
     public OptionOrder(){
 
@@ -26,6 +27,14 @@ public class OptionOrder {
 
     public void setOrderStatus(int orderIn){
         orderStatus = orderIn;
+    }
+
+    public String getException(){
+        return exception;
+    }
+
+    public void setException(String exceptionIn){
+        exception = exceptionIn;
     }
 
 }

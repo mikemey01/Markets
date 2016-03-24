@@ -44,10 +44,13 @@ public class TradeKingApiCalls {
     private static final String OPTION_STRIKE_URL = "https://api.tradeking.com/v1/market/options/strikes"+RESPONSE_TYPE+"?symbol=";
     private final String OPTION_PREVIEW_URL = "https://api.tradeking.com/v1/accounts/"+apiKeys.ACCOUNT_NUMBER+"/orders/preview"+RESPONSE_TYPE; //forcing this to be XML for response readability for now.
     private final String OPTION_EXPIRATION_URL = "https://api.tradeking.com/v1/market/options/expirations"+RESPONSE_TYPE+"?symbol=";
+    private final String OPTION_LIVE_URL = "https://api.tradeking.com/v1/accounts/"+apiKeys.ACCOUNT_NUMBER+"/orders"+RESPONSE_TYPE;
 
     public String getMarketOptionPreview(){
         return OPTION_PREVIEW_URL;
     }
+
+    public String getMarketOptionLive(){ return OPTION_LIVE_URL; }
 
     public String getOptionStrikePrices(String symbol){
         return OPTION_STRIKE_URL + symbol;
