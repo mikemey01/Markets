@@ -85,14 +85,18 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
 
     public void onParseOptionOrderPreviewComplete(OptionOrderPreview order){
         double totalCost = 0.0;
+        FixmlModel fixml = order.getFixml();
 
         totalCost = order.getTotalCost();
         this.delta = order.getDelta();
 
+        //add the limit price to the real order since we're submitting a real order, not market.
+        fixml.setLimitPrice(order.getAskPrice());
+
         //make sure we have the funds.
         if(totalCost < buyingPower){
             //use the same fixml data from the preview for consistency.
-            new ParseOptionOrder(uiActivity, this, order.getFixml()).execute();
+            new ParseOptionOrder(uiActivity, this, fixml).execute();
         }
     }
 
@@ -128,8 +132,8 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
             CFI = "OP";
         }
 
-        //TODO:setting this to 1 for now so I don't lose it all on the first bet.
-        fixml.createFIXMLObject(false, 1, orderSide, posEffect, CFI, "OPT", this.expiration, this.strikePrice, this.symbol, 1);
+        //TODO:setting the qty to 1 for now so I don't lose it all on the first bet.
+        fixml.createFIXMLObject(false, orderSide, posEffect, CFI, "OPT", this.expiration, this.strikePrice, this.symbol, 1, 0.0);
 
         return fixml;
     }

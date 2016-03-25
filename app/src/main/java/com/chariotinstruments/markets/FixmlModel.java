@@ -18,14 +18,19 @@ public class FixmlModel {
     private double strikePrice; // "strkPx" Strike price of option contract
     private String symbol; // "Sym" Current symbol being traded.
     private int quantity; // "Qty" order quantity.
+    private double limitPrice; //limit price
+
 
     public FixmlModel(boolean isLive){
         isOrderLive = isLive;
     }
 
-    public FixmlModel(boolean isLive, int orderType, int orderSide, String positionEffect, String CFI, String secType, String expDate, double strikePrice, String symbol, int quantity){
+    public void setLimitPrice(double limitIn) {
+        limitPrice = limitIn;
+    }
+
+    public FixmlModel(boolean isLive, int orderSide, String positionEffect, String CFI, String secType, String expDate, double strikePrice, String symbol, int quantity, double limitIn){
         this.isOrderLive = isLive;
-        this.orderType = orderType;
         this.orderSide = orderSide;
         this.positionEffect = positionEffect;
         this.CFI = CFI;
@@ -34,11 +39,11 @@ public class FixmlModel {
         this.strikePrice = strikePrice;
         this.symbol = symbol;
         this.quantity = quantity;
+        this.limitPrice = limitIn;
     }
 
-    public void createFIXMLObject(boolean isLive, int orderType, int orderSide, String positionEffect, String CFI, String secType, String expDate, double strikePrice, String symbol, int quantity){
+    public void createFIXMLObject(boolean isLive, int orderSide, String positionEffect, String CFI, String secType, String expDate, double strikePrice, String symbol, int quantity, double limitIn){
         this.isOrderLive = isLive;
-        this.orderType = orderType;
         this.orderSide = orderSide;
         this.positionEffect = positionEffect;
         this.CFI = CFI;
@@ -47,13 +52,15 @@ public class FixmlModel {
         this.strikePrice = strikePrice;
         this.symbol = symbol;
         this.quantity = quantity;
+        this.limitPrice = limitIn;
     }
 
-    public String getFixmlString(){
+    public String getMarketFixmlString(){
         String output = "";
 
+        //Note the hardcoded "Typ=1" for market order.
         output = "<FIXML xmlns=\"http://www.fixprotocol.org/FIXML-5-0-SP2\">";
-        output = output + "<Order TmInForce=\"0\" Typ=\""+orderType+"\" Side=\""+orderSide+"\" PosEfct=\""+positionEffect+"\" Acct=\""+apiKeys.ACCOUNT_NUMBER+"\">";
+        output = output + "<Order TmInForce=\"0\" Typ=\"1\" Side=\""+orderSide+"\" PosEfct=\""+positionEffect+"\" Acct=\""+apiKeys.ACCOUNT_NUMBER+"\">";
         output = output + "<Instrmt CFI=\""+CFI+"\" SecTyp=\""+secType+"\" MatDt=\""+expDate+"\" StrkPx=\""+strikePrice+"\" Sym=\""+symbol+"\"/>";
         output = output + "<OrdQty Qty=\""+quantity+"\"/>";
         output = output + "</Order>";
@@ -61,6 +68,21 @@ public class FixmlModel {
 
         return output;
     }
+
+    public String getLimitFixmlString(){
+        String output = "";
+
+        //note the hardcode "Typ=2" for limit order.
+        output = "<FIXML xmlns=\"http://www.fixprotocol.org/FIXML-5-0-SP2\">";
+        output = output + "<Order TmInForce=\"0\" Typ=\"2\" Side=\""+orderSide+"\" Px=\""+limitPrice+"\" PosEfct=\""+positionEffect+"\" Acct=\""+apiKeys.ACCOUNT_NUMBER+"\">";
+        output = output + "<Instrmt CFI=\""+CFI+"\" SecTyp=\""+secType+"\" MatDt=\""+expDate+"\" StrkPx=\""+strikePrice+"\" Sym=\""+symbol+"\"/>";
+        output = output + "<OrdQty Qty=\""+quantity+"\"/>";
+        output = output + "</Order>";
+        output = output + "</FIXML>";
+
+        return output;
+    }
+
 
     public String createDummyFIXML(){
 

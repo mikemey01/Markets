@@ -55,7 +55,7 @@ public class ParseOptionOrder extends AsyncTask<Void, Void, OptionOrder> {
         // Fetch the JSON data
         OAuthRequest request = new OAuthRequest(Verb.POST, tk.getMarketOptionLive(), service);
         //request.addHeader("TKI_OVERRIDE", "true");
-        request.addPayload(fixml.getFixmlString());
+        request.addPayload(fixml.getLimitFixmlString());
         service.signRequest(accessToken, request);
         Response response = request.send();
 

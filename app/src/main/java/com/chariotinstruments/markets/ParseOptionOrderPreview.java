@@ -56,7 +56,7 @@ public class ParseOptionOrderPreview extends AsyncTask<Void, Void, OptionOrderPr
 
         // Fetch the JSON data
         OAuthRequest request = new OAuthRequest(Verb.POST, tk.getMarketOptionPreview(), service);
-        request.addPayload(fixml.getFixmlString());
+        request.addPayload(fixml.getMarketFixmlString());
         service.signRequest(accessToken, request);
         Response response = request.send();
 
@@ -92,6 +92,7 @@ public class ParseOptionOrderPreview extends AsyncTask<Void, Void, OptionOrderPr
         order.setOrderCost(jsonResponse.getDouble("principal"));
         order.setTotalCost();
         order.setDelta(jsonDisplayData.getDouble("delta"));
+        order.setAskPrice(jsonDisplayData.getDouble("askprice"));
         order.setFixml(fixml);
 
         return order;
