@@ -107,8 +107,8 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
     public void onParseAccountDataComplete(AccountData aData){
         String output = "";
 
-        //output = output + "Buying Power: ";
-        //output = output + Double.toString(aData.getBuyingPower()) + "\n";
+        output = output + "Buying Power: ";
+        output = output + Double.toString(aData.getBuyingPower()) + "\n";
         output = output + "Total cash: ";
         output = output + Double.toString(aData.getAccountValue()) + "\n";
         output = output + "Cash Available: ";
