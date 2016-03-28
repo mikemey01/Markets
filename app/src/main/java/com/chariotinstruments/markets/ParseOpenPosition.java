@@ -2,6 +2,7 @@ package com.chariotinstruments.markets;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.os.SystemClock;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -42,6 +43,9 @@ public class ParseOpenPosition extends AsyncTask<Void, Void, OpenOptionPosition>
     }
 
     protected OpenOptionPosition doInBackground(Void... voids){
+        //sleep for a second for rate limiting.
+        SystemClock.sleep(1000);
+
         OpenOptionPosition openOptionPosition = new OpenOptionPosition();
 
         //Build the OAuth service

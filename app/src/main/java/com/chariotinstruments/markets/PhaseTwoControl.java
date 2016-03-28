@@ -61,7 +61,16 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
 
     private void openPositionLoop(){
         if(isActive){
-            //TODO: loop through parseOpenPosition and here.
+            new ParseOpenPosition(uiActivity, this, "SPY").execute();
+        }
+    }
+
+    private void checkGainLoss(double gainLoss){
+        if(gainLoss > 30){
+            //todo: sell
+        }
+        if(gainLoss < 40){
+            //todo: sell
         }
     }
 
@@ -69,6 +78,11 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
 
     public void onParseOpenPositionComplete(OpenOptionPosition positionIn){
         this.position = positionIn;
+
+        //pass gainloss to checker.
+        checkGainLoss(positionIn.getGainLoss());
+
+        //push to UI.
         outputPositionUI();
     }
 
@@ -95,6 +109,7 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         output = output + "Sec Type: " + position.getSecType() + "\n";
         output = output + "Strike: " + position.getStrikePrice() + "\n";
         output = output + "symbol: " + position.getSymbol() + "\n";
+        output = output + "Gain/Loss: " + position.getGainLoss();
 
         currentOutput = currentOutput + position.getQuantity() + " ";
         currentOutput = currentOutput + position.getSymbol() + ", ";
