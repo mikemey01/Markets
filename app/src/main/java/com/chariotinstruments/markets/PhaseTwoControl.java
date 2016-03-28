@@ -20,6 +20,7 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
     private EditText curData;
     private TextView console;
     private double delta;
+    private boolean isActive;
 
     //this constructor is for new positions that are found during analysis.
     public PhaseTwoControl(Activity activity, OptionOrder orderIn){
@@ -27,6 +28,7 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         this.order = orderIn;
         this.console = (TextView) uiActivity.findViewById(R.id.dataTextView);
         this.curData = (EditText) uiActivity.findViewById(R.id.currentTextBox);
+        this.isActive = false;
 
         //get the recently opened order:
         new ParseOpenPosition(uiActivity, this, "SPY").execute();
@@ -38,6 +40,8 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         this.console = (TextView) uiActivity.findViewById(R.id.dataTextView);
         this.curData = (EditText) uiActivity.findViewById(R.id.currentTextBox);
         this.position = positionIn;
+        this.isActive = false; //don't start the loop yet.
+
         outputPositionUI();
     }
 
@@ -46,12 +50,22 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
     }
 
     public void start(){
-
+        isActive = true;
     }
 
     public void stop(){
-
+        isActive = false;
     }
+
+    //region process
+
+    private void openPositionLoop(){
+        if(isActive){
+            //TODO: loop through parseOpenPosition and here.
+        }
+    }
+
+    //end region
 
     public void onParseOpenPositionComplete(OpenOptionPosition positionIn){
         this.position = positionIn;
