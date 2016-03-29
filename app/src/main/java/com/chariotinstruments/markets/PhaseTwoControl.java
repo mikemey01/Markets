@@ -68,9 +68,11 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
     private void checkGainLoss(double gainLoss){
         if(gainLoss > 30){
             //todo: sell
+            isActive = false;
         }
         if(gainLoss < 40){
             //todo: sell
+            isActive = false;
         }
     }
 
@@ -84,6 +86,9 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
 
         //push to UI.
         outputPositionUI();
+
+        //Call open position loop
+        openPositionLoop();
     }
 
     public void outputPositionUI(){
