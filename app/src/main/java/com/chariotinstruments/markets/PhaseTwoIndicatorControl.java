@@ -6,6 +6,6 @@ package com.chariotinstruments.markets;
 public class PhaseTwoIndicatorControl {
 
     public PhaseTwoIndicatorControl(){
-        
+
     }
 }

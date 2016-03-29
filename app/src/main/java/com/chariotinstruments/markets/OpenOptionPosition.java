@@ -40,7 +40,7 @@ public class OpenOptionPosition {
         return costBasis;
     }
 
-    public void setCostBasis(Double costBasisIn){
+    public void setCostBasis(double costBasisIn){
         costBasis = costBasisIn;
     }
 
@@ -48,7 +48,7 @@ public class OpenOptionPosition {
         return lastPrice;
     }
 
-    public void setLastPrice(Double lastPriceIn){
+    public void setLastPrice(double lastPriceIn){
         lastPrice = lastPriceIn;
     }
 
@@ -107,5 +107,7 @@ public class OpenOptionPosition {
     public void setGainLoss(double gainLossIn){
         gainLoss = gainLossIn;
     }
+
+
 
 }

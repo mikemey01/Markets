@@ -49,7 +49,7 @@ public class PhaseTwoTradeControl implements ParseOptionOrder.ParseOptionOrderLi
         }
 
         //TODO: need to get the limit price from p2.
-        fixml.createFIXMLObject(true, orderSide, posEffect, CFI, "OPT", position.getExpiryDate(), position.getStrikePrice(), position.getSymbol(), position.getQuantity(), 0.0);
+        fixml.createFIXMLObject(true, orderSide, posEffect, CFI, "OPT", position.getExpiryDate(), position.getStrikePrice(), position.getSymbol(), position.getQuantity(), position.getLastPrice());
 
         return fixml;
     }
