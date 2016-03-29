@@ -6,20 +6,33 @@ import android.widget.TextView;
 /**
  * Created by user on 3/15/16.
  */
-public class PhaseTwoTradeControl {
+public class PhaseTwoTradeControl implements ParseOptionOrder.ParseOptionOrderListener {
 
     private Activity uiActivity;
     private TextView console;
 
-    public void PhaseTwoControl(Activity activity){
+    public PhaseTwoTradeControl(Activity activity){
         uiActivity = activity;
         console = (TextView)uiActivity.findViewById(R.id.dataTextView);
     }
 
-    public void executeCloseTrade(OpenOptionPosition position){
+    public void executeClosingTrade(OpenOptionPosition position){
         FixmlModel fixml = new FixmlModel(true);
 
         fixml = buildClosingFixml(position);
+
+        //execute the API trade call
+        new ParseOptionOrder(uiActivity, this, fixml).execute();
+    }
+
+    public void onParseOptionOrderComplete(OptionOrder order){
+        //Ensure the order was successful.
+        if(!order.getIsException()) {
+            //Do nothing for now.
+        }else{
+            //if there's a warning, set it to the console.
+            console.setText(order.getException());
+        }
     }
 
     private FixmlModel buildClosingFixml(OpenOptionPosition position){
