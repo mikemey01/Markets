@@ -84,6 +84,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
     private void checkIndicators(PhaseOneIndicatorControl indicatorControl){
 
         //check if the tradeable conditions have been found.
+        //todo: the consoleView did not work here.
         if(indicatorControl.getTradeableConditionsFound()){
             isActive = false;
             //check if live trading is turned on in prefs.
