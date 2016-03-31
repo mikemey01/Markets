@@ -93,10 +93,17 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
                     //check if a trade has already occurred today
                     if (!tradeOccurredToday()) {
                         submitOrder(indicatorControl.getIsUp());
+                    }else {
+                        consoleView.setText("No Trade: already traded today.");
                     }
+                }else {
+                    consoleView.setText("No Trade: Not within timeframe");
                 }
+            }else {
+                consoleView.setText("No Trade: Live trading not turned on");
             }
         }
+
     }
 
     //submits the opening order as a call or put.
