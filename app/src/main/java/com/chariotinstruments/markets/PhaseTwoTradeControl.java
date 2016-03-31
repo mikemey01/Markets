@@ -28,7 +28,7 @@ public class PhaseTwoTradeControl implements ParseOptionOrder.ParseOptionOrderLi
     public void onParseOptionOrderComplete(OptionOrder order){
         //Ensure the order was successful.
         if(!order.getIsException()) {
-            //Do nothing for now.
+            console.setText("Closing trade successful for the above amount");
         }else{
             //if there's a warning, set it to the console.
             console.setText(order.getException());
@@ -42,14 +42,9 @@ public class PhaseTwoTradeControl implements ParseOptionOrder.ParseOptionOrderLi
         String posEffect = "C"; //default to "C" for closing.
         String CFI = "";
 
-        if(position.getCFI().equalsIgnoreCase("OC")){
-            CFI = "OP";
-        }else{
-            CFI = "OC";
-        }
 
         //TODO: need to get the limit price from p2.
-        fixml.createFIXMLObject(true, orderSide, posEffect, CFI, "OPT", position.getExpiryDate(), position.getStrikePrice(), position.getSymbol(), position.getQuantity(), position.getLastPrice());
+        fixml.createFIXMLObject(true, orderSide, posEffect, position.getCFI(), "OPT", position.getExpiryDate(), position.getStrikePrice(), position.getSymbol(), position.getQuantity(), position.getLastPrice());
 
         return fixml;
     }
