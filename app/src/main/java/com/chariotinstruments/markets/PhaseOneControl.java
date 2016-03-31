@@ -56,7 +56,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
     public void start(){
         isActive = true;
 
-        //Set the buying power first everytime we start.
+        //Set the buying power first every time we start.
         getBuyingPower();
 
         //This starts the processes of either jumping to p2 if an order is open
@@ -66,6 +66,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
     public void stop(){
         isActive = false;
+        setTradeableConditions(false);
     }
 
     public void checkOpenOrder(){
@@ -95,12 +96,15 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
                     if (!tradeOccurredToday()) {
                         submitOrder(indicatorControl.getIsUp());
                     }else {
+                        setTradeableConditions(false);
                         consoleView.setText("No Trade: already traded today.");
                     }
                 }else {
+                    setTradeableConditions(false);
                     consoleView.setText("No Trade: Not within timeframe");
                 }
             }else {
+                setTradeableConditions(false);
                 consoleView.setText("No Trade: Live trading not turned on");
             }
         }
@@ -117,8 +121,12 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         setTradeDate();
 
         //reset indicators in case we want to start phase one again.
-        indicatorControl.setPreTradeFavorableConditionsFound(false);
-        indicatorControl.setTradeableConditionsFound(false);
+        setTradeableConditions(false);
+    }
+
+    private void setTradeableConditions(boolean status){
+        indicatorControl.setPreTradeFavorableConditionsFound(status);
+        indicatorControl.setTradeableConditionsFound(status);
     }
 
     //Commits the current date to the prefs lastTradeDate.
@@ -213,21 +221,24 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
     //call back from parsing stock quote TK call.
     public void onParseStockQuoteComplete(StockQuote quote){
-        stockQuoteOutput = "Symbol: " + quote.getSymbol() + "\n" +
-                        "Time: " + Long.toString(quote.getTime()) + "\n" +
-                        "Last Price: " + Double.toString(quote.getLastTradePrice()) + "\n" +
-                        "Ask Price: " + Double.toString(quote.getAskPrice()) + "\n" +
-                        "Ask Size: " + Double.toString(quote.getAskSize()) + "\n" +
-                        "Bid Price: " + Double.toString(quote.getBidPrice()) + "\n" +
-                        "Bid Size: " + Double.toString(quote.getBidSize()) + "\n" +
-                        "Day High: " + Double.toString(quote.getDayHighPrice())+ "\n" +
-                        "Day Low: " + Double.toString(quote.getDayLowPrice()) + "\n" +
-                        "Increase Vol: " + Long.toString(quote.getIncreaseVolume()) + "\n" +
-                        "--------------------------------";
-        //consoleView.setText(output);
+        //putting this here so it doesn't overwrite the trade exception notices.
+        if(isActive) {
+            stockQuoteOutput = "Symbol: " + quote.getSymbol() + "\n" +
+                    "Time: " + Long.toString(quote.getTime()) + "\n" +
+                    "Last Price: " + Double.toString(quote.getLastTradePrice()) + "\n" +
+                    "Ask Price: " + Double.toString(quote.getAskPrice()) + "\n" +
+                    "Ask Size: " + Double.toString(quote.getAskSize()) + "\n" +
+                    "Bid Price: " + Double.toString(quote.getBidPrice()) + "\n" +
+                    "Bid Size: " + Double.toString(quote.getBidSize()) + "\n" +
+                    "Day High: " + Double.toString(quote.getDayHighPrice()) + "\n" +
+                    "Day Low: " + Double.toString(quote.getDayLowPrice()) + "\n" +
+                    "Increase Vol: " + Long.toString(quote.getIncreaseVolume()) + "\n" +
+                    "--------------------------------";
+            //consoleView.setText(output);
 
-        currentStockPrice = quote.getLastTradePrice();
-        symbol = quote.getSymbol();
+            currentStockPrice = quote.getLastTradePrice();
+            symbol = quote.getSymbol();
+        }
 
     }
 
@@ -244,7 +255,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
     public void onParseAccountDataComplete(AccountData aData){
         buyingPower = aData.getBuyingPower();
-        System.out.println("buying power: " + buyingPower);
+        //System.out.println("buying power: " + buyingPower);
     }
 
     //endregion
