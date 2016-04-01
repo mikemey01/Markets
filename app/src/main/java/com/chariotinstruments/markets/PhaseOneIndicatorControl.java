@@ -7,9 +7,9 @@ import java.util.ArrayList;
  */
 public class PhaseOneIndicatorControl {
 
-    private Boolean rsiGoAhead;
-    private Boolean macdGoAhead;
-    private Boolean stochasticGoAhead;
+    private boolean rsiGoAhead;
+    private boolean macdGoAhead;
+    private boolean stochasticGoAhead;
     private MarketDay marketDay;
 
     private double curRSI;
@@ -20,6 +20,7 @@ public class PhaseOneIndicatorControl {
     private boolean isUp;
     private boolean tradeableConditionsFound;
 
+    private ArrayList<Double> ema50List;
 
     public PhaseOneIndicatorControl(){
         rsiGoAhead = false;
@@ -106,6 +107,8 @@ public class PhaseOneIndicatorControl {
 
     public String calc50EMAPeriods(){
         String ret = "";
+        ema50List = new ArrayList<Double>();
+        double ema50Diff = 0.0;
 
         double firstFiftyAvg = 0.0;
         double multiplier = 0.0;
@@ -126,24 +129,49 @@ public class PhaseOneIndicatorControl {
 
         for(int i = 51; i < marketCandles.size(); i++) {
             ema = (marketCandles.get(i).getClose() - ema) * multiplier + ema;
+            ema50List.add(ema);
         }
 
-        ret = "50 EMA: " + String.format("%.2f", ema);
+        ema50Diff = Math.abs(ema - marketCandles.get(marketCandles.size()-1).getClose());
+
+        ret = "50 EMA: " + String.format("%.2f", ema) + "\n";
+        ret = ret + "50 EMA Diff: " + String.format("%.2f", ema50Diff);
         this.curEMA = ema;
 
         return ret;
     }
 
     public void preTradeFavorableConditionsFound(){
+        boolean emaDiffBool;
 
         if(curRSI > 71){
             isUp = false;
-            preTradeFavorableConditionsFound = true;
+            if(preTradeEMADiff()) {
+                preTradeFavorableConditionsFound = true;
+            }
         }else if(curRSI < 29){
             isUp = true;
-            preTradeFavorableConditionsFound = true;
+            if(preTradeEMADiff()) {
+                preTradeFavorableConditionsFound = true;
+            }
         }
 
+    }
+
+    private boolean preTradeEMADiff(){
+        ArrayList<MarketCandle> marketCandles = new ArrayList<MarketCandle>();
+        marketCandles = marketDay.getMarketCandles();
+
+        for(int i = ema50List.size()-11; i < ema50List.size(); i++){
+            double diff = 0.0;
+            diff = Math.abs(ema50List.get(i) - marketCandles.get(i).getClose());
+            if (diff > 45){
+                //found, return true;
+                return true;
+            }
+        }
+        //Did not find a diff of >45 in the last 10 minutes since we crossed the 71/29 RSI threshold
+        return false;
     }
 
     public void tradeableConditionsFound(){
