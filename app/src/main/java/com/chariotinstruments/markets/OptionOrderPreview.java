@@ -11,6 +11,7 @@ public class OptionOrderPreview {
     private double delta;
     private double askPrice;
     private FixmlModel fixml;
+    private String error;
 
     public OptionOrderPreview(){
         commission = 0.0;
@@ -18,6 +19,7 @@ public class OptionOrderPreview {
         totalCost = 0.0;
         delta = 0.0;
         askPrice = 0.0;
+        error = "";
     }
 
     public void setCommission(double commissionIn){
@@ -66,5 +68,13 @@ public class OptionOrderPreview {
 
     public void setFixml(FixmlModel fixmlIn){
         fixml = fixmlIn;
+    }
+
+    public String getError(){
+        return error;
+    }
+
+    public void setError(String errorIn){
+        error = errorIn;
     }
 }

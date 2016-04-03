@@ -15,9 +15,10 @@ public class OpenOptionPosition {
     private double strikePrice;
     private String symbol;
     private double gainLoss;
+    private String error;
 
     public OpenOptionPosition(){
-
+        error = "";
     }
 
     public boolean isOpenOrder(){
@@ -108,6 +109,12 @@ public class OpenOptionPosition {
         gainLoss = gainLossIn;
     }
 
+    public String getError(){
+        return error;
+    }
 
+    public void setError(String errorIn){
+        error = errorIn;
+    }
 
 }
