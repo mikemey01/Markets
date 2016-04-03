@@ -16,6 +16,7 @@ public class StockQuote {
     private long cumulativeVolume;
     private long increaseVolume;
     private long time;
+    private String error;
 
     public StockQuote(String symbol){
         this.symbol = symbol;
@@ -120,5 +121,13 @@ public class StockQuote {
 
     public void setTime(long timeIn){
         time = timeIn;
+    }
+
+    public String getError(){
+        return error;
+    }
+
+    public void setError(String errorIn){
+        error = errorIn;
     }
 }

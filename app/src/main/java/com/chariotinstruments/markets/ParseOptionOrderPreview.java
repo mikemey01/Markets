@@ -64,6 +64,7 @@ public class ParseOptionOrderPreview extends AsyncTask<Void, Void, OptionOrderPr
             order = parseJSON(response);
         } catch (JSONException e) {
             e.printStackTrace();
+            order.setError(e.toString());
         }
 
         return order;

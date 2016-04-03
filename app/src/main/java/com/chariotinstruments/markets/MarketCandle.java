@@ -15,6 +15,7 @@ public class MarketCandle {
     private long _date;
     private int _isOpen;
     private int _isClose;
+    private String error;
 
 
     //Constructor
@@ -103,5 +104,12 @@ public class MarketCandle {
         _isClose = isCloseIn;
     }
 
+    public String getError(){
+        return error;
+    }
+
+    public void setError(String errorIn){
+        error = errorIn;
+    }
 
 }

@@ -11,6 +11,7 @@ public class MarketDay {
 
     private DateFormat _marketDate;
     private ArrayList<MarketCandle> _marketCandles;
+    private String error;
 
     public MarketDay(){
         _marketCandles = new ArrayList<MarketCandle>();
@@ -28,6 +29,14 @@ public class MarketDay {
         candle.setVolume(volume);
 
         this._marketCandles.add(candle);
+    }
+
+    public String getError(){
+        return error;
+    }
+
+    public void setError(String errorIn){
+        error = errorIn;
     }
 
     public ArrayList<MarketCandle> getMarketCandles(){

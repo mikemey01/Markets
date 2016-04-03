@@ -64,6 +64,7 @@ public class ParseOpenPosition extends AsyncTask<Void, Void, OpenOptionPosition>
             openOptionPosition = parseJSON(response);
         } catch (JSONException e) {
             e.printStackTrace();
+            openOptionPosition.setError(e.toString());
         }
 
         return openOptionPosition;

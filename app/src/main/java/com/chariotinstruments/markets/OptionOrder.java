@@ -9,6 +9,7 @@ public class OptionOrder {
     private int orderStatus;
     private String exception;
     private boolean isException;
+    private String error;
 
     public OptionOrder(){
         isException = false;
@@ -44,6 +45,14 @@ public class OptionOrder {
 
     public void setIsException(boolean isExceptionIn){
         isException = isExceptionIn;
+    }
+
+    public String getError(){
+        return error;
+    }
+
+    public void setError(String errorIn){
+        error = errorIn;
     }
 
 }

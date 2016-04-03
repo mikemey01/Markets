@@ -72,6 +72,7 @@ public class ParseAccountData extends AsyncTask<Void, Void, AccountData> {
             aData = parseJSON(response);
         } catch (JSONException e) {
             e.printStackTrace();
+            aData.setError(e.toString());
         }
 
         return aData;

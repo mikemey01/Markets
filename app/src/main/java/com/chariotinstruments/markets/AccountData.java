@@ -12,6 +12,7 @@ public class AccountData {
     private double _unsettledFunds;
     private double _unclearedDeposits;
     private double _buyingPower;
+    private String error;
 
     public AccountData(){
         _cashAvailable = 0.0;
@@ -75,5 +76,13 @@ public class AccountData {
 
     public void setBuyingPower(double buyIn){
         _buyingPower = buyIn;
+    }
+
+    public String getError(){
+        return error;
+    }
+
+    public void setError(String errorIn){
+        error = errorIn;
     }
 }

@@ -65,6 +65,7 @@ public class ParseStockQuote  extends AsyncTask<Void, Void, StockQuote> {
             quote = parseJSON(response);
         } catch (JSONException e) {
             e.printStackTrace();
+            quote.setError(e.toString());
         }
 
         return quote;

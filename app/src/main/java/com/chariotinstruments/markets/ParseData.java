@@ -71,6 +71,7 @@ public class ParseData extends AsyncTask<Void, Void, MarketDay> {
             marketDay = parseJSON(response);
         } catch (JSONException e) {
             e.printStackTrace();
+            marketDay.setError(e.toString());
         }
 
         return marketDay;
