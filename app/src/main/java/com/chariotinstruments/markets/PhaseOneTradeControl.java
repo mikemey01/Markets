@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * 1. executeTrade() is called from outside.
  * 2. wait for the expirations and strike to return (onComplete methods)
  * 3. The preview order is created and executed in the onStrikeComplete method
- * 4. Check buying power in onOptionOrderPreviewComplete, execute real trade here (set delta).
+ * 4. Check buying power in onOptionOrderPreviewComplete, execute real trade here (set delta, limit).
  * 5. Start p2 in onOptionOrderComplete;
  */
 public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionStrikePriceAsyncListener, ParseOptionExpirations.ParseOptionExpirationsAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener, ParseOptionOrder.ParseOptionOrderListener{
