@@ -37,6 +37,7 @@ public class PhaseTwoTradeControl implements ParseOptionOrder.ParseOptionOrderLi
 
     private FixmlModel buildClosingFixml(OpenOptionPosition position){
         FixmlModel fixml = new FixmlModel(true);
+        int test = 0;
 
         int orderSide = 2; //default to sell
         String posEffect = "C"; //default to "C" for closing.

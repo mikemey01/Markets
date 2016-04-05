@@ -165,7 +165,7 @@ public class PhaseOneIndicatorControl {
         for(int i = ema50List.size()-11; i < ema50List.size(); i++){
             double diff = 0.0;
             diff = Math.abs(ema50List.get(i) - marketCandles.get(i).getClose());
-            if (diff > 45){
+            if (diff > 35){
                 //found, return true;
                 return true;
             }
