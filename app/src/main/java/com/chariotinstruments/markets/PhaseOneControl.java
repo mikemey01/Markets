@@ -181,7 +181,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         long sinceMid = (rightNow.getTimeInMillis() + offset) %
                 (24 * 60 * 60 * 1000);
 
-        if(sinceMid > 28800000 && sinceMid < 48600000){
+        if(sinceMid > 27000000 && sinceMid < 48600000){
             return true;
         }
 
