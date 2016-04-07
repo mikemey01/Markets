@@ -28,7 +28,7 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         this.order = orderIn;
         this.console = (TextView) uiActivity.findViewById(R.id.dataTextView);
         this.curData = (EditText) uiActivity.findViewById(R.id.currentTextBox);
-        this.isActive = false;
+        this.isActive = true;
 
         //get the recently opened order:
         new ParseOpenPosition(uiActivity, this, "SPY").execute();
@@ -40,9 +40,12 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         this.console = (TextView) uiActivity.findViewById(R.id.dataTextView);
         this.curData = (EditText) uiActivity.findViewById(R.id.currentTextBox);
         this.position = positionIn;
-        this.isActive = false; //don't start the loop yet.
+        this.isActive = true;
 
         outputPositionUI();
+
+        //start the open position loop
+        openPositionLoop();
     }
 
     public void setDelta(double deltaIn){
@@ -65,8 +68,11 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         }
     }
 
-    private void checkGainLoss(double gainLoss){
-        if(gainLoss > 3 || gainLoss < -4){
+    private void checkGainLoss(double gainLoss, int multiplier){
+        double highTarget = 3 * multiplier;
+        double lowTarget = -4 * multiplier;
+
+        if(gainLoss > highTarget || gainLoss < lowTarget){
             isActive = false;
             PhaseTwoTradeControl p2 = new PhaseTwoTradeControl(uiActivity);
             p2.executeClosingTrade(position);
@@ -79,7 +85,7 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         this.position = positionIn;
 
         //pass gainloss to checker.
-        checkGainLoss(positionIn.getGainLoss());
+        checkGainLoss(positionIn.getGainLoss(), positionIn.getQuantity());
 
         //push to UI.
         outputPositionUI();
@@ -106,19 +112,18 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         output = output + "Cost Basis: " + position.getCostBasis() + "\n";
         output = output + "Last Price: " + position.getLastPrice() + "\n";
         output = output + "Expiry: " + position.getExpiryDate() + "\n";
-        output = output + "PutCall: " + position.getPutOrCall() + "\n";
         output = output + "Quantity: " + position.getQuantity() + "\n";
         output = output + "Sec Type: " + position.getSecType() + "\n";
         output = output + "Strike: " + position.getStrikePrice() + "\n";
         output = output + "symbol: " + position.getSymbol() + "\n";
-        output = output + "Gain/Loss: " + position.getGainLoss();
+        output = output + "Gain/Loss: " + String.format("%.2f", position.getGainLoss());
 
         currentOutput = currentOutput + position.getQuantity() + " ";
         currentOutput = currentOutput + position.getSymbol() + ", ";
         currentOutput = currentOutput + formattedExpiry + ", ";
         currentOutput = currentOutput + position.getStrikePrice() + ", ";
         currentOutput = currentOutput + position.getCFI() + ", ";
-        currentOutput = currentOutput + position.getGainLoss() + ", ";
+        currentOutput = currentOutput + String.format("%.2f", position.getGainLoss()) + ", ";
         currentOutput = currentOutput + delta + " ";
 
 
