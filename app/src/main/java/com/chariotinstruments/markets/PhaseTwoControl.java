@@ -84,8 +84,10 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
     public void onParseOpenPositionComplete(OpenOptionPosition positionIn){
         this.position = positionIn;
 
-        //pass gainloss to checker.
-        checkGainLoss(positionIn.getGainLoss(), positionIn.getQuantity());
+        //pass gainloss to checker. make sure this order has substance
+        if(positionIn.getQuantity() > 0) {
+            checkGainLoss(positionIn.getGainLoss(), positionIn.getQuantity());
+        }
 
         //push to UI.
         outputPositionUI();
