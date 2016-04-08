@@ -69,8 +69,8 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
     }
 
     private void checkGainLoss(double gainLoss, int multiplier){
-        double highTarget = 3 * multiplier;
-        double lowTarget = -4 * multiplier;
+        double highTarget = 4 * multiplier;
+        double lowTarget = -5 * multiplier;
 
         if(gainLoss > highTarget || gainLoss < lowTarget){
             isActive = false;
