@@ -162,10 +162,10 @@ public class PhaseOneIndicatorControl {
         ArrayList<MarketCandle> marketCandles = new ArrayList<MarketCandle>();
         marketCandles = marketDay.getMarketCandles();
 
-        for(int i = ema50List.size()-11; i < ema50List.size(); i++){
+        for(int i = ema50List.size()-9; i < ema50List.size(); i++){
             double diff = 0.0;
             diff = Math.abs(ema50List.get(i) - marketCandles.get(i).getClose());
-            if (diff > .35){
+            if (diff < .10){
                 //found, return true;
                 return true;
             }
