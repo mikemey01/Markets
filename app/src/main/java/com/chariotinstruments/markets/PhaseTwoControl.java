@@ -67,7 +67,7 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         this.paperOptionSymbol = buildOptionSymbol(fixml);
 
         //call paper trade loop
-        paperTradeLoop();
+        //paperTradeLoop();
     }
 
     //endregion
@@ -185,7 +185,7 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         //handle the year/month/day
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         SimpleDateFormat sdfYear = new SimpleDateFormat("yy");
-        SimpleDateFormat sdfMonth = new SimpleDateFormat("mm");
+        SimpleDateFormat sdfMonth = new SimpleDateFormat("MM");
         SimpleDateFormat sdfDay = new SimpleDateFormat("dd");
         Calendar cal = Calendar.getInstance();
         try {

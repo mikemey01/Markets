@@ -62,6 +62,7 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
             double retStrikePrice = 0.0;
             int index = -1;
             retStrikePrice = Math.ceil(curPrice);
+
             //retStrikePrice += 1.0; commenting this out to move the strike closer to ITM.
             index = strikeList.indexOf(retStrikePrice);
 
@@ -140,6 +141,7 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
 
         //TODO:setting the qty to 1 for now so I don't lose it all on the first bet.
         fixml.createFIXMLObject(false, orderSide, posEffect, CFI, "OPT", this.expiration, this.strikePrice, this.symbol, 1, 0.0);
+
 
         return fixml;
     }

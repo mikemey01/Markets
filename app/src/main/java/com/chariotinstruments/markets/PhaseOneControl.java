@@ -54,7 +54,13 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
     //region process
 
     public void p2PaperTester(){
-        PhaseTwoControl p2 = new PhaseTwoControl(uiActivity, new FixmlModel());
+        isActive = true;
+        this.currentStockPrice = 204.48;
+
+        //Set the buying power first every time we start.
+        getBuyingPower();
+
+        submitOrder(true);
     }
 
     public void start(){
