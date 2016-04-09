@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -177,7 +178,49 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
 
     private String buildOptionSymbol(FixmlModel fixml){
         String ret = "";
+        String putCall = "";
+        long strike = 0;
+        String strStrike = "";
 
+        //handle the year/month/day
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        SimpleDateFormat sdfYear = new SimpleDateFormat("yy");
+        SimpleDateFormat sdfMonth = new SimpleDateFormat("mm");
+        SimpleDateFormat sdfDay = new SimpleDateFormat("dd");
+        Calendar cal = Calendar.getInstance();
+        try {
+            cal.setTime(sdf.parse(fixml.getExpDate()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String year = sdfYear.format(cal.getTime());
+        String month = sdfMonth.format(cal.getTime());
+        String day = sdfDay.format(cal.getTime());
+
+        //get put or call
+        if(fixml.getCFI().contentEquals("OC")){
+            putCall = "C";
+        }
+        if(fixml.getCFI().contentEquals("OP")){
+            putCall = "P";
+        }
+
+        //get strike price
+        strike = (long) (fixml.getStrikePrice() * 1000);
+        strStrike = Long.toString(strike);
+        while(strStrike.length()<8){
+            strStrike = "0"+strStrike;
+        }
+
+
+        ret = ret + fixml.getSymbol();
+        ret = ret + year;
+        ret = ret + month;
+        ret = ret + day;
+        ret = ret + putCall;
+        ret = ret + strStrike;
+
+        System.out.println(ret);
         return ret;
     }
 
@@ -192,7 +235,7 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
     }
 
     private void paperCloseTrade(double gainLoss){
-        
+
     }
 
     private void paperOutputToUI(){
