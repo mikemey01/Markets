@@ -226,7 +226,7 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
 
     private void paperCheckGainLoss(double tradePrice, double currentPrice){
         double currentGainLoss = 0.0;
-        currentGainLoss = currentPrice - 1.06;
+        currentGainLoss = currentPrice - tradePrice;
         if(currentGainLoss > .04 || currentGainLoss < -.05) {
             paperCloseTrade(currentGainLoss);
         }else{

@@ -60,18 +60,18 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
     public void getSymbolData(View v) throws JSONException {
         String symbol = symbolEditText.getText().toString().toUpperCase();
         hideKeyboard();
-//        if(symbol.trim().length() == 0){
-//            Toast toast = Toast.makeText(this, "Enter a symbol", Toast.LENGTH_SHORT);
-//            toast.show();
-//        }else {
-//            hideKeyboard();
-//            p1.setSymbol(symbol);
-//            p1.setIsLoop(false);
-//            p1.start();
-//        }
-        p1.setSymbol(symbol);
-        p1.setIsLoop(false);
-        p1.p2PaperTester();
+        if(symbol.trim().length() == 0){
+            Toast toast = Toast.makeText(this, "Enter a symbol", Toast.LENGTH_SHORT);
+            toast.show();
+        }else {
+            hideKeyboard();
+            p1.setSymbol(symbol);
+            p1.setIsLoop(false);
+            p1.start();
+        }
+//        p1.setSymbol(symbol);
+//        p1.setIsLoop(false);
+//        p1.p2PaperTester();
 
     }
 
