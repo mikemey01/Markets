@@ -31,15 +31,17 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
     private double buyingPower;
     private double delta;
     private FixmlModel liveFixml;
+    private boolean isLiveTrading;
 
-    public PhaseOneTradeControl(boolean isOpeningTrade, boolean isCall, Activity activity, String symbol, double curPrice, double buyingPower){
+    public PhaseOneTradeControl(boolean isOpeningTrade, boolean isCall, Activity activity, String symbol, double curPrice, double buyingPower, boolean isLive){
         this.isOpeningTrade = isOpeningTrade;
         this.isCall = isCall;
         this.uiActivity = activity;
         this.symbol = symbol;
         this.curPrice = curPrice;
         this.buyingPower = buyingPower;
-        consoleView = (TextView)activity.findViewById(R.id.dataTextView);
+        this.consoleView = (TextView)activity.findViewById(R.id.dataTextView);
+        this.isLiveTrading = isLive;
     }
 
     protected void executeTrade(){
@@ -94,9 +96,13 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
         fixml.setLimitPrice(order.getAskPrice());
 
         //make sure we have the funds.
-        if(totalCost < buyingPower){
+        if(totalCost < buyingPower && isLiveTrading){
             //use the same fixml data from the preview for consistency.
             new ParseOptionOrder(uiActivity, this, fixml).execute();
+        }
+        if(!isLiveTrading){
+            PhaseTwoControl p2 = new PhaseTwoControl(uiActivity, fixml);
+            p2.setDelta(this.delta);
         }
     }
 
@@ -104,7 +110,7 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
 
         //Ensure the order was successful.
         if(!order.getIsException()) {
-            PhaseTwoControl p2 = new PhaseTwoControl(uiActivity, order);
+            PhaseTwoControl p2 = new PhaseTwoControl(uiActivity, order, true);
             p2.setDelta(this.delta);
         }else{
             //if there's a warning, set it to the console.

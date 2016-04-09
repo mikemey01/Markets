@@ -12,7 +12,7 @@ import java.util.Locale;
 /**
  * Created by user on 3/15/16.
  */
-public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsyncListener{
+public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsyncListener, ParseStockQuote.ParseStockQuoteAsyncListener{
 
     private OpenOptionPosition position;
     private OptionOrder order;
@@ -21,14 +21,20 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
     private TextView console;
     private double delta;
     private boolean isActive;
+    private boolean isLiveTrading;
+    private FixmlModel paperFixml;
+    private String paperOptionSymbol;
+
+    //region constructors
 
     //this constructor is for new positions that are found during analysis.
-    public PhaseTwoControl(Activity activity, OptionOrder orderIn){
+    public PhaseTwoControl(Activity activity, OptionOrder orderIn, boolean isLive){
         uiActivity = activity;
         this.order = orderIn;
         this.console = (TextView) uiActivity.findViewById(R.id.dataTextView);
         this.curData = (EditText) uiActivity.findViewById(R.id.currentTextBox);
         this.isActive = true;
+        this.isLiveTrading = isLive;
 
         //get the recently opened order:
         new ParseOpenPosition(uiActivity, this, "SPY").execute();
@@ -41,12 +47,31 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         this.curData = (EditText) uiActivity.findViewById(R.id.currentTextBox);
         this.position = positionIn;
         this.isActive = true;
+        this.isLiveTrading = true;
 
         outputPositionUI();
 
         //start the open position loop
         openPositionLoop();
     }
+
+    //this constructor is for paper trading
+    public PhaseTwoControl(Activity activity, FixmlModel fixml){
+        uiActivity = activity;
+        this.console = (TextView) uiActivity.findViewById(R.id.dataTextView);
+        this.curData = (EditText) uiActivity.findViewById(R.id.currentTextBox);
+        this.isActive = true;
+        this.isLiveTrading = true;
+        this.paperFixml = fixml;
+        this.paperOptionSymbol = buildOptionSymbol(fixml);
+
+        //call paper trade loop
+        paperTradeLoop();
+    }
+
+    //endregion
+
+    //region live trading
 
     public void setDelta(double deltaIn){
         delta = deltaIn;
@@ -60,7 +85,6 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         isActive = false;
     }
 
-    //region process
 
     private void openPositionLoop(){
         if(isActive){
@@ -133,4 +157,47 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         this.curData.setText(currentOutput);
 
     }
+    //endregion
+
+    //region paper trading
+
+    private void paperTradeLoop(){
+        if(isActive){
+            new ParseStockQuote(this.uiActivity, this, paperOptionSymbol).execute();
+        }
+    }
+
+    public void onParseStockQuoteComplete(StockQuote quote){
+        //call check gain loss
+        paperCheckGainLoss(paperFixml.getLimitPrice(), quote.getLastTradePrice());
+
+        //Push output to UI
+        paperOutputToUI();
+    }
+
+    private String buildOptionSymbol(FixmlModel fixml){
+        String ret = "";
+
+        return ret;
+    }
+
+    private void paperCheckGainLoss(double tradePrice, double currentPrice){
+        double currentGainLoss = 0.0;
+        currentGainLoss = currentPrice - tradePrice;
+        if(currentGainLoss > 4 || currentGainLoss < -5) {
+            paperCloseTrade(currentGainLoss);
+        }else{
+            paperTradeLoop();
+        }
+    }
+
+    private void paperCloseTrade(double gainLoss){
+        
+    }
+
+    private void paperOutputToUI(){
+
+    }
+
+    //endregion
 }

@@ -88,24 +88,18 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         //todo: the consoleView did not work here.
         if(indicatorControl.getTradeableConditionsFound()){
             isActive = false;
-            //check if live trading is turned on in prefs.
-            if(isTradingLive()) {
-                //Check if within 8:00 and 1:30 MST
-                if(isWithinTimeFrame()) {
-                    //check if a trade has already occurred today
-                    if (!tradeOccurredToday()) {
-                        submitOrder(indicatorControl.getIsUp());
-                    }else {
-                        setTradeableConditions(false);
-                        consoleView.setText("No Trade: already traded today.");
-                    }
+            //Check if within 8:00 and 1:30 MST
+            if(isWithinTimeFrame()) {
+                //check if a trade has already occurred today
+                if (!tradeOccurredToday()) {
+                    submitOrder(indicatorControl.getIsUp());
                 }else {
                     setTradeableConditions(false);
-                    consoleView.setText("No Trade: Not within timeframe");
+                    consoleView.setText("No Trade: already traded today.");
                 }
             }else {
                 setTradeableConditions(false);
-                consoleView.setText("No Trade: Live trading not turned on");
+                consoleView.setText("No Trade: Not within timeframe");
             }
         }
 
@@ -114,11 +108,14 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
     //submits the opening order as a call or put.
     private void submitOrder(boolean isCall){
         isActive = false;
-        PhaseOneTradeControl trade = new PhaseOneTradeControl(true, isCall, uiActivity, symbol, currentStockPrice, buyingPower);
+        boolean isLiveTrading = isTradingLive();
+        PhaseOneTradeControl trade = new PhaseOneTradeControl(true, isCall, uiActivity, symbol, currentStockPrice, buyingPower, isLiveTrading);
         trade.executeTrade();
 
-        //Save the date that the trade was opened
-        setTradeDate();
+        //Save the date that the trade was opened if trading live.
+        if(isTradingLive()) {
+            setTradeDate();
+        }
 
         //reset indicators in case we want to start phase one again.
         setTradeableConditions(false);

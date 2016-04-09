@@ -29,6 +29,8 @@ public class FixmlModel {
         limitPrice = limitIn;
     }
 
+    public double getLimitPrice(){ return limitPrice; }
+
     public FixmlModel(boolean isLive, int orderSide, String positionEffect, String CFI, String secType, String expDate, double strikePrice, String symbol, int quantity, double limitIn){
         this.isOrderLive = isLive;
         this.orderSide = orderSide;
