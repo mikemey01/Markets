@@ -34,6 +34,10 @@ public class FixmlModel {
     public String getSymbol(){ return symbol; }
     public String getCFI(){ return CFI; }
 
+    public FixmlModel(){
+
+    }
+
     public FixmlModel(boolean isLive, int orderSide, String positionEffect, String CFI, String secType, String expDate, double strikePrice, String symbol, int quantity, double limitIn){
         this.isOrderLive = isLive;
         this.orderSide = orderSide;

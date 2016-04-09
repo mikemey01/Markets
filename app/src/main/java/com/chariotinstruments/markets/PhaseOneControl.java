@@ -53,6 +53,10 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
     //region process
 
+    public void p2PaperTester(){
+        PhaseTwoControl p2 = new PhaseTwoControl(uiActivity, new FixmlModel());
+    }
+
     public void start(){
         isActive = true;
 
