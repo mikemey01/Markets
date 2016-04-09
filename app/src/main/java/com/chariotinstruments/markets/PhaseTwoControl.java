@@ -24,6 +24,7 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
     private boolean isActive;
     private boolean isLiveTrading;
     private FixmlModel paperFixml;
+    private double paperTradePrice;
     private String paperOptionSymbol;
 
     //region constructors
@@ -65,9 +66,10 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         this.isLiveTrading = true;
         this.paperFixml = fixml;
         this.paperOptionSymbol = buildOptionSymbol(fixml);
+        this.paperTradePrice = fixml.getLimitPrice();
 
         //call paper trade loop
-        //paperTradeLoop();
+        paperTradeLoop();
     }
 
     //endregion
@@ -169,11 +171,11 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
     }
 
     public void onParseStockQuoteComplete(StockQuote quote){
-        //call check gain loss
-        paperCheckGainLoss(paperFixml.getLimitPrice(), quote.getLastTradePrice());
-
         //Push output to UI
-        paperOutputToUI();
+        paperOutputToUI(quote);
+
+        //call check gain loss
+        paperCheckGainLoss(paperTradePrice, quote.getLastTradePrice());
     }
 
     private String buildOptionSymbol(FixmlModel fixml){
@@ -212,7 +214,6 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
             strStrike = "0"+strStrike;
         }
 
-
         ret = ret + fixml.getSymbol();
         ret = ret + year;
         ret = ret + month;
@@ -220,14 +221,13 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         ret = ret + putCall;
         ret = ret + strStrike;
 
-        System.out.println(ret);
         return ret;
     }
 
     private void paperCheckGainLoss(double tradePrice, double currentPrice){
         double currentGainLoss = 0.0;
-        currentGainLoss = currentPrice - tradePrice;
-        if(currentGainLoss > 4 || currentGainLoss < -5) {
+        currentGainLoss = currentPrice - 1.06;
+        if(currentGainLoss > .04 || currentGainLoss < -.05) {
             paperCloseTrade(currentGainLoss);
         }else{
             paperTradeLoop();
@@ -235,11 +235,27 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
     }
 
     private void paperCloseTrade(double gainLoss){
+        PaperAccount paper = new PaperAccount(uiActivity);
+        paper.setAccountBalanceChange(gainLoss*10*100);
 
+        this.console.setText("Trade complete for a gain/loss of " + Double.toString(gainLoss*10*100));
     }
 
-    private void paperOutputToUI(){
+    private void paperOutputToUI(StockQuote quote){
+        String stockQuoteOutput = "";
+        stockQuoteOutput = "Symbol: " + quote.getSymbol() + "\n" +
+                "Time: " + Long.toString(quote.getTime()) + "\n" +
+                "Last Price: " + Double.toString(quote.getLastTradePrice()) + "\n" +
+                "Trade Price: " + Double.toString(paperTradePrice) + "\n" +
+                "Ask Price: " + Double.toString(quote.getAskPrice()) + "\n" +
+                "Ask Size: " + Double.toString(quote.getAskSize()) + "\n" +
+                "Bid Price: " + Double.toString(quote.getBidPrice()) + "\n" +
+                "Bid Size: " + Double.toString(quote.getBidSize()) + "\n" +
+                "Day High: " + Double.toString(quote.getDayHighPrice()) + "\n" +
+                "Day Low: " + Double.toString(quote.getDayLowPrice()) + "\n" +
+                "Increase Vol: " + Long.toString(quote.getIncreaseVolume()) + "\n";
 
+        this.console.setText(stockQuoteOutput);
     }
 
     //endregion
