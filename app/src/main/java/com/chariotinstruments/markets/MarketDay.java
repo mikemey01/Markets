@@ -12,6 +12,7 @@ public class MarketDay {
     private DateFormat _marketDate;
     private ArrayList<MarketCandle> _marketCandles;
     private String error;
+    private boolean isError;
 
     public MarketDay(){
         _marketCandles = new ArrayList<MarketCandle>();
