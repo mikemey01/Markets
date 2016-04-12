@@ -65,11 +65,11 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         this.isActive = true;
         this.isLiveTrading = true;
         this.paperFixml = fixml;
-        this.paperOptionSymbol = buildOptionSymbol(fixml);
         this.paperTradePrice = fixml.getLimitPrice();
 
-        //call paper trade loop
-        paperTradeLoop();
+        //calling the paper trade loop from here.
+        buildOptionSymbol(fixml);
+
     }
 
     //endregion
@@ -178,7 +178,7 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         paperCheckGainLoss(paperTradePrice, quote.getLastTradePrice());
     }
 
-    private String buildOptionSymbol(FixmlModel fixml){
+    private void buildOptionSymbol(FixmlModel fixml){
         String ret = "";
         String putCall = "";
         long strike = 0;
@@ -221,7 +221,11 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         ret = ret + putCall;
         ret = ret + strStrike;
 
-        return ret;
+        //set the option symbol string.
+        this.paperOptionSymbol = ret;
+
+        //fire the paper trade loop now that we have the option symbol built.
+        paperTradeLoop();
     }
 
     private void paperCheckGainLoss(double tradePrice, double currentPrice){
