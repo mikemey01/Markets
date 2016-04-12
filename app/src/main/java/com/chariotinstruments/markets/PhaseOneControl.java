@@ -239,7 +239,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
                     "Bid Size: " + Double.toString(quote.getBidSize()) + "\n" +
                     "Day High: " + Double.toString(quote.getDayHighPrice()) + "\n" +
                     "Day Low: " + Double.toString(quote.getDayLowPrice()) + "\n" +
-                    "Increase Vol: " + Long.toString(quote.getIncreaseVolume()) + "\n" +
+                    "Cumulative Vol: " + Long.toString(quote.getCumulativeVolume()) + "\n" +
                     "--------------------------------";
             //consoleView.setText(output);
 
