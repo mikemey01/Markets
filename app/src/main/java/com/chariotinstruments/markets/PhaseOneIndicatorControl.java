@@ -146,14 +146,10 @@ public class PhaseOneIndicatorControl {
 
         if(curRSI > 71){
             isUp = false;
-            if(preTradeEMADiff()) {
-                preTradeFavorableConditionsFound = true;
-            }
+            preTradeFavorableConditionsFound = true;
         }else if(curRSI < 29){
             isUp = true;
-            if(preTradeEMADiff()) {
-                preTradeFavorableConditionsFound = true;
-            }
+            preTradeFavorableConditionsFound = true;
         }
 
     }
@@ -171,6 +167,8 @@ public class PhaseOneIndicatorControl {
             }
         }
         //Did not find a diff of >45 in the last 10 minutes since we crossed the 71/29 RSI threshold
+        //reset the pretrade to false. this means the clock starts ticking after we cross
+        preTradeFavorableConditionsFound = false;
         return false;
     }
 
@@ -179,11 +177,11 @@ public class PhaseOneIndicatorControl {
 
         if(preTradeFavorableConditionsFound) { //first checked that we've crossed the first hysteresis threshold.
             if (isUp) { //if we're trading up (IE RSI was below 29)
-                if (curRSI > 35) { //if we've crossed the buying hysteresis mark;
+                if (curRSI > 35 && preTradeEMADiff()) { //if we've crossed the buying hysteresis mark;
                     tradeableConditionsFound = true;
                 }
             } else { //Otherwise RSI was above 71
-                if (curRSI < 65) { //if we've crossed the selling hysteresis mark;
+                if (curRSI < 65 &&preTradeEMADiff()) { //if we've crossed the selling hysteresis mark;
                     tradeableConditionsFound = true;
                 }
             }
