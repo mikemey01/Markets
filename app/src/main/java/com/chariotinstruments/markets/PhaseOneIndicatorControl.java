@@ -63,7 +63,8 @@ public class PhaseOneIndicatorControl {
     public String calculateIndicators(){
         String ret = "";
 
-        ret = calcRSI();
+        ret = calcLastCandleVolume();
+        ret = ret + calcRSI();
         ret = ret + calcMACD();
         ret = ret + calc50EMAPeriods();
 
@@ -72,6 +73,14 @@ public class PhaseOneIndicatorControl {
         if(preTradeFavorableConditionsFound){
             tradeableConditionsFound();
         }
+
+        return ret;
+    }
+
+    private String calcLastCandleVolume(){
+        String ret = "";
+
+        ret = "Last Period Vol: " + Long.toString(marketDay.getLatestCandleVolume()) + "\n";
 
         return ret;
     }
