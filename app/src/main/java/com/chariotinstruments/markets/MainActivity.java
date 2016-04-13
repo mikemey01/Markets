@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
 
     public void onParseAccountDataComplete(AccountData aData){
         String output = "";
+        PaperAccount paper = new PaperAccount(this);
 
         output = output + "Buying Power: ";
         output = output + Double.toString(aData.getBuyingPower()) + "\n";
@@ -119,7 +120,9 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
         output = output + "Options: ";
         output = output + Double.toString(aData.getOptionValue()) + "\n";
         output = output + "Uncleared Deposits: ";
-        output = output + Double.toString(aData.getUnclearedDeposists());
+        output = output + Double.toString(aData.getUnclearedDeposists()) + "\n";
+        output = output + "Paper Account: ";
+        output = output + Double.toString(paper.getPaperAccountBalance());
 
         dataTextView.setText(output);
     }
