@@ -41,7 +41,7 @@ public class MarketDay {
     }
 
     public long getLatestCandleVolume(){
-        return _marketCandles.get(_marketCandles.size()-1).getVolume();
+        return _marketCandles.get(_marketCandles.size()-2).getVolume();
     }
 
     public ArrayList<MarketCandle> getMarketCandles(){
