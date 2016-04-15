@@ -21,6 +21,7 @@ public class PhaseOneIndicatorControl {
     private boolean tradeableConditionsFound;
 
     private ArrayList<Double> ema50List;
+    private ArrayList<Double> ema200List;
 
     public PhaseOneIndicatorControl(){
         rsiGoAhead = false;
@@ -67,6 +68,7 @@ public class PhaseOneIndicatorControl {
         ret = ret + calcRSI();
         ret = ret + calcMACD();
         ret = ret + calc50EMAPeriods();
+        ret = ret + calc200EMAperiods();
 
         preTradeFavorableConditionsFound();
 
@@ -146,6 +148,41 @@ public class PhaseOneIndicatorControl {
         ret = "50 EMA: " + String.format("%.2f", ema) + "\n";
         ret = ret + "50 EMA Diff: " + String.format("%.2f", ema50Diff);
         this.curEMA = ema;
+
+        return ret;
+    }
+
+    public String calc200EMAperiods(){
+        String ret = "";
+        ema200List = new ArrayList<Double>();
+        double ema200Diff = 0.0;
+
+        double first200Avg = 0.0;
+        double multiplier = 0.0;
+        double ema = 0.0;
+        ArrayList<MarketCandle> marketCandles = new ArrayList<MarketCandle>();
+        marketCandles = marketDay.getMarketCandles();
+
+        //sum/avg the first 200 close prices.
+        for(int i = 0; i<200; i++){
+            first200Avg += marketCandles.get(i).getClose();
+        }
+        first200Avg = first200Avg/200.0d;
+
+        //calculate multiplier
+        multiplier = 2.0d/201.0d;
+
+        ema = (marketCandles.get(200).getClose() * multiplier) + (first200Avg * (1.0 - multiplier));
+
+        for(int i = 201; i < marketCandles.size(); i++) {
+            ema = (marketCandles.get(i).getClose() - ema) * multiplier + ema;
+            ema200List.add(ema);
+        }
+
+        ema200Diff = Math.abs(ema - marketCandles.get(marketCandles.size()-1).getClose());
+
+        ret = "200 EMA: " + String.format("%.2f", ema) + "\n";
+        //this.curEMA = ema;
 
         return ret;
     }
