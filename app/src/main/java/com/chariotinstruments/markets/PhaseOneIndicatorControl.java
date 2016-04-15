@@ -146,7 +146,7 @@ public class PhaseOneIndicatorControl {
         ema50Diff = Math.abs(ema - marketCandles.get(marketCandles.size()-1).getClose());
 
         ret = "50 EMA: " + String.format("%.2f", ema) + "\n";
-        ret = ret + "50 EMA Diff: " + String.format("%.2f", ema50Diff);
+        ret = ret + "50 EMA Diff: " + String.format("%.2f", ema50Diff) + "\n";
         this.curEMA = ema;
 
         return ret;
