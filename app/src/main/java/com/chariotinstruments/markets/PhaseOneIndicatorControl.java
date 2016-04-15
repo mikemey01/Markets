@@ -125,7 +125,7 @@ public class PhaseOneIndicatorControl {
         ArrayList<MarketCandle> marketCandles = new ArrayList<MarketCandle>();
         marketCandles = marketDay.getMarketCandles();
 
-        //sum/avg the first 12 close prices.
+        //sum/avg the first 50 close prices.
         for(int i = 0; i<50; i++){
             firstFiftyAvg += marketCandles.get(i).getClose();
         }

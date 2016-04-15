@@ -175,7 +175,7 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         paperOutputToUI(quote);
 
         //call check gain loss
-        paperCheckGainLoss(paperTradePrice, quote.getLastTradePrice());
+        paperCheckGainLoss(paperTradePrice, quote.getBidPrice());
     }
 
     private void buildOptionSymbol(FixmlModel fixml){
