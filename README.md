@@ -20,7 +20,7 @@ The following indicators are currently being calculated by the app. By default t
 
 # Setup
 You need to create a class titled APIKeys then copy the body of the APIKeysTemplate class into it. Populate your TradeKing API keys and account number and you’re good to go.
-‘’’java
+```java
 public class APIKeys {
 
     //TradeKing API Keys
@@ -36,7 +36,7 @@ public class APIKeys {
 
     }
 }
-‘’’
+```
 
 
 # Process
