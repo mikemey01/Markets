@@ -4,8 +4,8 @@ Markets is an Android app for creating automatic option trades using the TradeKi
 # Assumptions
 Markets makes a few assumptions to speed up the rate at which trades are opened and closed.
 * Put and call options are opened depending on direction of the trend.
-* Premium is never sold, contracts are only purchased
-* Strike price: purchased at-the-money for both put and calls
+* Premium is never sold, contracts are only purchased.
+* Strike price: purchased at-the-money for both put and calls.
 * Expiry Date: if running on Monday or Tuesday, the current week’s expiration. If trading Wednesday - Friday, the following weeks expiration. This is to keep delta up so fewer movements of the underlying are required.
 * Quantity: 10 contracts - usually only requires a few cents movement in the contract price to overcome the brokers commissions.
 * Limit orders are used for both opening and closing trades.
@@ -17,5 +17,25 @@ The following indicators are currently being calculated by the app. By default t
 * Slow Stochastics
 * 50 period EMA
 * 200 period EMA
+
+# Setup
+You need to create a class titled APIKeys then copy the body of the APIKeysTemplate class into it. Populate your TradeKing API keys and account number and you’re good to go.
+‘’’java
+public class APIKeys {
+
+    //TradeKing API Keys
+    public static final String CONSUMER_KEY = "";
+    public static final String CONSUMER_SECRET = "";
+    public static final String OAUTH_TOKEN = "";
+    public static final String OAUTH_TOKEN_SECRET = "";
+
+    //TradeKing account number
+    public static final String ACCOUNT_NUMBER = "";
+
+    public APIKeys(){
+
+    }
+}
+
 
 # Process
