@@ -22,7 +22,7 @@ The following indicators are currently being calculated by the app. By default t
 # Setup
 Markets currently only operates with the TradeKing API. TradeKing has no minimum for access to their API which is ideal for starting algo trading. A TradeKing brokerage account is required.
 
-Create a class titled APIKeys then copy the body of the APIKeysTemplate class into it. Populate your TradeKing API keys and account number and you’re good to go.
+Fork the repository then create a class titled APIKeys then copy the body of the APIKeysTemplate class into it. Populate your TradeKing API keys and account number and you’re good to go.
 ```java
 public class APIKeys {
 
@@ -50,3 +50,6 @@ There are two phases the app works through. Phase one consists mainly of analyzi
 
 Pressing “Start” begins the analysis loop of phase one. Stop ends it. If a trade is already open when start is pushed, the app will begin phase two (closing analysis) immediately.
 
+
+# Libraries
+* ScribeJava for OAuth API calls.
