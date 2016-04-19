@@ -20,9 +20,9 @@ The following indicators are currently being calculated by the app. By default t
 * 200 period EMA
 
 # Setup
-Markets currently only operates with the TradeKing API. TradeKing has no minimum for access to their API which is ideal for starting algo trading. A TradeKing brokerage account is required.
+Markets currently only operates using the TradeKing API. TradeKing has no minimum for access to their API which is ideal for starting automated trading on Android. A TradeKing brokerage account is required.
 
-Fork the repository, create a class titled APIKeys, then copy the body of the APIKeysTemplate class into it. Populate your TradeKing API keys and account number and you’re good to go.
+Fork the repository, create a class titled APIKeys, then copy the body of the APIKeysTemplate class into it. Populate your TradeKing API keys and account number and you’re good to go. Make sure to add your APIKeys.java file to your gitignore if it’s not already.
 ```java
 public class APIKeys {
 
