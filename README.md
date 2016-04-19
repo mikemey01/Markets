@@ -22,7 +22,7 @@ The following indicators are currently being calculated by the app. By default t
 # Setup
 Markets currently only operates with the TradeKing API. TradeKing has no minimum for access to their API which is ideal for starting algo trading. A TradeKing brokerage account is required.
 
-Fork the repository then create a class titled APIKeys then copy the body of the APIKeysTemplate class into it. Populate your TradeKing API keys and account number and you’re good to go.
+Fork the repository, create a class titled APIKeys, then copy the body of the APIKeysTemplate class into it. Populate your TradeKing API keys and account number and you’re good to go.
 ```java
 public class APIKeys {
 
@@ -44,7 +44,7 @@ public class APIKeys {
 # Process
 A more detailed process document with code outline to come later.
 
-The idea is trade assumptions are created ahead of time so when opening trade conditions are met, an order can be opened quickly. When closing conditions are met, the trade can be closed equally quickly. The above assumptions outline the default contracts that will be traded, these can and should be adjusted to fit your needs.
+The idea is this: trade assumptions are created ahead of time so when good opening trade conditions are met, an order can be opened quickly. When closing conditions are met, the trade can be closed equally quickly. The above assumptions outline the default contracts that will be traded, these can and should be adjusted to fit your needs.
 
 There are two phases the app works through. Phase one consists mainly of analyzing the current symbol technical indicators and wait for an appropriate time to enter a trade. When that time comes, the analysis loop stops, instantiates the trade object and creates the opening trade. If the trade is opened successfully phase two begins. Phase two analyzes the current conditions against the open trade. When conditions are met (good or bad) the phase two analysis loop stops and the closing trade is executed. 
 
