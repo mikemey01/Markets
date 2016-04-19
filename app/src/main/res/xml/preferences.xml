@@ -3,7 +3,7 @@
 
     <CheckBoxPreference android:title="Go Live?"
         android:defaultValue="false"
-        android:summary="Check the box to start trading"
+        android:summary="Check the box to start trading real money, unchecked makes paper trades."
         android:key="isTradingLive"
         android:persistent="true">
     </CheckBoxPreference>

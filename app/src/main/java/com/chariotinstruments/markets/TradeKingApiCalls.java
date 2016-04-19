@@ -28,16 +28,16 @@ public class TradeKingApiCalls {
     public String getProfile(){
         return PROFILE_URL;
     }
-
     public String getFullAccountInfo() {
         return ACCOUNT_BALANCE_URL;
     }
-
     public String getOpenOptionPositions(){
         return OPEN_OPTION_POSITION_URL;
     }
 
     //endregion
+
+
 
     //region orders
 
@@ -49,16 +49,15 @@ public class TradeKingApiCalls {
     public String getMarketOptionPreview(){
         return OPTION_PREVIEW_URL;
     }
-
     public String getMarketOptionLive(){ return OPTION_LIVE_URL; }
-
     public String getOptionStrikePrices(String symbol){
         return OPTION_STRIKE_URL + symbol;
     }
-
     public String getOptionExpirations(String symbol) { return OPTION_EXPIRATION_URL + symbol; }
 
     //endregion
+
+
 
     //region market calls
 
@@ -70,15 +69,12 @@ public class TradeKingApiCalls {
     public String getTickerCurrent(String symbol){
         return TICKER_URL+symbol;
     }
-
     public String getMarketClock(){
         return MARKET_CLOCK;
     }
-
     public String getMarketQuote(String symbol){
         return MARKET_QUOTE+symbol;
     }
-
     public String getMarketSpecifiedMinuteData(String symbol, String date){
         return MARKET_HISTORICAL_QUOTE+symbol+"&startdate="+date+"&interval=1min";
     }
@@ -90,7 +86,6 @@ public class TradeKingApiCalls {
         return MARKET_HISTORICAL_QUOTE+symbol+"&startdate="+yesterdaysDate+"&interval=1min";
     }
 
-
     //Gets the data up to the current time.
     public String getMarketTodaysMinuteData(String symbol){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
@@ -100,6 +95,8 @@ public class TradeKingApiCalls {
     }
 
     //endregion
+
+
 
     //region Calendar Work
 

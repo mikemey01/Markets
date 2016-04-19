@@ -176,8 +176,6 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
     private void prefsInit(){
         SharedPreferences sp= PreferenceManager.getDefaultSharedPreferences(this);
         boolean tradeOccurred = sp.getBoolean("hasTradeOccurred", false);
-
-        System.out.println(tradeOccurred);
     }
 
 }
