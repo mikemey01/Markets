@@ -2,7 +2,7 @@
 Markets is an Android app for creating automatic option trades using the TradeKing API. Trades are opened and closed based on the position of various technical indicators. TradeKing’s API uses the FIXML protocol for creating orders. Any exchange traded option symbols can be entered, analyzed, and traded.
 
 # Assumptions
-Markets makes a few assumptions to speed up the rate at which trades are opened and closed.
+Markets makes a few assumptions to speed up the rate at which trades are opened and closed. Note that these are the current defaults, a future update will include the ability to set some of these criteria inside the app so it doesn’t need to be adjusted in the code.
 * Put and call options are opened depending on direction of the trend.
 * Premium is never sold, contracts are only purchased.
 * Strike price: purchased at-the-money for both put and calls.
