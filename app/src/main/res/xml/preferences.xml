@@ -8,9 +8,9 @@
         android:persistent="true">
     </CheckBoxPreference>
 
-    <EditTextPreference android:title="Last Trade Date"
+    <EditTextPreference android:title="Last Live Trade Date"
         android:key="lastTradeDate"
-        android:summary="Date the last trade occurred">
+        android:summary="Date the last real trade occurred">
     </EditTextPreference>
 
     <EditTextPreference android:title="Paper Account Balance"
