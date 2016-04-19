@@ -50,6 +50,11 @@ There are two phases the app works through. Phase one consists mainly of analyzi
 
 Pressing “Start” begins the analysis loop of phase one. Stop ends it. If a trade is already open when start is pushed, the app will begin phase two (closing analysis) immediately.
 
+# Next Steps
+There is a lot of work to do on this project. Since TradeKing does not offer paper accounts that has recently been implemented within the app itself. This is the primary focus for now to treat the paper account as real as possible using live data from TK. Next in order of importance:
+* Back-testing framework (one week, one month, one year etc..)
+* Live charting of current data
+* Better interface (while keeping it minimal - speed will always be king).
 
 # Libraries
 * ScribeJava for OAuth API calls.
