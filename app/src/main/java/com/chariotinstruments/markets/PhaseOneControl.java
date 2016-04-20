@@ -217,7 +217,11 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         //Build the console output
         stockQuoteOutput = stockQuoteOutput + "\n" +
                             indicators + "\n";
-        consoleView.setText(stockQuoteOutput);
+
+        //only set the console view if analysis is currently active.
+        if(isActive) {
+            consoleView.setText(stockQuoteOutput);
+        }
 
         if(isLoop) {
             dataRetrievalLoop();

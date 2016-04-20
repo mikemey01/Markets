@@ -10,6 +10,7 @@ Markets makes a few assumptions to speed up the rate at which trades are opened 
 * Quantity: 10 contracts - usually only requires a few cents movement in the contract price to overcome the brokers commissions.
 * Limit orders are used for both opening and closing trades.
 * only one trade can be opened at a time.
+* Trades can not be opened within the last 30 minutes of the day.
 
 # Indicators
 The following indicators are currently being calculated by the app. By default the indicators are calculated for the one minute time-frame. This can be adjusted using a different time interval in the timeless API call.

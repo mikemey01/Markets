@@ -10,6 +10,10 @@ public class CalcMACD {
     private MarketDay marketDay;
     private ArrayList<MarketCandle> marketCandles;
 
+    //signal member vars
+    private ArrayList<Double> slowEMAList;
+    private ArrayList<Double> fastEMAList;
+
     public CalcMACD(MarketDay marDay){
         marketDay = marDay;
         this.marketCandles = new ArrayList<MarketCandle>();
@@ -27,10 +31,6 @@ public class CalcMACD {
         ret = twelveEMA - twentysixEMA;
 
         return ret;
-    }
-
-    public String getCurrentSignal(){
-        return "";
     }
 
     private double get12PeriodEMA(){
@@ -52,6 +52,7 @@ public class CalcMACD {
 
         for(int i = 13; i < marketCandles.size(); i++) {
             curEMA = (marketCandles.get(i).getClose() - curEMA) * multiplier + curEMA;
+            fastEMAList.add(curEMA);
         }
 
         //EMA: {Close - EMA(previous day)} x multiplier + EMA(previous day).
@@ -79,6 +80,29 @@ public class CalcMACD {
 
         for(int i = 27; i < marketCandles.size(); i++){
             curEMA = ((marketCandles.get(i).getClose() * multiplier) + (curEMA * (1.0 - multiplier)));
+            slowEMAList.add(curEMA);
+        }
+
+        return curEMA;
+    }
+
+    private double getSignal(){
+        ArrayList<Double> macdList = new ArrayList<Double>();
+        double multiplier = 2.0/10.0;
+        double curEMA = 0.0;
+
+        //add 9 MACD values to List for processing the latest signal.
+        //Minus 11 for one seed and one for accounting the size()-1.
+        for(int i = slowEMAList.size()-11; i < slowEMAList.size(); i++){
+            macdList.add(fastEMAList.get(i)-slowEMAList.get(i));
+        }
+
+        //Seed with the first item in the list.
+        curEMA = macdList.get(0);
+
+
+        for(int i = 1; i < macdList.size(); i++){
+            curEMA = ((macdList.get(i) * multiplier) + (curEMA * (1.0-multiplier)));
         }
 
         return curEMA;
