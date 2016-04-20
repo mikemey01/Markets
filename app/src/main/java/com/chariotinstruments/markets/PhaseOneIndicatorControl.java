@@ -101,10 +101,13 @@ public class PhaseOneIndicatorControl {
     public String calcMACD(){
         String ret = "";
         String macdString = "";
+        String signalString = "";
         CalcMACD macd = new CalcMACD(marketDay);
         curMACD = macd.getCurrentMACD();
+        double curSignal = macd.getSignal();
         macdString = String.format("%.4f", curMACD);
-        ret = ret + "MACD: " + macdString + "\n";
+        signalString = String.format("%.4f", curSignal);
+        ret = ret + "MACD: " + macdString + ", " +signalString + "\n";
 
         return ret;
     }

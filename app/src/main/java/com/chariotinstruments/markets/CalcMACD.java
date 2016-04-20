@@ -19,6 +19,10 @@ public class CalcMACD {
         this.marketCandles = new ArrayList<MarketCandle>();
         marketCandles = this.marketDay.getMarketCandles();
 
+        //initialize lists
+        slowEMAList = new ArrayList<Double>();
+        fastEMAList = new ArrayList<Double>();
+
     }
 
     public double getCurrentMACD(){
@@ -86,7 +90,7 @@ public class CalcMACD {
         return curEMA;
     }
 
-    private double getSignal(){
+    public double getSignal(){
         ArrayList<Double> macdList = new ArrayList<Double>();
         double multiplier = 2.0/10.0;
         double curEMA = 0.0;
