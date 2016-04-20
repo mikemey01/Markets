@@ -49,14 +49,15 @@ public class PaperAccount {
         editor.commit();
     }
 
-    public void setAccountBalanceChange(double changeAmount){
+    public void setAccountBalanceChange(double changeAmount, double qty){
         double newBalance = 0.0;
+        double commissions = (qty * .65) + 4.95;
 
         //get current account balance
         double curBalance = getPaperAccountBalance();
 
         //set the new balance
-        newBalance = curBalance + changeAmount;
+        newBalance = curBalance + changeAmount + commissions;
 
         //save it
         setPaperAccountBalance(newBalance);

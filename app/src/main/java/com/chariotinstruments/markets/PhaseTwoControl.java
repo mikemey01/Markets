@@ -240,7 +240,7 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
 
     private void paperCloseTrade(double gainLoss){
         PaperAccount paper = new PaperAccount(uiActivity);
-        paper.setAccountBalanceChange(gainLoss*10*100);
+        paper.setAccountBalanceChange(gainLoss*10*100, 10);
 
         this.console.setText("Trade complete for a gain/loss of " + Double.toString(gainLoss*10*100));
     }
