@@ -59,3 +59,6 @@ There is a lot of work to do on this project. Since TradeKing does not offer pap
 
 # Libraries
 * ScribeJava for OAuth API calls.
+
+# License
+MIT License will be added shortly.
