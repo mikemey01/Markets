@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <CheckBoxPreference android:title="Go Live?"
-        android:defaultValue="false"
-        android:summary="Check the box to start trading real money, unchecked makes paper trades."
-        android:key="isTradingLive"
-        android:persistent="true">
-    </CheckBoxPreference>
+    <PreferenceCategory
+        android:title="General Settings"
+        android:key="generalCategory">
 
-    <EditTextPreference android:title="Last Live Trade Date"
-        android:key="lastTradeDate"
-        android:summary="Date the last real trade occurred, no paper">
-    </EditTextPreference>
+        <CheckBoxPreference android:title="Go Live?"
+            android:defaultValue="false"
+            android:summary="Check the box to start trading real money, unchecked makes paper trades."
+            android:key="isTradingLive"
+            android:persistent="true">
+        </CheckBoxPreference>
+
+        <EditTextPreference android:title="Last Live Trade Date"
+            android:key="lastTradeDate"
+            android:summary="Date the last real trade occurred, no paper">
+        </EditTextPreference>
+
+    </PreferenceCategory>
 
     <PreferenceCategory
         android:key="tradeOverrides"
