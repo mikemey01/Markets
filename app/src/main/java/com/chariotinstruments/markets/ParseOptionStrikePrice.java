@@ -19,7 +19,7 @@ import java.util.ArrayList;
 /**
  * Created by user on 3/9/16.
  */
-public class ParseOptionStrikePrice extends AsyncTask<Void, Void, ArrayList<Double>> {
+public class ParseOptionStrikePrice extends AsyncTask<Void, Void, Double> {
 
     private static final String GET_RESPONSE = "response";
     private static final String GET_PRICES = "prices";
@@ -29,22 +29,26 @@ public class ParseOptionStrikePrice extends AsyncTask<Void, Void, ArrayList<Doub
     private TradeKingApiCalls tk = new TradeKingApiCalls();
     private String symbol;
     private ParseOptionStrikePriceAsyncListener _asyncListener;
+    private boolean isCall;
+    private double curPrice;
 
-    public ParseOptionStrikePrice(Activity activity, ParseOptionStrikePriceAsyncListener listener, String symbol) {
+    public ParseOptionStrikePrice(Activity activity, ParseOptionStrikePriceAsyncListener listener, String symbol, boolean isCallIn, double curPriceIn) {
         this.symbol = symbol;
         this._asyncListener = listener;
+        this.isCall = isCallIn;
+        this.curPrice = curPriceIn;
     }
 
     public interface ParseOptionStrikePriceAsyncListener{
-        public void onParseOptionStrikePriceComplete(ArrayList<Double> strikePrice);
+        public void onParseOptionStrikePriceComplete(double strikePrice);
     }
 
     public void onPreExecute(){
         super.onPreExecute();
     }
 
-    protected ArrayList<Double> doInBackground(Void... voids){
-        ArrayList<Double> ret = new ArrayList<Double>();
+    protected Double doInBackground(Void... voids){
+        double ret = 0.0;
 
         //Build the OAuth service
         final OAuth10aService service = new ServiceBuilder()
@@ -67,13 +71,14 @@ public class ParseOptionStrikePrice extends AsyncTask<Void, Void, ArrayList<Doub
         return ret;
     }
 
-    protected void onPostExecute(ArrayList<Double> strike){
+    protected void onPostExecute(double strike){
         super.onPostExecute(strike);
         _asyncListener.onParseOptionStrikePriceComplete(strike);
     }
 
-    public ArrayList<Double> parseJSON(Response response) throws JSONException{
+    public double parseJSON(Response response) throws JSONException{
         ArrayList<Double> ret = new ArrayList<Double>();
+        double retDouble = 0.0;
 
         JSONObject jsonResponse = new JSONObject();
         JSONObject jsonPrices = new JSONObject();
@@ -89,6 +94,36 @@ public class ParseOptionStrikePrice extends AsyncTask<Void, Void, ArrayList<Doub
             ret.add(Double.parseDouble(curPrice));
         }
 
-        return ret;
+        //pass the list we just parsed from TK to narrow down to one strike.
+        retDouble = getCurrentStrikePrice(ret);
+
+        return retDouble;
+    }
+
+    private double getCurrentStrikePrice(ArrayList<Double> strikeList){
+        if(isCall){
+            double retStrikePrice = 0.0;
+            int index = -1;
+            retStrikePrice = Math.ceil(curPrice);
+
+            //retStrikePrice += 1.0; commenting this out to move the strike closer to ITM.
+            index = strikeList.indexOf(retStrikePrice);
+
+            if(index > -1){
+                return retStrikePrice;
+            }
+        }else{
+            double retStrikePrice = 0.0;
+            int index = -1;
+            retStrikePrice = Math.floor(curPrice);
+            //retStrikePrice -= 1.0; //commenting this out to move the strike closer to ITM.
+            index = strikeList.indexOf(retStrikePrice);
+
+            if(index > -1){
+                return retStrikePrice;
+            }
+        }
+        //couldn't find the correct strike price, return -1 so an order isn't opened.
+        return 0.0;
     }
 }

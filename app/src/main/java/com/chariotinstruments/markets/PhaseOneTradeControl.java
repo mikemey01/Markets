@@ -47,7 +47,7 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
     protected void executeTrade(){
 
         new ParseOptionExpirations(uiActivity, this, symbol).execute();
-        new ParseOptionStrikePrice(uiActivity, this, symbol).execute();
+        new ParseOptionStrikePrice(uiActivity, this, symbol, isCall, curPrice).execute();
     }
 
     public void onParseOptionExpirationsComplete(String expiration) {
@@ -55,34 +55,14 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
     }
 
     //TODO: move this to the ParseStrike class, need to pass in if put or call.
-    public void onParseOptionStrikePriceComplete(ArrayList<Double> strikeList){
+    public void onParseOptionStrikePriceComplete(double strikePriceIn){
+        this.strikePrice = strikePriceIn;
+
+        //now that we have strike and expiration, build the fixml.
         FixmlModel fixml = new FixmlModel(false);
-
-        if(isCall){
-            double retStrikePrice = 0.0;
-            int index = -1;
-            retStrikePrice = Math.ceil(curPrice);
-
-            //retStrikePrice += 1.0; commenting this out to move the strike closer to ITM.
-            index = strikeList.indexOf(retStrikePrice);
-
-            if(index > -1){
-                this.strikePrice = retStrikePrice;
-            }
-        }else{
-            double retStrikePrice = 0.0;
-            int index = -1;
-            retStrikePrice = Math.floor(curPrice);
-            //retStrikePrice -= 1.0; //commenting this out to move the strike closer to ITM.
-            index = strikeList.indexOf(retStrikePrice);
-
-            if(index > -1){
-                this.strikePrice = retStrikePrice;
-            }
-        }
-
         fixml = buildFixml();
 
+        //execute the order preview to get the total cost, commissions, limit etc..before the real order.
         new ParseOptionOrderPreview(uiActivity, this, fixml).execute();
     }
 
@@ -101,6 +81,7 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
             //use the same fixml data from the preview for consistency.
             new ParseOptionOrder(uiActivity, this, fixml).execute();
         }
+        //If paper trading, call the paper trading constructor on p2.
         if(!isLiveTrading){
             PhaseTwoControl p2 = new PhaseTwoControl(uiActivity, fixml);
             p2.setDelta(this.delta);
