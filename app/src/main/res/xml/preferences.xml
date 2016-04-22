@@ -10,13 +10,19 @@
 
     <EditTextPreference android:title="Last Live Trade Date"
         android:key="lastTradeDate"
-        android:summary="Date the last real trade occurred">
+        android:summary="Date the last real trade occurred, no paper">
     </EditTextPreference>
 
-    <EditTextPreference android:title="Paper Account Balance"
-        android:key="paperAccountBalance"
-        android:summary="Current amount in paper account">
-    </EditTextPreference>
+    <PreferenceCategory
+        android:key="tradeOverrides"
+        android:title="Trae Overrides">
+
+        <EditTextPreference android:title="Paper Account Balance"
+            android:key="paperAccountBalance"
+            android:summary="Current amount in paper account">
+        </EditTextPreference>
+
+    </PreferenceCategory>
 
 
 </PreferenceScreen>

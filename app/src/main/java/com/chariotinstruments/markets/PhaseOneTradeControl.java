@@ -9,10 +9,10 @@ import java.util.ArrayList;
 /**
  * Created by user on 3/12/16.
  * The flow of this class is:
- * 1. executeTrade() is called from outside.
+ * 1. executeTrade() is called from phase one control.
  * 2. wait for the expirations and strike to return (onComplete methods)
  * 3. The preview order is created and executed in the onStrikeComplete method
- * 4. Check buying power in onOptionOrderPreviewComplete, execute real trade here (set delta, limit).
+ * 4. Check buying power in onOptionOrderPreviewComplete, execute real trade or paper trade here (set delta, limit).
  * 5. Start p2 in onOptionOrderComplete;
  */
 public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionStrikePriceAsyncListener, ParseOptionExpirations.ParseOptionExpirationsAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener, ParseOptionOrder.ParseOptionOrderListener{
@@ -45,7 +45,7 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
     }
 
     protected void executeTrade(){
-
+        //get the exact expiration and strike we'll be using.
         new ParseOptionExpirations(uiActivity, this, symbol).execute();
         new ParseOptionStrikePrice(uiActivity, this, symbol, isCall, curPrice).execute();
     }
@@ -54,7 +54,6 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
         this.expiration = expiration;
     }
 
-    //TODO: move this to the ParseStrike class, need to pass in if put or call.
     public void onParseOptionStrikePriceComplete(double strikePriceIn){
         this.strikePrice = strikePriceIn;
 
