@@ -19,6 +19,7 @@ The following indicators are currently being calculated by the app. By default t
 * Slow Stochastics
 * 50 period EMA
 * 200 period EMA
+* Period volume
 
 # Setup
 Markets currently only operates using the TradeKing API. TradeKing has no minimum for access to their API which is ideal for starting automated trading on Android. A TradeKing brokerage account is required.
