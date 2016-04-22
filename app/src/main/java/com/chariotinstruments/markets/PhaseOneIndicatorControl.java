@@ -15,6 +15,7 @@ public class PhaseOneIndicatorControl {
     private double curRSI;
     private double curMACD;
     private double curEMA;
+    private double curSlowStochastic;
 
     private boolean preTradeFavorableConditionsFound;
     private boolean isUp;
@@ -115,7 +116,10 @@ public class PhaseOneIndicatorControl {
     public String calcStochastics(){
         String ret = "";
         String stochString = "";
-
+        CalcStochastics stochs = new CalcStochastics(marketDay);
+        curSlowStochastic = stochs.getCurrentSlowStoachstics();
+        stochString = String.format("%.4f", curSlowStochastic);
+        ret = ret + "Slow Stochastic: " + stochString;
         return ret;
     }
 

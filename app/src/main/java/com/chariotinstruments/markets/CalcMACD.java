@@ -80,6 +80,7 @@ public class CalcMACD {
         //calculate multiplier
         multiplier = 2.0/27.0;
 
+        //calculate initial "seed" ema.
         curEMA = ((marketCandles.get(26).getClose() * multiplier) + (firstTwentysixAvg * (1.0 - multiplier)));
 
         for(int i = 27; i < marketCandles.size(); i++){

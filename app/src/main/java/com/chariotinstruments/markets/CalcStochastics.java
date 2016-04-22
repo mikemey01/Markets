@@ -13,19 +13,18 @@ public class CalcStochastics {
     private double highPrice;
     private double curPrice;
 
-    private ArrayList<Double> kListFast;
     private ArrayList<Double> kListSlow;
 
     public CalcStochastics(MarketDay marDay){
         marketDay = marDay;
         marketCandles = marketDay.getMarketCandles();
-        kListFast = new ArrayList<Double>();
         kListSlow = new ArrayList<Double>();
     }
 
-    public void startCalc(){
-        calcFastK();
-        calcSlowK();
+    public double getCurrentSlowStoachstics(){
+        double slowK = calcSlowK(calcFastK());
+
+        return slowK;
     }
 
     public StochasticHelper getLowHighCurrent(int startIndex, int stopIndex){
@@ -60,8 +59,9 @@ public class CalcStochastics {
         return stochHelper;
     }
 
-    public void calcFastK(){
-        double curFastK;
+    public ArrayList<Double> calcFastK(){
+        double curFastK = 0.0;
+        ArrayList<Double> kListFast = new ArrayList<Double>();
 
         for(int i = 15; i < marketCandles.size(); i++){
             StochasticHelper stochHelper = new StochasticHelper();
@@ -71,11 +71,11 @@ public class CalcStochastics {
 
         }
 
-        System.out.println(kListFast.get(kListFast.size()-2));
+        return kListFast;
     }
 
-    public void calcSlowK(){
-        double curSlowK;
+    public double calcSlowK(ArrayList<Double> kListFast){
+        double curSlowK = 0.0;
 
         for(int i = 2; i < kListFast.size(); i++){
             int j = i;
@@ -87,6 +87,7 @@ public class CalcStochastics {
             curSlowK = curSlowK / 3;
             kListSlow.add(curSlowK);
         }
+        return curSlowK;
     }
 
     public class StochasticHelper{
