@@ -20,7 +20,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="tradeOverrides"
+        android:key="tradeCategory"
         android:title="Trade Overrides, only enter if not using defaults">
 
         <EditTextPreference

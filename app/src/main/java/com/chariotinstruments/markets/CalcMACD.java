@@ -104,9 +104,13 @@ public class CalcMACD {
         //Seed with the first item in the list.
         curEMA = macdList.get(0);
 
+        //setup the index needed from the marketCandles array
+        int mi = marketCandles.size()-10;
 
         for(int i = 1; i < macdList.size(); i++){
-            curEMA = ((macdList.get(i) * multiplier) + (curEMA * (1.0-multiplier)));
+            curEMA = ((marketCandles.get(mi).getClose() * multiplier) + (curEMA * (1.0-multiplier)));
+            //increment the marketcandles index by 1.
+            mi++;
         }
 
         return curEMA;
