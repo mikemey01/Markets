@@ -40,8 +40,23 @@ public class MarketDay {
         error = errorIn;
     }
 
+    public void setIsError(boolean isErrorIn){
+        isError = isErrorIn;
+    }
+
+    public boolean getIsError(){
+        return isError;
+    }
+
     public long getLatestCandleVolume(){
-        return _marketCandles.get(_marketCandles.size()-2).getVolume();
+
+        //This was throwing an error a few times a day, trying to catch it.
+        if(_marketCandles.size()>2) {
+            return _marketCandles.get(_marketCandles.size() - 2).getVolume();
+        }
+
+        //something happened with the marketcandles array, return 0.
+        return 0;
     }
 
     public ArrayList<MarketCandle> getMarketCandles(){
