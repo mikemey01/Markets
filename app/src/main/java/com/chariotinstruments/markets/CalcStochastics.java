@@ -49,11 +49,6 @@ public class CalcStochastics {
             if(curHigh > stochHelper.getHighPrice()){
                 stochHelper.setHighPrice(curHigh);
             }
-            //test
-            if(stopIndex == marketCandles.size()-1){
-                System.out.println("cur candle: " + curLow);
-                System.out.println("Low: "+stochHelper.getLowprice());
-            }
         }
 
         return stochHelper;
