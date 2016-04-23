@@ -70,6 +70,7 @@ public class PhaseOneIndicatorControl {
         ret = ret + calcMACD();
         ret = ret + calc50EMAPeriods();
         ret = ret + calc200EMAperiods();
+        ret = ret + calcStochastics();
 
         preTradeFavorableConditionsFound();
 
@@ -118,8 +119,8 @@ public class PhaseOneIndicatorControl {
         String stochString = "";
         CalcStochastics stochs = new CalcStochastics(marketDay);
         curSlowStochastic = stochs.getCurrentSlowStoachstics();
-        stochString = String.format("%.4f", curSlowStochastic);
-        ret = ret + "Slow Stochastic: " + stochString;
+        stochString = String.format("%.2f", curSlowStochastic);
+        ret = ret + "Slow Stochastic: " + stochString + "\n";
         return ret;
     }
 
