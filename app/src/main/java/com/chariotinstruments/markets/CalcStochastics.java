@@ -23,7 +23,6 @@ public class CalcStochastics {
 
     public double getCurrentSlowStoachstics(){
         double slowK = calcSlowK(calcFastK());
-
         return slowK;
     }
 
@@ -50,7 +49,6 @@ public class CalcStochastics {
                 stochHelper.setHighPrice(curHigh);
             }
         }
-
         return stochHelper;
     }
 
@@ -63,9 +61,7 @@ public class CalcStochastics {
             stochHelper = getLowHighCurrent(i-15, i);
             curFastK = ((stochHelper.getCurPrice() - stochHelper.getLowprice()) / (stochHelper.getHighPrice() - stochHelper.getLowprice())) * 100;
             kListFast.add(curFastK);
-
         }
-
         return kListFast;
     }
 
