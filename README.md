@@ -1,19 +1,19 @@
 # Markets
 Markets is an Android app for creating automatic option trades using the TradeKing API. Trades are opened and closed based on the position of various technical indicators. TradeKing’s API uses the FIXML protocol for creating orders. Any exchange traded option symbols can be entered, analyzed, and traded.
 
-# Assumptions
-Markets makes a few assumptions to speed up the rate at which trades are opened and closed. Note that these are the current defaults, a future update will include the ability to set some of these criteria inside the app so it doesn’t need to be adjusted in the code.
+# Defaults
+Markets makes a few default assumptions to speed up the rate at which trades are opened and closed. Note that these are the current defaults, a future update will include the ability to override some of these criteria inside the app so it doesn’t need to be adjusted in the code.
 * Put and call options are opened depending on direction of the trend.
 * Premium is never sold, contracts are only purchased.
 * Strike price: purchased at-the-money for both put and calls.
-* Expiry Date: if running on Monday or Tuesday, the current week’s expiration. If trading Wednesday - Friday, the following weeks expiration. This is to keep delta up so fewer movements of the underlying are required.
+* Expiry Date: if running on Monday or Tuesday, it uses the current week’s expiration. If trading Wednesday - Friday, the following weeks expiration is used. This is to keep delta up so fewer movements of the underlying are required.
 * Quantity: 10 contracts - usually only requires a few cents movement in the contract price to overcome the brokers commissions.
 * Limit orders are used for both opening and closing trades.
 * only one trade can be opened at a time.
 * Trades can not be opened within the last 30 minutes of the day.
 
 # Indicators
-The following indicators are currently being calculated by the app. By default the indicators are calculated for the one minute time-frame. This can be adjusted using a different time interval in the timeless API call.
+The following indicators are currently being calculated by the app. By default the indicators are calculated for the one minute time-frame. This can be adjusted using a different time interval in the timesales API call. A future update will allow this to be adjusted from the preferences.
 * RSI
 * MACD/Signal
 * Slow Stochastics
