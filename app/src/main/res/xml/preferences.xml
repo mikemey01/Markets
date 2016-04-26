@@ -64,7 +64,8 @@
         <EditTextPreference
             android:title="Time Interval"
             android:key="timeInterval"
-            android:summary="Which time interval should be used when returning data? Enter whole number: 1 for one-minute, 5 for five-minute etc..">
+            android:summary="Which time interval should be used when returning data? Enter whole number: 1 for one-minute, 5 for five-minute etc.."
+            android:inputType="number">
         </EditTextPreference>
 
     </PreferenceCategory>

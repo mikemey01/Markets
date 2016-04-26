@@ -98,7 +98,7 @@ public class CalcMACD {
 
         //add 9 MACD values to List for processing the latest signal.
         //Minus 11 for one seed and one for accounting the size()-1.
-        for(int i = slowEMAList.size()-11; i < slowEMAList.size(); i++){
+        for(int i = 100; i < slowEMAList.size(); i++){
             macdList.add(fastEMAList.get(i)-slowEMAList.get(i));
         }
 
