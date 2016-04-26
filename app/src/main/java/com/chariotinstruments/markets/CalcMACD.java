@@ -94,27 +94,30 @@ public class CalcMACD {
     public double getSignal(){
         ArrayList<Double> macdList = new ArrayList<Double>();
         double multiplier = 2.0/10.0;
-        double curEMA = 0.0;
+        double curMACD= 0.0;
 
-        //add 9 MACD values to List for processing the latest signal.
-        //Minus 11 for one seed and one for accounting the size()-1.
+        //todo:sync macd list here, fast and slow started at different times, need to add the last index to new array and work backwards.
         for(int i = 100; i < slowEMAList.size(); i++){
             macdList.add(fastEMAList.get(i)-slowEMAList.get(i));
         }
 
+
+
         //Seed with the first item in the list.
-        curEMA = macdList.get(0);
+        curMACD = macdList.get(0);
 
         //setup the index needed from the marketCandles array
         int mi = marketCandles.size()-10;
 
         for(int i = 1; i < macdList.size(); i++){
-            curEMA = ((marketCandles.get(mi).getClose() * multiplier) + (curEMA * (1.0-multiplier)));
+            //should be:
+            //curMACD = ((<curMacd> * multiplier) + (<previousMacd> * (1.0-multiplier)));
+            curMACD = ((marketCandles.get(mi).getClose() * multiplier) + (curMACD * (1.0-multiplier)));
             //increment the marketcandles index by 1.
             mi++;
         }
 
-        return curEMA;
+        return curMACD;
     }
 
 }
