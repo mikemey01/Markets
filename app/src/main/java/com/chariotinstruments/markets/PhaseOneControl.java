@@ -102,6 +102,8 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
             if(isWithinTimeFrame()) {
                 //check if a trade has already occurred today, allow the order to submit always if paper trading.
                 if (!tradeOccurredToday() || !isTradingLive()) {
+                    consoleView.setText("Trade occurred");
+                    System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDD TRADE OCCURRED");
                     submitOrder(indicatorControl.getIsUp());
                 }else {
                     setTradeableConditions(false);
@@ -155,6 +157,11 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
         String strDate = prefs.getString("lastTradeDate", "");
         Calendar lastTradeDate = Calendar.getInstance();
         Calendar todaysDate = Calendar.getInstance();
+
+        //Check if the last trade date is populated, if not return false
+        if(strDate.isEmpty() || strDate == null){
+            return false;
+        }
 
         //returning false if it fails to parse a date A LITTLE RISKY.
         try {
