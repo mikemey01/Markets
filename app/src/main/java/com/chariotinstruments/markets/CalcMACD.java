@@ -117,7 +117,7 @@ public class CalcMACD {
         for(int i = 1; i < macdList.size(); i++){
             //should be:
             //curMACD = ((<curMacd> * multiplier) + (<previousMacd> * (1.0-multiplier)));
-            curMACD = ((marketCandles.get(mi).getClose() * multiplier) + (curMACD * (1.0-multiplier)));
+            //curMACD = ((marketCandles.get(mi).getClose() * multiplier) + (curMACD * (1.0-multiplier)));
             //increment the marketcandles index by 1.
             mi++;
         }
