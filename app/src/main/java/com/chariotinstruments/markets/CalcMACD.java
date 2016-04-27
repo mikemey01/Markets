@@ -97,11 +97,16 @@ public class CalcMACD {
         double curMACD= 0.0;
 
         //todo:sync macd list here, fast and slow started at different times, need to add the last index to new array and work backwards.
-        for(int i = 100; i < slowEMAList.size(); i++){
-            macdList.add(fastEMAList.get(i)-slowEMAList.get(i));
+        int j = fastEMAList.size()-1;
+        for(int i = slowEMAList.size()-1; i > 30; i--){
+            macdList.add(fastEMAList.get(j)-slowEMAList.get(i));
+            j--;
         }
 
-
+        //reverse through this list to start at the beginning.
+        for(int i = macdList.size()-1; i > 0; i--){
+            
+        }
 
         //Seed with the first item in the list.
         curMACD = macdList.get(0);
