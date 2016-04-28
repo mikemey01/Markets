@@ -62,4 +62,4 @@ There is a lot of work to do on this project. Since TradeKing does not offer pap
 * ScribeJava for OAuth API calls.
 
 # License
-MIT License will be added shortly.
+Licensed under the MIT License - see LICENSE.txt for more.
