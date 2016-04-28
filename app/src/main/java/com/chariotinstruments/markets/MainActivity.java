@@ -18,7 +18,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements ParseAccountData.ParseAccountDataAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener, ParseOpenPosition.ParseOpenPositionAsyncListener{
+public class MainActivity extends AppCompatActivity implements ParseAccountData.ParseAccountDataAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener, ParseOpenPosition.ParseOpenPositionAsyncListener, ParseOptionStrikePrice.ParseOptionStrikePriceAsyncListener{
 
     TextView dataTextView;
     EditText currentTextBox;
@@ -65,13 +65,12 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
             toast.show();
         }else {
             hideKeyboard();
-            p1.setSymbol(symbol);
-            p1.setIsLoop(false);
-            p1.start();
+//            p1.setSymbol(symbol);
+//            p1.setIsLoop(false);
+//            p1.start();
+
+            new ParseOptionStrikePrice(this, this, symbol, true, 208.75).execute();
         }
-//        p1.setSymbol(symbol);
-//        p1.setIsLoop(false);
-//        p1.p2PaperTester();
 
     }
 
@@ -131,14 +130,9 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
         dataTextView.setText(expiration);
     }
 
-    public void onParseOptionStrikePriceComplete(ArrayList<Double> response){
-        String output = "";
-
-        for(int i = 0; i < response.size(); i++){
-            output = Double.toString(response.get(i)) + "\n" + output;
-        }
-
-        dataTextView.setText(output);
+    public void onParseOptionStrikePriceComplete(double response){
+        System.out.println(response);
+        dataTextView.setText(Double.toString(response));
     }
 
     public void onParseOptionOrderPreviewComplete(OptionOrderPreview order){

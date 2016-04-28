@@ -71,7 +71,7 @@ public class ParseOptionStrikePrice extends AsyncTask<Void, Void, Double> {
         return ret;
     }
 
-    protected void onPostExecute(double strike){
+    protected void onPostExecute(Double strike){
         super.onPostExecute(strike);
         _asyncListener.onParseOptionStrikePriceComplete(strike);
     }
@@ -100,7 +100,7 @@ public class ParseOptionStrikePrice extends AsyncTask<Void, Void, Double> {
         return retDouble;
     }
 
-    private double getCurrentStrikePrice(ArrayList<Double> strikeList){
+    protected double getCurrentStrikePrice(ArrayList<Double> strikeList){
         if(isCall){
             double retStrikePrice = 0.0;
             int index = -1;

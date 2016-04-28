@@ -38,7 +38,7 @@ public class CalcStochastics {
         stochHelper.setHighPrice(marketCandles.get(startIndex).getHigh());
         stochHelper.setCurPrice(marketCandles.get(stopIndex).getClose());
 
-        for (int i = startIndex + 1; i < stopIndex; i++){
+        for (int i = startIndex; i <= stopIndex; i++){
             curLow = marketCandles.get(i).getLow();
             curHigh = marketCandles.get(i).getHigh();
 
@@ -56,9 +56,9 @@ public class CalcStochastics {
         double curFastK = 0.0;
         ArrayList<Double> kListFast = new ArrayList<Double>();
 
-        for(int i = 15; i < marketCandles.size(); i++){
+        for(int i = 14; i < marketCandles.size(); i++){
             StochasticHelper stochHelper = new StochasticHelper();
-            stochHelper = getLowHighCurrent(i-15, i);
+            stochHelper = getLowHighCurrent(i-14, i-1);
             curFastK = ((stochHelper.getCurPrice() - stochHelper.getLowprice()) / (stochHelper.getHighPrice() - stochHelper.getLowprice())) * 100;
             kListFast.add(curFastK);
         }
