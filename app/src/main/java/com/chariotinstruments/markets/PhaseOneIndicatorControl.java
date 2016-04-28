@@ -109,7 +109,7 @@ public class PhaseOneIndicatorControl {
         double curSignal = macd.getSignal();
         macdString = String.format("%.4f", curMACD);
         signalString = String.format("%.4f", curSignal);
-        ret = ret + "MACD: " + macdString + ", " +signalString + "\n";
+        ret = ret + "MACD, Signal: " + macdString + ", " +signalString + "\n";
 
         return ret;
     }
@@ -153,8 +153,7 @@ public class PhaseOneIndicatorControl {
 
         ema50Diff = Math.abs(ema - marketCandles.get(marketCandles.size()-1).getClose());
 
-        ret = "50 EMA: " + String.format("%.2f", ema) + "\n";
-        ret = ret + "50 EMA Diff: " + String.format("%.2f", ema50Diff) + "\n";
+        ret = "50 EMA, Diff: " + String.format("%.2f", ema) + ", " + String.format("%.2f", ema50Diff) + "\n";
         this.curEMA = ema;
 
         return ret;

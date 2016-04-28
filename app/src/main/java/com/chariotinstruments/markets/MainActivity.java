@@ -65,11 +65,9 @@ public class MainActivity extends AppCompatActivity implements ParseAccountData.
             toast.show();
         }else {
             hideKeyboard();
-//            p1.setSymbol(symbol);
-//            p1.setIsLoop(false);
-//            p1.start();
-
-            new ParseOptionStrikePrice(this, this, symbol, true, 208.75).execute();
+            p1.setSymbol(symbol);
+            p1.setIsLoop(false);
+            p1.start();
         }
 
     }
