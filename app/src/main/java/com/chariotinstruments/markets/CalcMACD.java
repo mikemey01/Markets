@@ -59,7 +59,6 @@ public class CalcMACD {
             fastEMAList.add(curEMA);
         }
 
-        //EMA: {Close - EMA(previous day)} x multiplier + EMA(previous day).
 
         return curEMA;
     }
@@ -93,36 +92,39 @@ public class CalcMACD {
 
     public double getSignal(){
         ArrayList<Double> macdList = new ArrayList<Double>();
+        ArrayList<Double> macdListForward = new ArrayList<Double>();
         double multiplier = 2.0/10.0;
-        double curMACD= 0.0;
+        double curSignal= 0.0;
+        double firstAvg = 0.0;
 
-        //todo:sync macd list here, fast and slow started at different times, need to add the last index to new array and work backwards.
         int j = fastEMAList.size()-1;
         for(int i = slowEMAList.size()-1; i > 30; i--){
             macdList.add(fastEMAList.get(j)-slowEMAList.get(i));
             j--;
         }
 
-        //reverse through this list to start at the beginning.
+        //reverse the macdList
         for(int i = macdList.size()-1; i > 0; i--){
-            
+            macdListForward.add(macdList.get(i));
         }
 
-        //Seed with the first item in the list.
-        curMACD = macdList.get(0);
-
-        //setup the index needed from the marketCandles array
-        int mi = marketCandles.size()-10;
-
-        for(int i = 1; i < macdList.size(); i++){
-            //should be:
-            //curMACD = ((<curMacd> * multiplier) + (<previousMacd> * (1.0-multiplier)));
-            //curMACD = ((marketCandles.get(mi).getClose() * multiplier) + (curMACD * (1.0-multiplier)));
-            //increment the marketcandles index by 1.
-            mi++;
+        //average the first nine
+        for(int i = 0; i < 9; i++){
+            firstAvg += macdListForward.get(i);
         }
 
-        return curMACD;
+        //average the first nine
+        firstAvg = firstAvg/9;
+
+        //seed the first signal
+        curSignal = ((macdListForward.get(9) * multiplier) + (firstAvg * (1.0 - multiplier)));
+
+        //reverse through this list to start at the beginning.
+        for(int i = 10; i < macdListForward.size()-1; i++){
+            curSignal = ((macdListForward.get(i) * multiplier) + (curSignal * (1.0-multiplier)));
+        }
+
+        return curSignal;
     }
 
 }

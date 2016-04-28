@@ -70,7 +70,7 @@ public class PhaseOneIndicatorControl {
         ret = ret + calcMACD();
         ret = ret + calc50EMAPeriods();
         ret = ret + calc200EMAperiods();
-        //ret = ret + calcStochastics();
+        ret = ret + calcStochastics();
 
         preTradeFavorableConditionsFound();
 
