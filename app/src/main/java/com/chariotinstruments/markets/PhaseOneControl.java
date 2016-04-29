@@ -18,7 +18,7 @@ import java.util.Locale;
  * 3. If no, start data retrieval loop
  * 4. When favorable conditions are found, launch phase two.
  */
-public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseStockQuote.ParseStockQuoteAsyncListener, ParseOpenPosition.ParseOpenPositionAsyncListener, ParseAccountData.ParseAccountDataAsyncListener{
+public class PhaseOneControl extends BaseControl implements ParseData.ParseDataAsyncListener, ParseStockQuote.ParseStockQuoteAsyncListener, ParseOpenPosition.ParseOpenPositionAsyncListener, ParseAccountData.ParseAccountDataAsyncListener{
 
     private TextView consoleView;
     private Activity uiActivity;
@@ -32,6 +32,9 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
     private double buyingPower;
 
     public PhaseOneControl(Activity activity){
+        //send activity to BaseControl
+        super(activity);
+
         uiActivity = activity;
         consoleView = (TextView)activity.findViewById(R.id.dataTextView);
         isActive = false;
@@ -102,8 +105,6 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
             if(isWithinTimeFrame()) {
                 //check if a trade has already occurred today, allow the order to submit always if paper trading.
                 if (!tradeOccurredToday() || !isTradingLive()) {
-                    consoleView.setText("Trade occurred");
-                    System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDD TRADE OCCURRED");
                     submitOrder(indicatorControl.getIsUp());
                 }else {
                     setTradeableConditions(false);
@@ -126,7 +127,7 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
 
         //Save the date that the trade was opened if trading live.
         if(isTradingLive()) {
-            setTradeDate();
+            setLastTradeDate();
         }
 
         //reset indicators in case we want to start phase one again.
@@ -139,46 +140,17 @@ public class PhaseOneControl implements ParseData.ParseDataAsyncListener, ParseS
     }
 
     //Commits the current date to the prefs lastTradeDate.
-    private void setTradeDate(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        Calendar cal = Calendar.getInstance();
-        String todaysDate = sdf.format(cal.getTime());
+//    private void setTradeDate(){
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+//        Calendar cal = Calendar.getInstance();
+//        String todaysDate = sdf.format(cal.getTime());
+//
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(uiActivity);
+//        SharedPreferences.Editor editor = prefs.edit();
+//        editor.putString("lastTradeDate", todaysDate);
+//        editor.commit();
+//    }
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(uiActivity);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("lastTradeDate", todaysDate);
-        editor.commit();
-    }
-
-    //Compares todays date with what's currently stored in prefs. returns true if the date in prefs matches.
-    private boolean tradeOccurredToday(){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(uiActivity);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        String strDate = prefs.getString("lastTradeDate", "");
-        Calendar lastTradeDate = Calendar.getInstance();
-        Calendar todaysDate = Calendar.getInstance();
-
-        //Check if the last trade date is populated, if not return false
-        if(strDate.isEmpty() || strDate == null){
-            return false;
-        }
-
-        //returning false if it fails to parse a date A LITTLE RISKY.
-        try {
-            lastTradeDate.setTime(sdf.parse(strDate));
-        } catch (ParseException e) {
-            return false;
-        }
-
-        //Check if the dates match, return true if they do
-        if(todaysDate.get(Calendar.DAY_OF_MONTH) == lastTradeDate.get(Calendar.DAY_OF_MONTH) &&
-                todaysDate.get(Calendar.MONTH) == lastTradeDate.get(Calendar.MONTH) &&
-                todaysDate.get(Calendar.YEAR) == lastTradeDate.get(Calendar.YEAR)){
-            return true;
-        }
-
-        return false;
-    }
 
     //returns whether the preference value for trading is turned on or not
     private boolean isTradingLive(){
