@@ -61,7 +61,7 @@ public class MarketDay {
     }
 
     public String getLatestCandleVolumeString(){
-        DecimalFormat formatter = new DecimalFormat("#,###.00");
+        DecimalFormat formatter = new DecimalFormat("#,###");
         String formatted = "";
 
         //This was throwing an error a few times a day, trying to catch it.
