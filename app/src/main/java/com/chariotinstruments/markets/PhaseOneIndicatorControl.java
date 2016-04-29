@@ -84,7 +84,7 @@ public class PhaseOneIndicatorControl {
     private String calcLastCandleVolume(){
         String ret = "";
 
-        ret = "Last Period Vol: " + Long.toString(marketDay.getLatestCandleVolume()) + "\n";
+        ret = "Last Period Vol: " + marketDay.getLatestCandleVolumeString() + "\n";
 
         return ret;
     }

@@ -2,6 +2,7 @@ package com.chariotinstruments.markets;
 
 import android.text.format.DateFormat;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -57,6 +58,19 @@ public class MarketDay {
 
         //something happened with the marketcandles array, return 0.
         return 0;
+    }
+
+    public String getLatestCandleVolumeString(){
+        DecimalFormat formatter = new DecimalFormat("#,###.00");
+        String formatted = "";
+
+        //This was throwing an error a few times a day, trying to catch it.
+        if(_marketCandles.size()>2) {
+            return formatter.format(_marketCandles.get(_marketCandles.size() - 2).getVolume());
+        }
+
+        //something happened with the marketcandles array, return 0.
+        return "0";
     }
 
     public ArrayList<MarketCandle> getMarketCandles(){
