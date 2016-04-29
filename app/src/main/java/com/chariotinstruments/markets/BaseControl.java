@@ -3,6 +3,7 @@ package com.chariotinstruments.markets;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,14 +18,19 @@ public class BaseControl {
     private String expirationDate;
     private double strikePrice;
     private SharedPreferences prefs;
+    private Activity uiActivity;
+    private TextView console;
 
-    public BaseControl(Activity uiActivity){
+    public BaseControl(Activity uiActivityIn){
         //shared prefs setup
-        SharedPreferences prefsIn = PreferenceManager.getDefaultSharedPreferences(uiActivity);
+        SharedPreferences prefsIn = PreferenceManager.getDefaultSharedPreferences(uiActivityIn);
         prefs = prefsIn;
+        uiActivity = uiActivityIn;
+        this.console = (TextView) uiActivity.findViewById(R.id.dataTextView);
     }
 
     public double getStrikePrice(){
+        //todo: prefs strike price
         return strikePrice;
     }
 
@@ -33,6 +39,7 @@ public class BaseControl {
     }
 
     public String getExpirationDate(){
+        //todo: prefs expiration date
         return expirationDate;
     }
 
@@ -82,5 +89,37 @@ public class BaseControl {
 
         return false;
     }
+
+    //Checks if the current time is within 8:00 and 1:30 MST. Returns true if so.
+    protected boolean isWithinTimeFrame(){
+        Calendar rightNow = Calendar.getInstance();
+
+        long offset = rightNow.get(Calendar.ZONE_OFFSET) +
+                rightNow.get(Calendar.DST_OFFSET);
+        long sinceMid = (rightNow.getTimeInMillis() + offset) %
+                (24 * 60 * 60 * 1000);
+
+        if(sinceMid > 27000000 && sinceMid < 48600000){
+            return true;
+        }
+
+        return false;
+    }
+
+    //returns whether the preference value for trading is turned on or not
+    protected boolean isTradingLive(){
+        return prefs.getBoolean("isTradingLive", false);
+    }
+
+    //region P2 Stuff
+
+    protected void paperCloseTrade(double gainLoss){
+        PaperAccount paper = new PaperAccount(uiActivity);
+        paper.setAccountBalanceChange(gainLoss*10*100, 10);
+
+        this.console.setText("Trade complete for a gain/loss of " + Double.toString(gainLoss*10*100));
+    }
+
+    //endregion
 
 }

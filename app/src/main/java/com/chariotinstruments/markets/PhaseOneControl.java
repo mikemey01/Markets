@@ -139,41 +139,6 @@ public class PhaseOneControl extends BaseControl implements ParseData.ParseDataA
         indicatorControl.setTradeableConditionsFound(status);
     }
 
-    //Commits the current date to the prefs lastTradeDate.
-//    private void setTradeDate(){
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-//        Calendar cal = Calendar.getInstance();
-//        String todaysDate = sdf.format(cal.getTime());
-//
-//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(uiActivity);
-//        SharedPreferences.Editor editor = prefs.edit();
-//        editor.putString("lastTradeDate", todaysDate);
-//        editor.commit();
-//    }
-
-
-    //returns whether the preference value for trading is turned on or not
-    private boolean isTradingLive(){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(uiActivity);
-        return prefs.getBoolean("isTradingLive", false);
-    }
-
-    //Checks if the current time is within 8:00 and 1:30 MST. Returns true if so.
-    private boolean isWithinTimeFrame(){
-        Calendar rightNow = Calendar.getInstance();
-
-        long offset = rightNow.get(Calendar.ZONE_OFFSET) +
-                rightNow.get(Calendar.DST_OFFSET);
-        long sinceMid = (rightNow.getTimeInMillis() + offset) %
-                (24 * 60 * 60 * 1000);
-
-        if(sinceMid > 27000000 && sinceMid < 48600000){
-            return true;
-        }
-
-        return false;
-    }
-
     //endregion
 
     //region Async Callbacks

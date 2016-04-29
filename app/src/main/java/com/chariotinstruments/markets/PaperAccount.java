@@ -36,7 +36,13 @@ public class PaperAccount {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(uiActivity);
         String strBalance = prefs.getString("paperAccountBalance", "");
-        ret = Double.parseDouble(strBalance);
+
+        //handle when no paper balance is setup.
+        if(strBalance.isEmpty() || strBalance == null){
+            ret = 0.0;
+        }else {
+            ret = Double.parseDouble(strBalance);
+        }
 
         return ret;
     }

@@ -13,7 +13,7 @@ import java.util.Locale;
 /**
  * Created by user on 3/15/16.
  */
-public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsyncListener, ParseStockQuote.ParseStockQuoteAsyncListener{
+public class PhaseTwoControl extends BaseControl implements ParseOpenPosition.ParseOpenPositionAsyncListener, ParseStockQuote.ParseStockQuoteAsyncListener{
 
     private OpenOptionPosition position;
     private OptionOrder order;
@@ -31,6 +31,10 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
 
     //this constructor is for new positions that are found during analysis.
     public PhaseTwoControl(Activity activity, OptionOrder orderIn, boolean isLive){
+
+        //pass activity to base class
+        super(activity);
+
         uiActivity = activity;
         this.order = orderIn;
         this.console = (TextView) uiActivity.findViewById(R.id.dataTextView);
@@ -44,6 +48,10 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
 
     //This constructor is used for when a trade already existed when the app was first opened/started in p1.
     public PhaseTwoControl(Activity activity, OpenOptionPosition positionIn){
+
+        //pass activity to base class
+        super(activity);
+
         uiActivity = activity;
         this.console = (TextView) uiActivity.findViewById(R.id.dataTextView);
         this.curData = (EditText) uiActivity.findViewById(R.id.currentTextBox);
@@ -59,6 +67,10 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
 
     //this constructor is for paper trading
     public PhaseTwoControl(Activity activity, FixmlModel fixml){
+
+        //pass the activity to base class
+        super(activity);
+
         uiActivity = activity;
         this.console = (TextView) uiActivity.findViewById(R.id.dataTextView);
         this.curData = (EditText) uiActivity.findViewById(R.id.currentTextBox);
@@ -178,6 +190,7 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         paperCheckGainLoss(paperTradePrice, quote.getBidPrice());
     }
 
+    //todo: move this to baseControl so we can always see what the option string is in the current text box.
     private void buildOptionSymbol(FixmlModel fixml){
         String ret = "";
         String putCall = "";
@@ -236,13 +249,6 @@ public class PhaseTwoControl implements ParseOpenPosition.ParseOpenPositionAsync
         }else{
             paperTradeLoop();
         }
-    }
-
-    private void paperCloseTrade(double gainLoss){
-        PaperAccount paper = new PaperAccount(uiActivity);
-        paper.setAccountBalanceChange(gainLoss*10*100, 10);
-
-        this.console.setText("Trade complete for a gain/loss of " + Double.toString(gainLoss*10*100));
     }
 
     private void paperOutputToUI(StockQuote quote){
