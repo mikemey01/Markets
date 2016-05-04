@@ -41,6 +41,12 @@
             android:summary="Enter as DD-MM-YYY">
         </EditTextPreference>
 
+        <EditTextPreference
+            android:title="Quantity"
+            android:key="quantity"
+            android:summary="Enter number of contracts to trade">
+        </EditTextPreference>
+
         <CheckBoxPreference
             android:title="Trade Calls?"
             android:key="tradeCalls"
