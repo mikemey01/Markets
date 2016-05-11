@@ -29,9 +29,17 @@ public class BaseControl {
         this.console = (TextView) uiActivity.findViewById(R.id.dataTextView);
     }
 
+    public int getQuantity(){
+        //defaults to 1.
+        int qty = 1;
+        qty = prefs.getInt("quantity", 1);
+        return qty;
+    }
+
     public double getStrikePrice(){
-        //todo: prefs strike price
-        return strikePrice;
+        double strike = 0.0;
+        strike = prefs.getFloat("strikePrice", 0);
+        return strike;
     }
 
     public void setStrikePrice(double strikePriceIn){
@@ -39,8 +47,9 @@ public class BaseControl {
     }
 
     public String getExpirationDate(){
-        //todo: prefs expiration date
-        return expirationDate;
+        String expiry = "";
+        expiry = prefs.getString("expiryData", "");
+        return expiry;
     }
 
     public void setExpirationDate(String expirationDateIn){

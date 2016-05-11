@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * 4. Check buying power in onOptionOrderPreviewComplete, execute real trade or paper trade here (set delta, limit).
  * 5. Start p2 in onOptionOrderComplete;
  */
-public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionStrikePriceAsyncListener, ParseOptionExpirations.ParseOptionExpirationsAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener, ParseOptionOrder.ParseOptionOrderListener{
+public class PhaseOneTradeControl extends BaseControl implements ParseOptionStrikePrice.ParseOptionStrikePriceAsyncListener, ParseOptionExpirations.ParseOptionExpirationsAsyncListener, ParseOptionOrderPreview.ParseOptionOrderPreviewListener, ParseOptionOrder.ParseOptionOrderListener{
     private TextView consoleView;
     private EditText currentTextBox;
 
@@ -34,6 +34,7 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
     private boolean isLiveTrading;
 
     public PhaseOneTradeControl(boolean isOpeningTrade, boolean isCall, Activity activity, String symbol, double curPrice, double buyingPower, boolean isLive){
+        super(activity);
         this.isOpeningTrade = isOpeningTrade;
         this.isCall = isCall;
         this.uiActivity = activity;
@@ -120,7 +121,7 @@ public class PhaseOneTradeControl implements ParseOptionStrikePrice.ParseOptionS
         }
 
         //TODO:setting the qty to 1 for now so I don't lose it all on the first bet.
-        fixml.createFIXMLObject(false, orderSide, posEffect, CFI, "OPT", this.expiration, this.strikePrice, this.symbol, 1, 0.0);
+        fixml.createFIXMLObject(false, orderSide, posEffect, CFI, "OPT", this.expiration, this.strikePrice, this.symbol, super.getQuantity(), 0.0);
 
 
         return fixml;
