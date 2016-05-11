@@ -32,13 +32,21 @@ public class BaseControl {
     public int getQuantity(){
         //defaults to 1.
         int qty = 1;
-        qty = prefs.getInt("quantity", 1);
+        String qtyString = "";
+        qtyString = prefs.getString("quantity", "1");
+
+        if(qtyString.isEmpty() || qtyString == null){
+            qty = 1;
+        }else{
+            qty = Integer.parseInt(qtyString);
+        }
+
         return qty;
     }
 
     public double getStrikePrice(){
         double strike = 0.0;
-        strike = prefs.getFloat("strikePrice", 0);
+        strike = Double.parseDouble(prefs.getString("strikePrice", "0"));
         return strike;
     }
 

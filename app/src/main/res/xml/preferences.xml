@@ -44,21 +44,23 @@
         <EditTextPreference
             android:title="Quantity"
             android:key="quantity"
-            android:summary="Enter number of contracts to trade">
+            android:summary="Enter number of contracts to trade, defaults to 1">
         </EditTextPreference>
 
         <CheckBoxPreference
             android:title="Trade Calls?"
             android:key="tradeCalls"
             android:summary="Should call orders be opened?"
-            android:persistent="true">
+            android:persistent="true"
+            android:defaultValue="true">
         </CheckBoxPreference>
 
         <CheckBoxPreference
             android:title="Trade Puts?"
             android:key="tradePuts"
             android:summary="Should put orders be opened?"
-            android:persistent="true">
+            android:persistent="true"
+            android:defaultValue="true">
         </CheckBoxPreference>
 
     </PreferenceCategory>
