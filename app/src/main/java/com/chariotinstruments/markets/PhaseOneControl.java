@@ -67,7 +67,6 @@ public class PhaseOneControl extends BaseControl implements ParseData.ParseDataA
     }
 
     public void start(){
-        consoleView.setText(Integer.toString(super.getQuantity()));
 
         isActive = true;
 
