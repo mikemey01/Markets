@@ -14,7 +14,9 @@ public class PhaseOneIndicatorControl {
 
     private double curRSI;
     private double curMACD;
-    private double curEMA;
+    private double curMACDSignal;
+    private double cur50EMA;
+    private double cur200EMA;
     private double curSlowStochastic;
 
     private boolean preTradeFavorableConditionsFound;
@@ -32,6 +34,30 @@ public class PhaseOneIndicatorControl {
         preTradeFavorableConditionsFound = false;
         isUp = false;
         tradeableConditionsFound = false;
+    }
+
+    public double getRSI(){
+        return curRSI;
+    }
+
+    public double getMACD(){
+        return curMACD;
+    }
+
+    public double getMACDSignal(){
+        return curMACDSignal;
+    }
+
+    public double get50EMA(){
+        return cur50EMA;
+    }
+
+    public double get200EMA(){
+        return cur200EMA;
+    }
+
+    public double getStochastic(){
+        return curSlowStochastic;
     }
 
     public void setPreTradeFavorableConditionsFound(boolean condition){
@@ -107,6 +133,7 @@ public class PhaseOneIndicatorControl {
         CalcMACD macd = new CalcMACD(marketDay);
         curMACD = macd.getCurrentMACD();
         double curSignal = macd.getSignal();
+        this.curMACDSignal = curSignal;
         macdString = String.format("%.4f", curMACD);
         signalString = String.format("%.4f", curSignal);
         ret = ret + "MACD, Signal: " + macdString + ", " +signalString + "\n";
@@ -154,7 +181,7 @@ public class PhaseOneIndicatorControl {
         ema50Diff = Math.abs(ema - marketCandles.get(marketCandles.size()-1).getClose());
 
         ret = "50 EMA, Diff: " + String.format("%.2f", ema) + ", " + String.format("%.2f", ema50Diff) + "\n";
-        this.curEMA = ema;
+        this.cur50EMA = ema;
 
         return ret;
     }
@@ -187,6 +214,8 @@ public class PhaseOneIndicatorControl {
         }
 
         ema200Diff = Math.abs(ema - marketCandles.get(marketCandles.size()-1).getClose());
+
+        this.cur200EMA = ema;
 
         ret = "200 EMA: " + String.format("%.2f", ema) + "\n";
         //this.curEMA = ema;
