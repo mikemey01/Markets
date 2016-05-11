@@ -180,7 +180,7 @@ public class PhaseOneControl extends BaseControl implements ParseData.ParseDataA
         //putting this here so it doesn't overwrite the trade exception notices.
         if(isActive) {
             stockQuoteOutput = "Symbol: " + quote.getSymbol() + "\n" +
-                    "Time: " + Long.toString(quote.getTime()) + "\n" +
+                    "Time: " + convertTimeMillisToString(quote.getTime()) + "\n" +
                     "Last Price: " + Double.toString(quote.getLastTradePrice()) + "\n" +
                     "Ask Price: " + Double.toString(quote.getAskPrice()) + "\n" +
                     "Ask Size: " + Double.toString(quote.getAskSize()) + "\n" +

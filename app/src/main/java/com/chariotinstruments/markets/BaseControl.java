@@ -5,9 +5,11 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.TextView;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -126,6 +128,20 @@ public class BaseControl {
     //returns whether the preference value for trading is turned on or not
     protected boolean isTradingLive(){
         return prefs.getBoolean("isTradingLive", false);
+    }
+
+    protected String convertTimeMillisToString(Long millis){
+//        long second = (millis / 1000) % 60;
+//        long minute = (millis / (1000 * 60)) % 60;
+//        long hour = (millis / (1000 * 60 * 60)) % 24;
+//
+//        String time = String.format("%02d:%02d:%02d", hour, minute, second);
+
+        Date date = new Date(millis);
+        DateFormat formatter = new SimpleDateFormat("HH:mm:ss:SSS");
+        String time = formatter.format(date);
+
+        return time;
     }
 
     //region P2 Stuff
