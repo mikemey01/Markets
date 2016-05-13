@@ -148,7 +148,7 @@ public class BaseControl {
 
     protected void paperCloseTrade(double gainLoss){
         PaperAccount paper = new PaperAccount(uiActivity);
-        paper.setAccountBalanceChange(gainLoss*10*100, getQuantity());
+        paper.setAccountBalanceChange(gainLoss*getQuantity()*100, getQuantity());
 
         this.console.setText("Trade complete for a gain/loss of " + Double.toString(gainLoss*10*100));
     }
