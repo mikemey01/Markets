@@ -98,15 +98,18 @@ public class PhaseOneControl extends BaseControl implements ParseData.ParseDataA
     //Checks to see if tradeable conditions were found with the last data retrieval.
     private void checkIndicators(PhaseOneIndicatorControl indicatorControl){
 
+        //Set which strategy we're using
+        StrategyHysteresis strat = new StrategyHysteresis(uiActivity, indicatorControl);
+
         //check if the tradeable conditions have been found.
         //todo: the consoleView did not work here.
-        if(indicatorControl.getTradeableConditionsFound()){
+        if(strat.getTradeableConditionsFound()){
             isActive = false;
             //Check if within 8:00 and 1:30 MST
             if(isWithinTimeFrame()) {
                 //check if a trade has already occurred today, allow the order to submit always if paper trading.
                 if (!tradeOccurredToday() || !isTradingLive()) {
-                    submitOrder(indicatorControl.getIsUp());
+                    submitOrder(strat.getIsUp());
                 }else {
                     setTradeableConditions(false);
                     consoleView.setText("No Trade: already traded today.");

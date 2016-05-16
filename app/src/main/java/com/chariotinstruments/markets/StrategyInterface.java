@@ -6,4 +6,6 @@ package com.chariotinstruments.markets;
 public interface StrategyInterface {
     public boolean preTradeFavorableConditionsFound();
     public boolean tradeableConditionsFound();
+    public boolean getIsUp();
+    public boolean getTradeableConditionsFound();
 }

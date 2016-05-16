@@ -72,4 +72,10 @@ public class StrategyHysteresis implements StrategyInterface{
         return false;
     }
 
+    public boolean getTradeableConditionsFound(){
+        return tradeableConditionsFound;
+    }
+
+    public boolean getIsUp(){ return isUp; }
+
 }
