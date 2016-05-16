@@ -88,6 +88,10 @@ public class PhaseOneIndicatorControl {
         return marketDay;
     }
 
+    public ArrayList<Double> getEma50List(){ return ema50List; };
+
+    public ArrayList<Double> getEma200List(){ return ema200List; };
+
     public String calculateIndicators(){
         String ret = "";
 
