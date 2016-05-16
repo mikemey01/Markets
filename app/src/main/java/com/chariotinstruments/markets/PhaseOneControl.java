@@ -103,6 +103,7 @@ public class PhaseOneControl extends BaseControl implements ParseData.ParseDataA
 
         //check if the tradeable conditions have been found.
         //todo: the consoleView did not work here.
+        //todo: the strat doesn't work since it's instantiated each time and doesn't persist the pretradeable conditions
         if(strat.getTradeableConditionsFound()){
             isActive = false;
             //Check if within 8:00 and 1:30 MST
