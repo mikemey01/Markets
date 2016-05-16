@@ -27,8 +27,12 @@ public class CalcRSI {
     }
 
     public double getCurrentRSI(){
-        getFirstAverages();
-        double RSI = getRSI(gainAverage, lossAverage);
+        double RSI = 0.0;
+        
+        if(marketCandles.size()>1) {
+            getFirstAverages();
+            RSI = getRSI(gainAverage, lossAverage);
+        }
 
         return RSI;
     }
