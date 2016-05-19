@@ -221,10 +221,4 @@ public class PhaseOneIndicatorControl {
         return ret;
     }
 
-
-
-
-
-
-
 }

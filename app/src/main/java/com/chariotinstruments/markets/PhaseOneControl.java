@@ -40,7 +40,7 @@ public class PhaseOneControl extends BaseControl implements ParseData.ParseDataA
         consoleView = (TextView)activity.findViewById(R.id.dataTextView);
         isActive = false;
         indicatorControl = new PhaseOneIndicatorControl();
-        strat = new StrategyHysteresis(activity, indicatorControl); //implement any strategy here so it persists.
+        strat = new StrategyHysteresis(activity, indicatorControl); // todo: implement any strategy here so it persists.
         indicators = "";
         stockQuoteOutput = "";
         currentStockPrice = 0.0;
