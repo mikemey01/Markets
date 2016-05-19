@@ -21,6 +21,18 @@ public class StrategyHysteresis implements StrategyInterface{
         indicators = indicatorsIn;
     }
 
+    public void setIndicatorControl(PhaseOneIndicatorControl indicatorControlIn){
+        indicators = indicatorControlIn;
+    }
+
+    public void checkConditions() {
+        preTradeFavorableConditionsFound();
+
+        if (preTradeFavorableConditionsFound) {
+            tradeableConditionsFound();
+        }
+    }
+
     public boolean preTradeFavorableConditionsFound(){
         boolean emaDiffBool;
 

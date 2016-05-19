@@ -25,6 +25,7 @@ public class PhaseOneControl extends BaseControl implements ParseData.ParseDataA
     private String symbol;
     private boolean isActive;
     private PhaseOneIndicatorControl indicatorControl;
+    private StrategyInterface strat;
     private boolean isLoop;
     private String indicators;
     private String stockQuoteOutput;
@@ -39,6 +40,7 @@ public class PhaseOneControl extends BaseControl implements ParseData.ParseDataA
         consoleView = (TextView)activity.findViewById(R.id.dataTextView);
         isActive = false;
         indicatorControl = new PhaseOneIndicatorControl();
+        strat = new StrategyHysteresis(activity, indicatorControl); //implement any strategy here so it persists.
         indicators = "";
         stockQuoteOutput = "";
         currentStockPrice = 0.0;
@@ -98,12 +100,11 @@ public class PhaseOneControl extends BaseControl implements ParseData.ParseDataA
     //Checks to see if tradeable conditions were found with the last data retrieval.
     private void checkIndicators(PhaseOneIndicatorControl indicatorControl){
 
-        //Set which strategy we're using
-        StrategyHysteresis strat = new StrategyHysteresis(uiActivity, indicatorControl);
+        //set the indicators in the current strategy
+        strat.setIndicatorControl(indicatorControl);
+        strat.checkConditions();
 
         //check if the tradeable conditions have been found.
-        //todo: the consoleView did not work here.
-        //todo: the strat doesn't work since it's instantiated each time and doesn't persist the pretradeable conditions
         if(strat.getTradeableConditionsFound()){
             isActive = false;
             //Check if within 8:00 and 1:30 MST

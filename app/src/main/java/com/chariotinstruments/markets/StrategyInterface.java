@@ -8,4 +8,7 @@ public interface StrategyInterface {
     public boolean tradeableConditionsFound();
     public boolean getIsUp();
     public boolean getTradeableConditionsFound();
+
+    public void setIndicatorControl(PhaseOneIndicatorControl indicatorControl);
+    public void checkConditions();
 }
